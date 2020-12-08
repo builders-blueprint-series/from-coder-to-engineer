@@ -5,9 +5,9 @@ Introduction
 ## Part 1: A Engineering Mind
 
 Chapter 1: Coding is easy. Engineering is hard
-Chapter 2: Engineer is a mentality, not a title
-Chapter 3: Favor simplicity over complexity
-Chapter 4: Poorly written software harms everyone
+Chapter 2: Favor simplicity over complexity
+Chapter 3: Poorly written software harms everyone
+Chapter 4: The engineering process
 
 ## Part 2: Tools of the trade
 

@@ -6,20 +6,24 @@ Introduction
 
 ### Chapter 1: Coding is easy. Engineering is hard
 
-
-### Chapter 2: Engineer is a mentality, not a title
-
+Engineer is a mentality, not a title
 One line a day
 
-### Chapter 3: Favor simplicity over complexity
+### Chapter 2: Favor simplicity over complexity
 
+Easier to understand
+Easier to work with
 Frameworks aren't friends
 
-### Chapter 4: Poorly written software harms everyone
+### Chapter 3: Poorly written software harms everyone
 
 Bad software hurts customers
 Bad software costs money
-Bad software 
+Bad software hurts developers
+
+### Chapter 4: The Engineering Process
+
+
 
 ## Part 2: Tools of the trade
 
@@ -28,6 +32,7 @@ Bad software
 
 
 ### Chapter 6: Tests don't lie
+
 
 
 ### Chapter 7: Coding building blocks
