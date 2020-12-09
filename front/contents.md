@@ -13,6 +13,7 @@ Titles and years of experience don't matter
 
 ### Chapter 2: Favor simplicity over complexity
 
+The five minute rule
 Easier to understand  
 Easier to work with  
 Associate lines with cost  
@@ -102,4 +103,10 @@ Inappropriate registration
 
 Too many conditional statements  
 Classes doing too much  
-Logic in the wrong place  
+Logic in the wrong place
+
+### Chapter 15: Miscellaneous
+
+Comments
+Naming
+Asynchronous

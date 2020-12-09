@@ -24,3 +24,4 @@ Chapter 11: Encapsulation
 Chapter 12: Repetition
 Chapter 13: Coupling
 Chapter 14: Responsibility
+Chapter 15: Miscellaneous
