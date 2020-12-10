@@ -21,7 +21,7 @@ Chapter 9: Patterns to remember
 
 Chapter 10: Testing
 Chapter 11: Encapsulation
-Chapter 12: Repetition
-Chapter 13: Coupling
+Chapter 12: Coupling
+Chapter 13: Repetition
 Chapter 14: Responsibility
 Chapter 15: Miscellaneous

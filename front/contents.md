@@ -81,23 +81,24 @@ Extension methods
 Exposed collections  
 Leaky domain  
 
-### Chapter 12: Repetition
-
-Duplication in the presentation layer  
-Duplication in the data layer  
-Checks everywhere  
-Logging everything  
-
-### Chapter 13: Coupling
+### Chapter 12: Coupling
 
 The "new" keyword  
-Concrete dependencies  
+Concrete dependencies
+Friend classes
 Relying on dispose  
 Injecting the container  
 Resolving from the container  
 Over injecting  
 Fancy injecting  
-Inappropriate registration  
+Inappropriate registration
+
+### Chapter 13: Repetition
+
+Duplication in the presentation layer  
+Duplication in the data layer  
+Checks everywhere  
+Logging everything
 
 ### Chapter 14: Responsibility
 
