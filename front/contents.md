@@ -9,14 +9,16 @@ Introduction
 Engineer is a mentality, not a title  
 One line a day keeps the refactoring away  
 Speak up now, or pay later  
-Titles and years of experience don't matter  
+Titles and years of experience don't matter
+Good software is 99% wanting to write good software, the rest is details  
 
 ### Chapter 2: Favor simplicity over complexity
 
 The five minute rule
 Easier to understand  
 Easier to work with  
-Associate lines with cost  
+Associate lines with cost
+Anything that you allow, will happen  
 Frameworks aren't friends  
 
 ### Chapter 3: Poorly written software harms everyone

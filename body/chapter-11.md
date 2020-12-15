@@ -18,7 +18,7 @@ If you can only do one thing well in your application, make sure it is encapsula
 
 To help explain how proper encapsulation will better your application, we will continue with the reservation system example we introduced in the previous chapter.
 
-**Listing 11-1** An example of a class with public setters.
+**Listing 11-1** Our Customer class with public setters.
 
 ```csharp
     public class Customer
@@ -33,16 +33,11 @@ To help explain how proper encapsulation will better your application, we will c
 
         public int LoyaltyPoints { get; set; }
 
-        // Year To Date
-        public double PointsYTD { get; set; }
-
-        public LoyaltyStatus Status { get; set; }
-
-        public ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
+        public int PointsYearToDate { get; set; }
     }
 ```
 
-Our Customer class contains a handful of properties, and a collection of Reservations which here signifies that we are using Entity Framework and Reservations represents a One-To-Many relationship where a single customer may have multiple reservations.
+Our Customer class contains a handful of properties. For simplicity, we have keep all of these properties to basic types.
 
 The issue with public setters is:
 
