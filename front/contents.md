@@ -77,7 +77,8 @@ Overuse of mocks
 
 ### Chapter 11: Encapsulation
 
-Public setters  
+Public setters
+Excessive Properties (names, loyalty data)  
 Private methods  
 Extension methods  
 Exposed collections  
