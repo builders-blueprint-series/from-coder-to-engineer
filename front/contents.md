@@ -82,7 +82,8 @@ Excessive Properties (names, loyalty data)
 Private methods  
 Extension methods  
 Exposed collections  
-Leaky domain  
+Leaky domain
+Entity Framework  
 
 ### Chapter 12: Coupling
 

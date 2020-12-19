@@ -16,4 +16,4 @@
 
    - Show how testing has improved afterwards
 
-5. Every example should come back to the theme of testing as a benchmark
+5. Every example should come back to the theme of testing as a benchmark, shortening the feedback loop, and enforcing simplicity via common interfaces

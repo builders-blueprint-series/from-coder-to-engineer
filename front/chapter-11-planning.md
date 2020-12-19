@@ -12,16 +12,8 @@
 
 - Leaky Domain Logic
 
+- Encapsulation with Entity Framework
+
 ### Topics In Details
 
-#### Public Setters
 
-1. 
-
-#### Private Methods
-
-#### Extension Methods
-
-#### Exposed Collections
-
-#### Leaky Domain Logic
