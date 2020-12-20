@@ -1,5 +1,3 @@
-
-
 If you can only do one thing well in your application, make sure it is encapsulated. A lack of encapsulation will slow down and break an application faster than anything else.
 
 To help explain how proper encapsulation will better your application, we will continue with the reservation system example we introduced in the previous chapter.
@@ -78,17 +76,18 @@ After completing this chapter, you will be able to
 
 - Learn how to enforce encapsulation with Entity Framework
 
+- Weigh the limits of encapsulation in certain situations
+
 ### At a glance
 
-1. Encapsulation as a foundation for good coding techniques.
+<!-- Find a way to emphasize crafting over foundation -->
+1. Encapsulation as a foundation for good coding techniques
 
-2. Encapsulation issues compound together.
+2. Encapsulation issues compound together
 
-3. Properly encapsulated code results in easier testing.
+3. Properly encapsulated code results in better testing
 
-4. Properly encapsulated code results in less testing.
-
-5. Properly encapsulated code limits options, shortens the feedback loops, and enforces simplicity through a constrained interface
+4. Properly encapsulated code limits options, shortens the feedback loop, and enforces simplicity through a common interface
 
 #### Public Setters
 
@@ -96,15 +95,15 @@ After completing this chapter, you will be able to
 
     - Listing Customer with public setters
 
-        1. Code description
+        1. Code overview
 
     - Listing Service that uses Customer
 
-        1. Code description
+        1. Code overview
 
     - Listing Tests for service
 
-        1. Code description
+        1. Code overview
 
 2. Issues at hand
 
@@ -112,7 +111,7 @@ After completing this chapter, you will be able to
 
         1. Naked details
 
-            - Listing Customer information is widely available
+            - Customer details are open clients
 
                 1. Code details
 
@@ -123,7 +122,7 @@ After completing this chapter, you will be able to
             - Objects are interfaces
             - Objects that limit details shorten the feedback loop
 
-    - Invariants can't be protected
+    - Invariants can not be protected
 
         1. Scattered Validation
 
@@ -137,7 +136,7 @@ After completing this chapter, you will be able to
 
             - Validation statements cause extra testing
 
-        2. State can't be guaranteed
+        2. State can not be guaranteed
 
             - Listing State in first Customer
 
@@ -153,11 +152,11 @@ After completing this chapter, you will be able to
 
             - Objects should self-validate
             - Objects should be aware their state at all times
-            - Fewer state options translates to less tests and less bugs
+            - Fewer state options translates to fewer tests and bugs
 
     - Non-centralized creation
 
-        1. Object change cascades throughout application
+        1. Object changes cascade throughout application
 
             - Note: What is Shotgun Surgery
             - Listing Customer has property added to it
@@ -202,8 +201,8 @@ After completing this chapter, you will be able to
 
 7. Conclusion
 
-    - Public setters create endless amount of possibilities for object creation and state, resulting in extra code
-    - Private setters with constructors limit these possibilities, resulting in less code, bugs, and a simplified code base
+    - Public setters create an endless amount of possibilities for object creation and state, resulting in extraneous code
+    - Private setters with constructors limit these possibilities, resulting in less code, fewer bugs, and a simplified code base
 
 #### Private Methods
 

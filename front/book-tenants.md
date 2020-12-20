@@ -1,6 +1,6 @@
 # Book Tenants
 
-1. Writing should be as simple as possible
+1. Writing and code should be as simple as possible
 
 2. Keep words to code ratio around ~55/45
 
