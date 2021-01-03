@@ -1,63 +1,3 @@
-If you can only do one thing well in your application, make sure it is encapsulated. A lack of encapsulation will slow down and break an application faster than anything else.
-
-To help explain how proper encapsulation will better your application, we will continue with the reservation system example we introduced in the previous chapter.
-
-**Listing 11-1** Our Customer class with public setters.
-
-```csharp
-    public class Customer
-    {
-        public Guid Id { get; set; }
-
-        public string FirstName { get; set; }
-
-        public string LastName { get; set; }
-
-        public string Email { get; set; }
-
-        public int LoyaltyPoints { get; set; }
-
-        public int PointsYearToDate { get; set; }
-    }
-```
-
-Our Customer class contains a handful of properties. For simplicity, we have keep all of these properties to basic types.
-
-There is nothing to stop a person from doing the following:
-
-**Listing 11-2** Public setters allow for any change
-
-```csharp
-    // Retrieve customer from persistence
-
-    Customer customer;
-
-    customer.Id = Guid.NewGuid();
-    customer.Status = LoyaltyStatus.Gold;
-
-    // Save to persistence
-```
-
-This code changes the Id of the customer to a different GUID, and updates their status to Gold.
-
-A common reaction to this code sample:
-
-1. "No one would actually do this."
-
-2. "My developers know better."
-
-3. "We'll catch it in code review".
-
-Remember, its not that this situation did occur, it's that it could occur. Private setters protect against this scenario from happening, because the complier does not allow you to do so.
-
-**Listing 11-3** Invariants can't be protected
-
-```csharp
-    customer.Email = "IForgotTheDotCom@MyDomain";
-```
-
-Looking at this, we can assign any string value to our Email property, and the mistake will only be known to us when we try to send the email.
-
 # Chapter 11
 
 ## Encapsulation
@@ -80,7 +20,6 @@ After completing this chapter, you will be able to
 
 ### At a glance
 
-<!-- Find a way to emphasize crafting over foundation -->
 1. Encapsulation as a foundation for good coding techniques
 
 2. Encapsulation issues compound together
@@ -91,21 +30,289 @@ After completing this chapter, you will be able to
 
 #### Public Setters
 
-1. Problem Statement
+---
 
-    - Listing Customer with public setters
+##### Problem Statement
 
-        1. Code overview
+- Continuation of reservation system introduced in the previous chapter.
 
-    - Listing Service that uses Customer
+<br/>
 
-        1. Code overview
+**Listing 11-X** Customer object with properties
 
-    - Listing Tests for service
+```csharp
+    public class Customer
+    {
+        public Guid Id { get; set; }
 
-        1. Code overview
+        public string FirstName { get; set; }
 
-2. Issues at hand
+        public string LastName { get; set; }
+
+        public string Email { get; set; }
+
+        public string LoyaltyId { get; set; }
+
+        public int LoyaltyPoints { get; set; }
+
+        public int PointsYearToDate { get; set; }
+
+        public LoyaltyStatus Status { get; set; }
+    }
+```
+
+**Listing 11-X** Loyalty Status enumeration
+
+```csharp
+    public enum LoyaltyStatus
+    {
+        Blue,
+        Silver,
+        Gold,
+        Platinum,
+    }
+```
+
+Our Customer class contains a handful of properties related to their identity and their loyalty status. Our status is defined as an enumeration.
+
+<br/>
+
+**Listing** 11-X Customer Service
+
+```csharp
+    public class CustomerService : ICustomerService
+    {
+        private readonly ICustomerRepository _customerRepository;
+        private readonly IEmailClient _emailClient;
+
+        public CustomerService(ICustomerRepository customerRepository, IEmailClient emailClient)
+        {
+            _customerRepository = customerRepository;
+            _emailClient = emailClient;
+        }
+
+        public void AddLoyaltyPoints(Guid customerId, int loyaltyPoints)
+        {
+            var customer = _customerRepository.GetById(customerId);
+
+            var newStatus = AddPointsAndCheckForNewStatus(customer, loyaltyPoints);
+
+            if (newStatus)
+            {
+                _emailClient.SendNewStatusEmail(customer);
+            }
+        }
+
+        public void GiftPoints(Guid customerId, int loyaltyPoints)
+        {
+            var customer = _customerRepository.GetById(customerId);
+
+            AddPointsAndCheckForNewStatus(customer, loyaltyPoints);
+
+            _emailClient.SendApology(customer);
+        }
+
+        public Customer CreateCustomer(string firstName, string lastName, string email)
+        {
+            var customer = new Customer
+            {
+                Id = Guid.NewGuid(),
+                FirstName = firstName,
+                LastName = lastName,
+                Email = email,
+                LoyaltyPoints = 0,
+                PointsYearToDate = 0,
+                Status = LoyaltyStatus.Blue,
+            };
+
+            customer.LoyaltyId = customer.Id.GenerateCustomerId();
+
+            _customerRepository.AddCustomer(customer);
+
+            return customer;
+        }
+
+        public Customer StatusMatchCustomer(string firstName, string lastName, string email, LoyaltyStatus status)
+        {
+            var customer = new Customer
+            {
+                Id = Guid.NewGuid(),
+                FirstName = firstName,
+                LastName = lastName,
+                Email = email,
+                LoyaltyPoints = 0,
+                PointsYearToDate = 0,
+                Status = status,
+            };
+
+            customer.LoyaltyId = customer.Id.GenerateCustomerId();
+
+            _customerRepository.AddCustomer(customer);
+
+            return customer;
+        }
+
+        public IEnumerable<Customer> GetAllSilverCustomers()
+        {
+            var allCustomers = _customerRepository.GetAllCustomers();
+
+            return allCustomers.Where(customer => customer.Status == LoyaltyStatus.Silver);
+        }
+
+        private bool AddPointsAndCheckForNewStatus(Customer customer, int points)
+        {
+            var currentStatus = customer.Status;
+
+            customer.LoyaltyPoints += points;
+            customer.PointsYearToDate += points;
+
+            if (customer.PointsYearToDate >= 25000)
+            {
+                customer.Status = LoyaltyStatus.Silver;
+            }
+
+            if (customer.PointsYearToDate >= 50000)
+            {
+                customer.Status = LoyaltyStatus.Gold;
+            }
+
+            if (customer.PointsYearToDate >= 75000)
+            {
+                customer.Status = LoyaltyStatus.Platinum;
+            }
+
+            if (currentStatus != customer.Status)
+            {
+                return true;
+            }
+
+            return false;
+        }
+    }
+```
+
+Our Customer Service contains a handful of methods relating to operations such as creating new Customers, adding points to their accounts for activity, and querying for certain customers.
+
+<br/>
+
+> **Note:** In a production situation, this class would have many more methods.
+
+<!-- This should probably be expanded some more. -->
+
+<br/>
+
+**Listing 11-X** Customer Service Tests
+
+```csharp
+    [TestClass]
+    public class CustomerServiceTests
+    {
+        private readonly Mock<ICustomerRepository> _customerRepository;
+        private readonly Mock<IEmailClient> _emailClient;
+        private readonly ICustomerService _customerService;
+
+        public CustomerServiceTests()
+        {
+            _customerRepository = new Mock<ICustomerRepository>();
+            _emailClient = new Mock<IEmailClient>();
+            _emailClient.Setup(x => x.SendNewStatusEmail(It.IsAny<Customer>()));
+            _customerService = new CustomerService(_customerRepository.Object, _emailClient.Object);
+        }
+
+        [TestMethod]
+        public void AddLoyaltyPoints_NewStatus_SendsEmail()
+        {
+            _customerRepository.Setup(x => x.GetById(It.IsAny<Guid>()))
+                .Returns(new Customer());
+
+            _customerService.AddLoyaltyPoints(Guid.NewGuid(), 25000);
+
+            _emailClient.Verify(x => x.SendNewStatusEmail(It.IsAny<Customer>()), Times.Once);
+        }
+
+        [TestMethod]
+        public void AddLoyaltyPoints_NoNewStatus_DoesNotSendEmail()
+        {
+            _customerRepository.Setup(x => x.GetById(It.IsAny<Guid>()))
+                .Returns(new Customer());
+
+            _customerService.AddLoyaltyPoints(Guid.NewGuid(), 15000);
+
+            _emailClient.Verify(x => x.SendNewStatusEmail(It.IsAny<Customer>()), Times.Never);
+        }
+
+        [TestMethod]
+        public void GiftPoints_SendsApology()
+        {
+            _customerRepository.Setup(x => x.GetById(It.IsAny<Guid>()))
+                .Returns(new Customer());
+
+            _customerService.GiftPoints(Guid.NewGuid(), 5000);
+
+            _emailClient.Verify(x => x.SendApology(It.IsAny<Customer>()), Times.Once);
+        }
+
+        [TestMethod]
+        public void CreateCustomer_ReturnsCorrectValues()
+        {
+            const string firstName = "John";
+            const string lastName = "Doe";
+            const string email = "john@doe.com";
+
+            var result = _customerService.CreateCustomer(firstName, lastName, email);
+
+            Assert.AreEqual(firstName, result.FirstName);
+            Assert.AreEqual(lastName, result.LastName);
+            Assert.AreEqual(email, result.Email);
+        }
+
+        [TestMethod]
+        public void StatusMatchCustomer_ReturnsCorrectValues()
+        {
+            const string firstName = "John";
+            const string lastName = "Doe";
+            const string email = "john@doe.com";
+            const LoyaltyStatus status = LoyaltyStatus.Gold;
+
+            var result = _customerService.StatusMatchCustomer(firstName, lastName, email, status);
+
+            Assert.AreEqual(firstName, result.FirstName);
+            Assert.AreEqual(lastName, result.LastName);
+            Assert.AreEqual(email, result.Email);
+            Assert.AreEqual(status, result.Status);
+        }
+
+        [TestMethod]
+        public void GetAllSilverCustomers_ReturnsCorrectCustomers()
+        {
+            _customerRepository.Setup(x => x.GetAllCustomers())
+                .Returns(new List<Customer>
+                {
+                    new Customer { Status = LoyaltyStatus.Silver },
+                    new Customer { Status = LoyaltyStatus.Blue },
+                    new Customer { Status = LoyaltyStatus.Silver },
+                    new Customer { Status = LoyaltyStatus.Gold },
+                });
+
+            var result = _customerService.GetAllSilverCustomers();
+
+            Assert.IsTrue(result.All(x => x.Status == LoyaltyStatus.Silver));
+        }
+    }
+```
+
+Our Customer Service tests cover unit level testing for our service. For mocking, I have utilized the popular Moq testing library.
+
+<br/>
+
+> **Note:** This service still requires a suite of integration tests to be considered complete. I have omitted them because I want to focus on the code contained in the service, not how it is being persisted.
+
+<br/>
+
+##### Issues at hand
+
+---
+
 
     - Client access to details
 
@@ -289,6 +496,18 @@ performed on collection afterwards
 
 #### Limits of Encapsulation
 
-It is important to understand that achieving full encapsulation will probably not occur. There are a number of commonly used libraries and frameworks that do not allow for full encapsulation. Entity Framework for complex types requires private setters and a private constructor. Swagger, the common library for implementing the Open API standard requires public setters. Model Binding and other JSON deserializers also require private setters and an empty constructor.
+1. Complete encapsulation of an application is not the goal.
 
-Sometimes we are required to make concessions when and when we can apply encapsulation. As an engineer it is up to you to weigh the advantages and disadvantages of every decision you make.
+2. Situations exist where the benefits and disadvantages of encapsulation needs to be weighed. A well-engineered application enforces encapsulation where it needs to.
+
+3. Model Binding, Open API (Swagger), and Entity Framework are situations where the rules of encapsulation can be relaxed.
+
+#### Conclusion
+
+1. Proper encapsulation is the foundation to well-engineered software.
+
+2. Start with removing public setters and private methods from your application.
+
+3. Eventually tackle larger issues with collections, misplaced domain objects and extension methods.
+
+4. If you can only do one thing well in your application, encapsulate.
