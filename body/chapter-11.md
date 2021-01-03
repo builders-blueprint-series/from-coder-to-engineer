@@ -34,7 +34,7 @@ After completing this chapter, you will be able to
 
 ##### Problem Statement
 
-- Continuation of reservation system introduced in the previous chapter.
+1. Continuation of reservation system introduced in the previous chapter.
 
 <br/>
 
@@ -313,21 +313,20 @@ Our Customer Service tests cover unit level testing for our service. For mocking
 
 ---
 
+###### Client access to details
 
-    - Client access to details
+1. Naked details
 
-        1. Naked details
+- Customer details are open clients
 
-            - Customer details are open clients
+1. Code details
 
-                1. Code details
+- Example of SSN
 
-            - Example of SSN
+2. Objects mimic real life interactions
 
-        2. Objects mimic real life interactions
-
-            - Objects are interfaces
-            - Objects that limit details shorten the feedback loop
+- Objects are interfaces
+- Objects that limit details shorten the feedback loop
 
     - Invariants can not be protected
 
@@ -374,7 +373,7 @@ Our Customer Service tests cover unit level testing for our service. For mocking
 
         2. Objects should limit their creation options
 
-            - Centralized object creation produces a common interface
+            - Centralized object creation produces a common interface    
 
 3. Converting to private setters
 
