@@ -18,7 +18,7 @@ After completing this chapter, you will be able to
 
 - Weigh the limits of encapsulation in certain situations
 
-### At a glance
+## Introduction
 
 1. Encapsulation as a foundation for good coding techniques
 
@@ -28,11 +28,9 @@ After completing this chapter, you will be able to
 
 4. Properly encapsulated code limits options, shortens the feedback loop, and enforces simplicity through a common interface
 
-#### Public Setters
+## Problem Statement
 
 ---
-
-##### Problem Statement
 
 1. Continuation of reservation system introduced in the previous chapter.
 
@@ -101,6 +99,8 @@ Our Customer class contains a handful of properties related to their identity an
             {
                 _emailClient.SendNewStatusEmail(customer);
             }
+
+            _customerRepository.UpdateCustomer(customer);
         }
 
         public void GiftPoints(Guid customerId, int loyaltyPoints)
@@ -110,6 +110,8 @@ Our Customer class contains a handful of properties related to their identity an
             AddPointsAndCheckForNewStatus(customer, loyaltyPoints);
 
             _emailClient.SendApology(customer);
+
+            _customerRepository.UpdateCustomer(customer);
         }
 
         public Customer CreateCustomer(string firstName, string lastName, string email)
@@ -309,124 +311,204 @@ Our Customer Service tests cover unit level testing for our service. For mocking
 
 <br/>
 
-##### Issues at hand
+## Issues At Hand
 
 ---
 
-###### Client access to details
+<br/>
 
-1. Naked details
+### Public Setters
 
-- Customer details are open clients
+#### Revisiting the Customer Class
 
-1. Code details
+**Listing 11-X** Customer class
 
-- Example of SSN
+```csharp
+public class Customer
+{
+    public Guid Id { get; set; }
 
-2. Objects mimic real life interactions
+    public string FirstName { get; set; }
 
-- Objects are interfaces
-- Objects that limit details shorten the feedback loop
+    public string LastName { get; set; }
 
-    - Invariants can not be protected
+    public string Email { get; set; }
 
-        1. Scattered Validation
+    public string LoyaltyId { get; set; }
 
-            - Listing Customer validation in service
+    public int LoyaltyPoints { get; set; }
 
-                1. Code details
+    public int PointsYearToDate { get; set; }
 
-            - Listing Customer validation in repository
+    public LoyaltyStatus Status { get; set; }      
+}
+```
 
-                1. Code details
+Code details
 
-            - Validation statements cause extra testing
+<br/>
 
-        2. State can not be guaranteed
+#### Problems with Public Setters
 
-            - Listing State in first Customer
+---
+<br/>
 
-                1. Code details
+##### Exposed Properties
 
-            - Listing State in second Customer
+1. Introduction
 
-                1. Code details
+###### Real Life Encapsulation
 
-            - Having to check state cause extra testing
+1. SSN number is private to you and only you
 
-        3. Objects are masters of their information
+###### Objects mimic real life interactions
 
-            - Objects should self-validate
-            - Objects should be aware their state at all times
-            - Fewer state options translates to fewer tests and bugs
+1. Objects are interfaces
+2. Objects that limit details shorten the feedback loop
 
-    - Non-centralized creation
+<br/>
 
-        1. Object changes cascade throughout application
+##### Unprotected Invariants
 
-            - Note: What is Shotgun Surgery
-            - Listing Customer has property added to it
+1. Scattered Validation introduction
 
-                1. Code details
+**Listing 11-X** Customer validation in service
 
-            - Customer creation must be updated in entire code base
+Code details
 
-        2. Objects should limit their creation options
+**Listing 11-X** Customer validation in repository
 
-            - Centralized object creation produces a common interface    
+Code details
 
-3. Converting to private setters
+###### Validation Statements require extra testing
 
-    - Listing Customer now has private setters
+1. Validation statements are no different than other conditionals
 
-        1. Code details
+> **Note**: Every conditional statement you write means at least two tests, one per condition. The best way to not write these tests is to avoid conditional statements when possible.
 
-4. Embracing Constructors
+###### State can not be guaranteed
 
-    - Listing Customer now has constructor
+**Listing 11-X** State in first Customer
 
-        1. Code details
+Code details
 
-    - Constructors are common interfaces
+**Listing 11-X** State in second Customer
 
-5. Clarity through static methods
+Code details
 
-    - Listing Customer created via new acquisition
+1. Checking state causes extra tests
 
-        1. Code details
+###### Objects are masters of their information
 
-    - Listing Customer created via status match
+1. Objects should self-validate
+2. Objects should be aware their state at all times
+3. Fewer state options translates to fewer tests and bugs
 
-        1. Code details
+<br/>
 
-    - Static methods provide intent and clarity
+##### Non-centralized creation
 
-6. Improved testing
+###### Object changes cascade throughout application
 
-    - Testing has become easier to understand and maintain
+> **Note:** What is Shotgun Surgery
 
-7. Conclusion
+**Listing 11-X** Customer has property added to it
 
-    - Public setters create an endless amount of possibilities for object creation and state, resulting in extraneous code
-    - Private setters with constructors limit these possibilities, resulting in less code, fewer bugs, and a simplified code base
+Code details
 
-#### Private Methods
+1. Customer creation must be updated in entire code base
 
-1. Show application service with private methods
+2. Objects should limit their creation options
 
-2. Show why private method harm a code base
+3. Centralized object creation produces a common interface
 
-3. Private methods can't be tested
+<br/>
 
-4. Private methods indicate poorly placed code
+#### Solutions
 
-5. Show how to push private methods down
+---
 
-6. Code can now be tested properly
+<br/>
 
-7. Section conclusion
+##### Converting to private setters
 
-#### Extension Methods
+**Listing 11-X** Customer now has private setters
+
+Code details
+
+<br/>
+
+##### Embracing Constructors
+
+**Listing 11-X** Customer now has constructor
+
+Code details
+
+1. Constructors are common interfaces
+
+2. Clarity through static methods
+
+**Listing 11-X** Customer created via new acquisition
+
+Code details
+
+**Listing 11-X** Customer created via status match
+
+Code details
+
+##### Static methods provide intent and clarity
+
+1. Static methods as a means to document intent
+2. Static methods to choke parameter lists
+
+> **Note**: Parameter hiding
+
+<br/>
+
+#### Result
+
+---
+
+<br/>
+
+##### Improved testing
+
+1. Code is easier to maintain
+2. Code coverage has increased
+
+<br/>
+
+#### Conclusion
+
+1. Public setters create an endless amount of possibilities for object creation and state, resulting in extraneous code
+2. Private setters with constructors limit these possibilities, resulting in less code, fewer bugs, and a simplified code base
+3. Static construction methods provide clarity for objects with confusing or excessive constructors.
+
+<br/>
+
+### Private Methods
+
+<br/>
+
+#### Issues At Hand
+
+---
+
+1. Revisiting the Customer Service class
+
+**Listing 11-X** Customer Service class
+
+#### Private methods can't be tested
+
+#### Private methods indicate poorly placed code
+
+#### Pushing private methods down
+
+#### Improved testing
+
+#### Conclusion
+
+### Extension Methods
 
 1. Some things require extension methods
 
@@ -444,7 +526,7 @@ Our Customer Service tests cover unit level testing for our service. For mocking
 
 8. Section conclusion
 
-#### Exposed Collections
+### Exposed Collections
 
 1. Show class that returns an exposed collection, where logic is
 performed on collection afterwards
@@ -461,7 +543,7 @@ performed on collection afterwards
 
 7. Section conclusion
 
-#### Leaky Domain Logic
+### Leaky Domain Logic
 
 1. Show domain classes that have leaked to the presentation
 
@@ -477,7 +559,7 @@ performed on collection afterwards
 
 7. Section conclusion
 
-#### Encapsulation with Entity Framework
+### Encapsulation with Entity Framework
 
 1. Entity Framework means tradeoffs with encapsulation
 
@@ -493,7 +575,7 @@ performed on collection afterwards
 
 7. Section conclusion
 
-#### Limits of Encapsulation
+## Limits of Encapsulation
 
 1. Complete encapsulation of an application is not the goal.
 
@@ -501,7 +583,7 @@ performed on collection afterwards
 
 3. Model Binding, Open API (Swagger), and Entity Framework are situations where the rules of encapsulation can be relaxed.
 
-#### Conclusion
+## Conclusion
 
 1. Proper encapsulation is the foundation to well-engineered software.
 
