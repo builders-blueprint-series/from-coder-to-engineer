@@ -313,10 +313,6 @@ Our Customer Service tests cover unit level testing for our service. For mocking
 
 ## Issues At Hand
 
----
-
-<br/>
-
 ### Public Setters
 
 #### Revisiting the Customer Class
@@ -349,9 +345,6 @@ Code details
 <br/>
 
 #### Problems with Public Setters
-
----
-<br/>
 
 ##### Exposed Properties
 
@@ -488,25 +481,33 @@ Code details
 
 ### Private Methods
 
-<br/>
+#### Revisiting the Customer Service Class
 
 #### Issues At Hand
-
----
 
 1. Revisiting the Customer Service class
 
 **Listing 11-X** Customer Service class
 
-#### Private methods can't be tested
+##### Private methods can't be tested
 
-#### Private methods indicate poorly placed code
+##### Private methods indicate poorly placed code
 
-#### Pushing private methods down
+##### Pushing private methods down
 
 #### Improved testing
 
 #### Conclusion
+
+### Excessive Properties
+
+<br/>
+
+#### Issues At Hand
+
+##### Relying on Primitive Types
+
+##### 
 
 ### Extension Methods
 
