@@ -13,7 +13,7 @@ Introduction
 
 Engineer is a mentality, not a title
 
-- Good software comes from wanting to write good software
+- Good software comes from wanting to write good software (no silver bullet library, framework, architecture)
 - Code is a by-product
 - Remove yourself from your code
 - Code and coders are cheap
