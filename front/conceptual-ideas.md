@@ -2,7 +2,12 @@
 
 Introduction
 
-## Part 1: A Engineering Mind
+- Software engineering is not black and white, its a sea a gray
+- Software is knowing what not to do
+- Only you know your application, so only you can make the best decision
+- Bad code comes from either not knowing, or not caring, you can't know everything, but you can eliminate the second
+
+## Part 1: An Engineering Mind
 
 ### Chapter 1: Coding is easy. Engineering is hard
 
@@ -10,6 +15,7 @@ Engineer is a mentality, not a title
 
 - Good software comes from wanting to write good software
 - Code is a by-product
+- Remove yourself from your code
 - Code and coders are cheap
 - Engineers are rare
 
@@ -30,7 +36,7 @@ One line a day keeps the refactoring away
 - Software is imperfect
 - Software is never finished
 - Software is entropic
-- Fix one line a day
+- Fix one line a day (make this cultural)
 
 ### Chapter 2: Favor simplicity over complexity
 
@@ -51,13 +57,13 @@ Easier to work with
 
 Associate lines with cost
 
-- Everyone line of code costs money
+- Everyone line of code costs money (not absolute)
 - Every line adds complexity
 
 Anything that you allow, will happen
 
 - Every line of code sets a standard
-- Cargo cult programming is natural
+- Cargo cult programming is the norm, not the exception
 
 Frameworks aren't friends
 
@@ -85,6 +91,7 @@ Bad software hurts developers
 - Bad code is frustrating
 - Bad code slows development
 - Bad code hurts culture
+- Bad software reinforces future bad software
 
 Small things add up
 
@@ -94,9 +101,14 @@ Small things add up
 
 ### Chapter 4: The Engineering Process
 
+<!-- Find better part name -->
+
+Software in an immature process
+
 Software is not a physical science
 
 - Story of Tacoma Narrows Bridge
+(Toyota break controller, 737 max, florida pedestrian bridge)
 - Software does not have a set of mathematical formulas determined by the laws of physics
 
 Need to create your own laws
@@ -106,8 +118,8 @@ Need to create your own laws
 Automate the engineering process
 
 - Embrace the compiler
-- Embrace your dev ops process
 - Embrace your test suite
+- Embrace your dev ops process
 
 Code Reviews Are Sacred
 
@@ -116,6 +128,8 @@ Code Reviews Are Sacred
 - Address issues in code review, or face the consequences later
 
 ## Part 2: Tools of the trade
+
+<!-- Find better part name -->
 
 ### Chapter 5: You can't cheat the compiler
 
@@ -129,7 +143,7 @@ Compiler is the first line of defense
 Embracing the compiler
 
 - Style vs Best Practices
-- ESLint, EditorConfigs, StyleGuides, Prettier, Warnings As Errors
+- ESLint, EditorConfigs, StyleGuides, Prettier, Warnings As Errors, Roselyn Analyzers
 - Encapsulation
 
 Turn lemmings into lemonade
@@ -140,14 +154,21 @@ Turn lemmings into lemonade
 
 The purpose of tests
 
+<!-- Automatic tests can't find everything -->
+
 - Tests provide clarity
 - Tests provide confidence
 
 Tests as a feedback loop
 
 - Tests allow rapid change
+- Test coverage is a lie
 
 Tests as insurance
+
+- Is it tested
+- Is it tested properly
+- Is it easy to test
 
 ### Chapter 7: Coding building blocks
 
@@ -163,7 +184,7 @@ Functional Code
 - Purpose of functional code (minimize procedural)
 - OOP and Functional aren't mutually exclusive
 - Methods vs Classes
-- Callbacks
+- Purpose of callbacks
 
 ### Chapter 8: Principles to live by
 
@@ -183,7 +204,7 @@ Only provide what is needed
 
 Ideas over implementations
 
-- Purpose of Dependency Inversion
+- Purpose of Dependency Inversion (relate back to polymorphism)
 - DI vs DI (dependency injection) vs DI (inversion of control)
 
 ### Chapter 9: Patterns to remember
@@ -271,6 +292,7 @@ Leaky domain
 
 - Clients don't need everything
 - Embrace diverse responses
+- Response objects allow for 1-M with clients
 
 Entity Framework
 
@@ -297,7 +319,7 @@ Friend classes
 
 Inheritance
 
-- Inheritance is the second highest form of couples
+- Inheritance is the second highest form of coupling
 - O and L in SOLID are because of inheritance
 
 Dependency Injection
@@ -305,9 +327,10 @@ Dependency Injection
 - Relying on dispose  
 - Injecting the container  
 - Resolving from the container  
-- Over injecting  
-- Fancy injecting  
+- Over injecting (5+ things in a class)
+- Fancy injecting  (stupid shit you shouldn't good)
 - Inappropriate registration
+- DI should be seen, but not herd
 
 ### Chapter 13: Repetition
 
@@ -356,5 +379,14 @@ Logic in the wrong place
 ### Chapter 15: Miscellaneous
 
 Comments
+
+- Comments describe why not how
+
 Naming
+
+- Style
+
 Asynchronous
+
+- Understand what goes on with async
+- The amount of code generated
