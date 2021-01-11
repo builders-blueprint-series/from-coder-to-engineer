@@ -6,8 +6,8 @@ Introduction
 
 ### Chapter 1: Coding is easy. Engineering is hard
 
-Engineer is a mentality, not a title  
-One line a day keeps the refactoring away  
+Engineer is a mentality, not a title
+One line a day keeps the refactoring away
 Speak up now, or pay later  
 Titles and years of experience don't matter
 Good software is 99% wanting to write good software, the rest is details  
@@ -78,7 +78,7 @@ Overuse of mocks
 ### Chapter 11: Encapsulation
 
 Public setters
-Excessive Properties (names, loyalty data)  
+Excessive Properties
 Private methods  
 Extension methods  
 Exposed collections  

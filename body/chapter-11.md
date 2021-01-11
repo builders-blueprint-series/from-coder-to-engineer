@@ -30,11 +30,7 @@ After completing this chapter, you will be able to
 
 ## Problem Statement
 
----
-
 1. Continuation of reservation system introduced in the previous chapter.
-
-<br/>
 
 **Listing 11-X** Customer object with properties
 
@@ -72,8 +68,6 @@ After completing this chapter, you will be able to
 ```
 
 Our Customer class contains a handful of properties related to their identity and their loyalty status. Our status is defined as an enumeration.
-
-<br/>
 
 **Listing** 11-X Customer Service
 
@@ -195,13 +189,9 @@ Our Customer class contains a handful of properties related to their identity an
 
 Our Customer Service contains a handful of methods relating to operations such as creating new Customers, adding points to their accounts for activity, and querying for certain customers.
 
-<br/>
-
 > **Note:** In a production situation, this class would have many more methods.
 
 <!-- This should probably be expanded some more. -->
-
-<br/>
 
 **Listing 11-X** Customer Service Tests
 
@@ -305,17 +295,13 @@ Our Customer Service contains a handful of methods relating to operations such a
 
 Our Customer Service tests cover unit level testing for our service. For mocking, I have utilized the popular Moq testing library.
 
-<br/>
-
 > **Note:** This service still requires a suite of integration tests to be considered complete. I have omitted them because I want to focus on the code contained in the service, not how it is being persisted.
-
-<br/>
 
 ## Issues At Hand
 
 ### Public Setters
 
-#### Revisiting the Customer Class
+#### Public Setters In The Customer Class
 
 **Listing 11-X** Customer class
 
@@ -342,9 +328,7 @@ public class Customer
 
 Code details
 
-<br/>
-
-#### Problems with Public Setters
+#### Issues With Public Setters
 
 ##### Exposed Properties
 
@@ -358,8 +342,6 @@ Code details
 
 1. Objects are interfaces
 2. Objects that limit details shorten the feedback loop
-
-<br/>
 
 ##### Unprotected Invariants
 
@@ -397,8 +379,6 @@ Code details
 2. Objects should be aware their state at all times
 3. Fewer state options translates to fewer tests and bugs
 
-<br/>
-
 ##### Non-centralized creation
 
 ###### Object changes cascade throughout application
@@ -415,21 +395,13 @@ Code details
 
 3. Centralized object creation produces a common interface
 
-<br/>
-
-#### Solutions
-
----
-
-<br/>
+#### Solutions For Public Setters
 
 ##### Converting to private setters
 
 **Listing 11-X** Customer now has private setters
 
 Code details
-
-<br/>
 
 ##### Embracing Constructors
 
@@ -456,34 +428,22 @@ Code details
 
 > **Note**: Parameter hiding
 
-<br/>
-
-#### Result
-
----
-
-<br/>
-
-##### Improved testing
+#### Advantages After Removing Public Setters
 
 1. Code is easier to maintain
 2. Code coverage has increased
 
-<br/>
-
-#### Conclusion
+#### Public Setters Conclusion
 
 1. Public setters create an endless amount of possibilities for object creation and state, resulting in extraneous code
 2. Private setters with constructors limit these possibilities, resulting in less code, fewer bugs, and a simplified code base
 3. Static construction methods provide clarity for objects with confusing or excessive constructors.
 
-<br/>
-
 ### Private Methods
 
-#### Revisiting the Customer Service Class
+#### Private Methods In The Customer Service Class
 
-#### Issues At Hand
+#### Issues With Private Methods
 
 1. Revisiting the Customer Service class
 
@@ -493,21 +453,31 @@ Code details
 
 ##### Private methods indicate poorly placed code
 
+#### Solutions For Private Methods
+
 ##### Pushing private methods down
 
-#### Improved testing
+#### Advantages After Removing Private Methods
 
-#### Conclusion
+#### Private Methods Conclusion
 
 ### Excessive Properties
 
-<br/>
+#### Excessive Properties In The Customer Class
 
-#### Issues At Hand
+#### Issues With Excessive Properties
 
 ##### Relying on Primitive Types
 
-##### 
+##### Objects Themselves Break Encapsulation
+
+#### Solutions For Excessive Properties
+
+##### Moving Properties To Objects
+
+#### Advantages After Reducing Excessive Properties
+
+#### Excessive Properties Conclusion
 
 ### Extension Methods
 
@@ -584,7 +554,7 @@ performed on collection afterwards
 
 3. Model Binding, Open API (Swagger), and Entity Framework are situations where the rules of encapsulation can be relaxed.
 
-## Conclusion
+## Encapsulation Conclusion
 
 1. Proper encapsulation is the foundation to well-engineered software.
 
