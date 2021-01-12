@@ -4,6 +4,7 @@ Introduction
 
 - Software engineering is not black and white, its a sea a gray
 - Software is knowing what not to do
+- Seatbelt/helmet analogy for why testing is possible
 - Only you know your application, so only you can make the best decision
 - Bad code comes from either not knowing, or not caring, you can't know everything, but you can eliminate the second
 
@@ -70,6 +71,9 @@ Frameworks aren't friends
 - Frameworks hide problems
 - Frameworks are one more thing you need to know
 - You are responsible for all code in your application
+(story about xml creation needs approvals)
+(don't use a framework to hide a problem)
+(get brians grooveyscript story)
 
 ### Chapter 3: Poorly written software harms everyone
 
@@ -78,6 +82,9 @@ Bad software hurts customers
 - Poor software is under performing
 - Poor software is harder to interact with
 - Customers aren't stupid (people can tell your app is bad)
+(story moving from android to apple because i could tell the
+ios apps were just red-headed stepchild)
+(airline story us airways added wi-fi when people booked away)
 
 Bad software costs money
 
@@ -91,7 +98,7 @@ Bad software hurts developers
 - Bad code is frustrating
 - Bad code slows development
 - Bad code hurts culture
-- Bad software reinforces future bad software
+- Bad software reinforces future bad software (cargo cult)
 
 Small things add up
 
@@ -127,7 +134,7 @@ Code Reviews Are Sacred
 - Be tough, but don't be mean
 - Address issues in code review, or face the consequences later
 
-## Part 2: Tools of the trade
+## Part 2: Tools of a Craftsman
 
 <!-- Find better part name -->
 
@@ -145,6 +152,10 @@ Embracing the compiler
 - Style vs Best Practices
 - ESLint, EditorConfigs, StyleGuides, Prettier, Warnings As Errors, Roselyn Analyzers
 - Encapsulation
+
+Embrace the compiler
+
+- Use the plugins, ReSharper
 
 Turn lemmings into lemonade
 
@@ -167,7 +178,7 @@ Tests as a feedback loop
 Tests as insurance
 
 - Is it tested
-- Is it tested properly
+- Is it tested properly (conditional, Assert(1).Equals(1))
 - Is it easy to test
 
 ### Chapter 7: Coding building blocks
@@ -184,17 +195,19 @@ Functional Code
 - Purpose of functional code (minimize procedural)
 - OOP and Functional aren't mutually exclusive
 - Methods vs Classes
-- Purpose of callbacks
+- Purpose of callbacks (polymorphism of functional)
 
 ### Chapter 8: Principles to live by
 
 Don't do too much
 
 - Purpose of Single Responsibility
-- SRP versus DRY
+- SRP versus DRY (aren't mutually exclusive)
 
 Interfaces over inheritance
 
+- Keep inheritance limited (1-2 max)
+- Example of introducing an interface over base class
 - Purpose of Open/Closed
 - Purpose of Liskov
 
@@ -223,16 +236,21 @@ There are no such things as anti-patterns
 Knowing where is more important than how
 
 - Don't memorize patterns, memorize when to use them
-- Patterns play nicely with each other
+- Patterns play nicely with each other (pattern composition)
 
 Getting comfortable with patterns
 
-- Creational Patterns Overview
-- Structural Patterns Overview
+(forward-facing, active users)
+
+- Finding a common interface
+(n-1, IEnumerable, Func vs Action)
+
+- Creational Patterns Overview (your di framework does it)
+- Structural Patterns Overview (more architecture)
 - Behavior Patterns Overview
+- Command (Common interface, introduce first, common interface)
 - Builder Pattern (Dapper, SQL query, Predicates)
 - Chain of Responsibility (Complex processes, service call chain)
-- Command (Common interface)
 - Mediator (Service SRP)
 - Observer (Conditional replacement)
 - Strategy (Conditional replacement)
@@ -347,6 +365,8 @@ Duplication in the data layer
 - Consolidate the process
 
 Checks everywhere
+
+(functional opportunity)
 
 - If/else/switch hell
 - Fail early and throw
