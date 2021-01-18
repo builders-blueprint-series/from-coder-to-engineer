@@ -41,6 +41,11 @@ One line a day keeps the refactoring away
 
 ### Chapter 2: Favor simplicity over complexity
 
+Southwest Airlines and simplicity
+
+- Simplicity is not giving people options, it is removing them
+- Costco only gives you one item, so you have to buy it
+
 The five minute rule
 
 - Can you explain anything to a junior developer in five minutes
@@ -272,6 +277,7 @@ Not testing the right thing
 Testing the wrong thing
 
 - Testing method calls
+- Writing the same code in the test that you are testing
 
 Overuse of mocks
 
