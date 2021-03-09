@@ -250,6 +250,8 @@ Getting comfortable with patterns
 - Finding a common interface
 (n-1, IEnumerable, Func vs Action)
 
+Patterns in detail
+
 - Creational Patterns Overview (your di framework does it)
 - Structural Patterns Overview (more architecture)
 - Behavior Patterns Overview

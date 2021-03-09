@@ -44,10 +44,95 @@ A narrative that is echoed by some people in the software industry is that certa
 
 I would like to present a different opinion. There is no such thing as an anti-pattern. Only an improperly applied one.
 
-For example, if your application uses a Http client, WCF channel factories, or gRPC channel. These are typically registered as singletons in a dependency injection framework. Just because you are not writing your own singleton class for these objects does not mean you are not using the pattern. Your dependency injection framework or IOC containing is using the pattern from which you get to benefit from.
+For example, if your application uses a Http client, WCF channel factories, system clock, or gRPC channel. These are typically registered as singletons in a dependency injection framework. Just because you are not writing your own singleton class for these objects does not mean you are not using the pattern. Your dependency injection framework or IOC containing is using the pattern from which you get to benefit from.
 
 As for Service Locators, every dependency injection framework or IOC container is also using a service locator, or relying on a service locator to resolve objects when they are needed. I have yet to see a blog article argue against dependency injection, so it would be rather hypocritical to argue against service locators, but support an IOC container.
 
 Every pattern have a time and place when it can and SHOULD be applied. For some patterns, this window of opportunity is very small, for others it is abundant. Remember, as the curator of your application, only you know what is truly appropriate. Just because certain pattern may be a good or bad fit for someone elses application does not mean that it is equally good or bad for yours as well.
 
 This notion goes beyond software anti-patterns, do an internet search for the term "anti-pattern" that you will come back with blog article after blog article of "Product Owner Anti-Patterns", "Scrum Anti-Patterns", and "Dev Ops Anti-Patterns". Some people event assert the notion that design pattern in and of themselves are an anti-pattern. Again, people do not take this absolutism by others as a software dogma that be be adhered to at every possible opportunity. All software applications are different, and each needs to satisfy different requirements.
+
+## Learning Where To Apply Patterns
+
+## Finding A Common Interface
+
+### Why We Want Common Interfaces
+
+### Real Life Common Interfaces
+
+There are many non-software engineering examples, where less is more. Simplicity is removing options, not providing them. Some of the most successful and respected companies operate by offering their customers very few options all.
+
+In-N-Out burgers is a fast-food chain that originated in Baldwin Park, California in 1948. Their original menu consisted of hamburgers, cheeseburgers, fries, and soft drinks. The menu has changed very little since their inception. This is in contrast to other fast-food chains such as McDonald's or TacoBell which experience a constant churn of product changes, updates, additions, and removals. That is because In-N-Out is not a fast-food company, they are an "experience" company. When you go to any In-N-Out, everything is exactly the same. Their stores all have the same layout and design. Most customers can probably recite the menu from heart because it has so many options. And every order you make is consistent from any other store. The process of going to In-N-Out, from the moment you walk in the door, until you walk out is exactly the same. In-N-Out sells consistency, not hamburgers.
+
+Costco Wholesale is a big-box retail store that was founded in 1994 just outside of Seattle. While Costco sells thousands of items in their store and online, each item they sale typically has very few options available to choose from. If you want to buy ketchup or napkins from Costco, you typically have one name brand and possible a generic brand to choose from. This is intentional on Costco's part because human behavior has a tendency to succumb  to analysis paralysis. When people are presented too many options to choose from, they end up not choosing any of them because they are overwhelmed with options. For Costco, this means a loss of possible sales if people aren't buying products from them. Limiting options to customers ends up helping Costco in two ways; it forces customers to buy products, and it helps move product faster, which cuts down on costs.
+
+Southwest Airlines was founded in 1967 as an exclusive inter-state airline that only flew inside the state of Texas for the first part of its existence. Today Southwest is the largest domestic airlines in the United States. The foundation for Southwest's success has always been by offering a limited set of options to its' customers. The airline only flies one type of airplanes, has a single class of service and does not serve meals. In addition to a straight forward product, the airline offers a simple fare structure that contains very few restrictions, rules, or extra fees attached to a ticket. By doing so, the airline offers every customers with a bundled solution that contains all the necessary ways to get from one location to another with very little hassle. By forgoing products that only a small subset of its customers would use, lounges, business class, meals, or seat assignments; Southwest has allowed more
+people to fly by offering far less than most other carriers.
+
+Great software functions the exact same way as these companies, it finds a way to only offer what is absolutely necessary. It purposely restricts options to both end-users, and other engineers so that the correct decision in many cases is the only decision available.
+
+### Common Interface Examples
+
+Existing examples of common interfaces in software are both ubiquitous, but rarely explained in computed science programs or software engineering books. Being able to identity and create common interfaces in software is a skill that must be learned over time. This books goal is to train to mind to look and think in terms of find common interfaces. As the master of your own application, it is your job to continuously explore and discover possible ways to condense code and exact a common interface.
+
+#### IEnumerable<T>
+
+The most commonly used common interface is the IEnumerable<T> interface from the generic collections namespace. And the reason it is so useful is probably not what automatically comes to mind. You might be thinking that IEnumerable is a useful common interface because it can hold a List, Dictionary, or HashSet. And yes, that is a very good reason for why IEnumerable is a wonderful interface, but it is not what I want to talk about here. IEnumerable is a great interface because it can hold n number of value of reference types. In math, n is a a variable which simply means any number of items in a collection. IEnumerables' greatest value is that you have no clue how many items it contains; and even better, it does not matter from a code standpoint.
+
+Let's step back for a moment and get a little abstract. Imagine you are counting the number of towels in your household. You place all of the towels on the floor in front of you and start counting. How could we represent this in code?
+
+```csharp
+const int myTowels = 3;
+```
+
+There is not wrong with this approach, but it only represents the state of our towel ownership in one and exactly one possible state. We could own eleven towels.
+
+```csharp
+const int myTowels = 11;
+```
+
+Or maybe we own a super fancy ceiling dryer which means we don't need to own any towels at all.
+
+```csharp
+const int myTowels = 0;
+```
+
+As you can see, our state of towel ownership is in three very different states, which severely limits our possibilities. What if we wanted to add a towel to our ownership.
+
+```csharp
+myTowels++;
+// Compiler error, myTowels is a constant.
+```
+
+Therein lies  the problem, we want values single values to be consistent and never change, or be able to change dynamically without us knowing the details of the how, when, and why. What we want, is for our variable to be an IEumerable, so the value is inconsequential.
+
+```csharp
+IEnumerable<int> myTowels = new List<int>{ 3 };
+```
+
+We still own three towels, but we have encapsulated our ownership from a hard coded variable, to a dynamic object that gives us a interface to work with. IEnumerable is actually a rather boring interface, it only has one method. Luckily for us, that's all we need. The GetEnumerator() will return an iterator that will allow to go sequentially go through the entire collection from the start until the end. THIS is the real power of IEnumerable, the keywords here are from the start and end. We can now write code that is collection length agnostic. Let me repeat that. We can write code that is indifferent to how many towels we own.
+
+In short: IEnumerable + foreach = software awesomeness.
+
+**Listing 9-X** Foreach loop over enumerable
+
+```csharp
+IEnumerable<int> myTowels = new List<int>();
+
+foreach(var towel in myTowels)
+{
+    DryTowel(towel);
+}
+
+```
+
+Here we created an empty list, and called the DryTowel method inside of the a foreach loop. But since we our list had zero towels, the method was never called. Had we had 8,213 towels in our list, the method would have been called 8,213 times. 
+
+Now there are instances where you need an exact amount of an object or item, and that will never change. 
+
+#### Func<TIn, TOut>
+
+#### Factorials
+
+## Patterns In Detail
+
