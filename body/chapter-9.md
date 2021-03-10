@@ -64,7 +64,7 @@ There are many non-software engineering examples, where less is more. Simplicity
 
 In-N-Out burgers is a fast-food chain that originated in Baldwin Park, California in 1948. Their original menu consisted of hamburgers, cheeseburgers, fries, and soft drinks. The menu has changed very little since their inception. This is in contrast to other fast-food chains such as McDonald's or TacoBell which experience a constant churn of product changes, updates, additions, and removals. That is because In-N-Out is not a fast-food company, they are an "experience" company. When you go to any In-N-Out, everything is exactly the same. Their stores all have the same layout and design. Most customers can probably recite the menu from heart because it has so many options. And every order you make is consistent from any other store. The process of going to In-N-Out, from the moment you walk in the door, until you walk out is exactly the same. In-N-Out sells consistency, not hamburgers.
 
-Costco Wholesale is a big-box retail store that was founded in 1994 just outside of Seattle. While Costco sells thousands of items in their store and online, each item they sale typically has very few options available to choose from. If you want to buy ketchup or napkins from Costco, you typically have one name brand and possible a generic brand to choose from. This is intentional on Costco's part because human behavior has a tendency to succumb  to analysis paralysis. When people are presented too many options to choose from, they end up not choosing any of them because they are overwhelmed with options. For Costco, this means a loss of possible sales if people aren't buying products from them. Limiting options to customers ends up helping Costco in two ways; it forces customers to buy products, and it helps move product faster, which cuts down on costs.
+Costco Wholesale is a big-box retail store that was founded in 1994 just outside of Seattle. While Costco sells thousands of items in their store and online, each item they sale typically has very few options available to choose from. If you want to buy ketchup or napkins from Costco, you typically have one name brand and possible a generic brand to choose from. This is intentional on Costco's part because human behavior has a tendency to succumb to analysis paralysis. When people are presented too many options to choose from, they end up not choosing any of them because they are overwhelmed with options. For Costco, this means a loss of possible sales if people aren't buying products from them. Limiting options to customers ends up helping Costco in two ways; it forces customers to buy products, and it helps move product faster, which cuts down on costs.
 
 Southwest Airlines was founded in 1967 as an exclusive inter-state airline that only flew inside the state of Texas for the first part of its existence. Today Southwest is the largest domestic airlines in the United States. The foundation for Southwest's success has always been by offering a limited set of options to its' customers. The airline only flies one type of airplanes, has a single class of service and does not serve meals. In addition to a straight forward product, the airline offers a simple fare structure that contains very few restrictions, rules, or extra fees attached to a ticket. By doing so, the airline offers every customers with a bundled solution that contains all the necessary ways to get from one location to another with very little hassle. By forgoing products that only a small subset of its customers would use, lounges, business class, meals, or seat assignments; Southwest has allowed more
 people to fly by offering far less than most other carriers.
@@ -104,7 +104,7 @@ myTowels++;
 // Compiler error, myTowels is a constant.
 ```
 
-Therein lies  the problem, we want values single values to be consistent and never change, or be able to change dynamically without us knowing the details of the how, when, and why. What we want, is for our variable to be an IEumerable, so the value is inconsequential.
+Therein lies the problem, we want values single values to be consistent and never change, or be able to change dynamically without us knowing the details of the how, when, and why. What we want, is for our variable to be an IEumerable, so the value is inconsequential.
 
 ```csharp
 IEnumerable<int> myTowels = new List<int>{ 3 };
@@ -126,13 +126,183 @@ foreach(var towel in myTowels)
 
 ```
 
-Here we created an empty list, and called the DryTowel method inside of the a foreach loop. But since we our list had zero towels, the method was never called. Had we had 8,213 towels in our list, the method would have been called 8,213 times. 
+Here we created an empty list, and called the DryTowel method inside of the a foreach loop. But since we our list had zero towels, the method was never called. Had we had 8,213 towels in our list, the method would have been called 8,213 times.
 
-Now there are instances where you need an exact amount of an object or item, and that will never change. 
+<!-- Do something with LINQ/Functional here -->
 
-#### Func<TIn, TOut>
+#### Generic Delegates
+
+One way you can create a common interface in your application is merging generic delegates into a single Func. In C#, we have three generic delegates available to use, Func, Action, and Predicate.
+
+In keeping with our reservation system, let's imagine we have a class that contains a list of reservations with three possible methods for interacting with the data. This class is unique in that it contains three functions which will accept a generic delegate that allows an end-user to choose how they will query and interact with the data.
+
+**Listing 9-X** Reservation Service
+
+```csharp
+public class ReservationService
+{
+    private readonly IEnumerable<Reservation> _reservations;
+
+    public ReservationService(IReservationRepository reservationRepository)
+    {
+        _reservations = reservationRepository.GetAllReservations();
+    }
+
+    public T Interact<T>(Func<IEnumerable<Reservation>, T> func)
+    {
+        return func.Invoke(_reservations);
+    }
+
+    public bool Interact(Predicate<IEnumerable<Reservation>> predicate)
+    {
+        return predicate.Invoke(_reservations);
+    }
+
+    public void Interact(Action<IEnumerable<Reservation>> action)
+    {
+        action.Invoke(_reservations);
+    }
+}
+```
+
+In the class above, we have a Reservation Service that allows a person to supply a number of generic delegates to the class, which will invoke them and return a result. For this class, because the delegates are being supplied to us, the class does not require any unit tests. However any delegates you passed would need to be unit tested. We like the ability for the user to supply the function used, but we don't like having to support three different options. There has to be a way to take the Interact function and go from multiple overloads, to a single method.
+
+With this class we could pass in the following functions:
+
+```csharp
+Func<IEnumerable<Reservation>, IEnumerable<Reservation>> TodaysReservations = (x) => x.Where(y => y.DateTime == DateTime.Today);
+
+Predicate<IEnumerable<Reservation>> RestaurantIsFull = (x) => x.Count() == 100;
+
+Action<IEnumerable<Reservation>> CloseOldReservations = (x) => x.Where(y => y.DateTime <= DateTime.Today).ToList().ForEach(y => y.Close());
+```
+
+These three generic function above can be passed to our reservation class Interact method, and the overloaded method will return, or in one instance, not return the result.
+
+**Listing 9-X** Generic delegate signatures
+
+```csharp
+public delegate TResult Func<in T, out TResult> - Takes in a type of T, and returns a type of TResult.
+
+public delegate void Action<in T>(T obj); - Takes in a type of T, and returns void.
+
+public delegate bool Predicate<in T>(T obj); - Takes in a type of T, and returns a boolean.
+```
+
+Above are the three main generic signatures for generic delegates in C#. Note that Func can be overloaded to take up to sixteen different inputs.
+
+How we go go from three different signatures, to just one?
+
+The first move is easy. We can just avoid using Predicate all together. When we want to return a boolean from a generic delegate, we just use a Func with a boolean return type.
+
+**Listing 9-X** Func with boolean return
+
+```csharp
+Func<int, boolean> isEvenNumber = (x) => x % 2 == 0;
+```
+
+Here we have defined a Func that will tell us if a number is even or not. By explicitly using a Func instead of Predicate, we no longer need to worry about having to support another interface.
+
+The next part of combining Action and Func into a single interface is a little harder. We can deduce that Func will be the nominal survival because we need to have the ability to support return types. Not everything can be void, but we can't just use void as a return type in a Func.
+
+**Listing 9-X** Attempt to return void from Func
+
+```csharp
+Func<int, void> notPossible = (x) => Console.WriteLine(x);
+// Compiler error. CS1547: Keyword 'void' cannot be used in this context
+```
+
+If we look at the Func signature, we need to supply the generic with an object instead of a type keyword. We need a class that represents void. If you are not familiar with this concept, it is a functional programming paradigm. In many functional language, the term "Unit" is a first class citizen used to represent void.
+
+**Listing 9-X** Unit class
+
+```csharp
+public class Unit
+{
+    public static Unit Value { get; } = default;
+}
+```
+
+The Unit class above has a single property called value that will return a null instance of the Unit class. We can now apply our Unit class to our Func as follows.
+
+**Listing 9-X** Func that returns a Unit
+
+```csharp
+Func<int, Unit> possible = (x) =>
+{
+    Console.WriteLine(x);
+    return Unit.Value;
+}
+```
+
+We now have a generic function that "returns" void in the form of a Unit class. While the end result is not quite as compact as we wish, the functionality we get from having a common interface can replace three interfaces far outweighs the negative impact of another couple lines of code.
+
+Lets see an example of how condensing all of these generic interfaces into a single common interface can have a positive impact on our code.
+
+**Listing 9-X** Reservation Service with only one method
+
+```csharp
+public class ReservationService
+{
+    private readonly IEnumerable<Reservation> _reservations;
+
+    public ReservationService(IReservationRepository reservationRepository)
+    {
+        _reservations = reservationRepository.GetAllReservations();
+    }
+
+    public T Interact<T>(Func<IEnumerable<Reservation>, T> func)
+    {
+        return func.Invoke(_reservations);
+    }
+}
+```
+
+Our final class removed the option to pass a Predicate or Action because we learned how we can use a Func to pass a generic delegate that can return a boolean, void, or any other type for that matter.
+
+**Listing 9-X** Updated generic functions
+
+```csharp
+Func<IEnumerable<Reservation>, IEnumerable<Reservation>> TodaysReservations = x => x.Where(y => y.DateTime == DateTime.Today);
+
+Func<IEnumerable<Reservation>, bool> RestaurantIsFull = x => x.Count() == 100;
+
+Func<IEnumerable<Reservation>, Unit> CloseOldReservations = x =>
+{
+    x.Where(y => y.DateTime <= DateTime.Today).ToList().ForEach(y => y.Close());
+    return Unit.Value;
+};
+```
+
+With small modifications, we have changed all three of our generic functions to all use a Func, and can now reap the benefits of a common interface.
+
+However, we are not quite finished. Now that we have a single interface for our Reservation Service, we can apply this to all other classes in our application. What if we were doing something similar in a Customer class. We could extract the Interact method as follows.
+
+**Listing 9-X** Interact interface
+
+```csharp
+public interface IInteract<T>
+{
+    TResult Interact<TResult>(Func<IEnumerable<T>, TResult> func);
+}
+```
+
+**Listing 9-X** Reservation Service implements new interface
+
+```csharp
+
+```
+
+##### Other Instances
+
+Keep in mind that there are many instances of using an interface with the greatest common denominator and then passing in only the values that are necessary. You will see in a little bit the Mediator pattern will use what we just learned to great effect.
 
 #### Factorials
 
 ## Patterns In Detail
 
+### Creational Patterns
+
+### Structural Patterns
+
+### Behavioral Patterns
