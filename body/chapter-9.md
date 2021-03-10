@@ -182,7 +182,7 @@ These three generic function above can be passed to our reservation class Intera
 **Listing 9-X** Generic delegate signatures
 
 ```csharp
-public delegate TResult Func<in T, out TResult> - Takes in a type of T, and returns a type of TResult.
+public delegate TResult Func<in T, out TResult>(T obj); - Takes in a type of T, and returns a type of TResult.
 
 public delegate void Action<in T>(T obj); - Takes in a type of T, and returns void.
 
@@ -223,7 +223,7 @@ public class Unit
 }
 ```
 
-The Unit class above has a single property called value that will return a null instance of the Unit class. We can now apply our Unit class to our Func as follows.
+The Unit class above has a single property called Value that will return a null instance of the Unit class. We can now apply our Unit class to our Func as follows.
 
 **Listing 9-X** Func that returns a Unit
 
@@ -263,11 +263,11 @@ Our final class removed the option to pass a Predicate or Action because we lear
 **Listing 9-X** Updated generic functions
 
 ```csharp
-Func<IEnumerable<Reservation>, IEnumerable<Reservation>> TodaysReservations = x => x.Where(y => y.DateTime == DateTime.Today);
+Func<IEnumerable<Reservation>, IEnumerable<Reservation>> TodaysReservations = (x) => x.Where(y => y.DateTime == DateTime.Today);
 
-Func<IEnumerable<Reservation>, bool> RestaurantIsFull = x => x.Count() == 100;
+Func<IEnumerable<Reservation>, bool> RestaurantIsFull = (x) => x.Count() == 100;
 
-Func<IEnumerable<Reservation>, Unit> CloseOldReservations = x =>
+Func<IEnumerable<Reservation>, Unit> CloseOldReservations = (x) =>
 {
     x.Where(y => y.DateTime <= DateTime.Today).ToList().ForEach(y => y.Close());
     return Unit.Value;
@@ -281,9 +281,9 @@ However, we are not quite finished. Now that we have a single interface for our 
 **Listing 9-X** Interact interface
 
 ```csharp
-public interface IInteract<T>
+public interface IInteract
 {
-    TResult Interact<TResult>(Func<IEnumerable<T>, TResult> func);
+    TResult Interact<T, TResult>(Func<IEnumerable<T>, TResult> func);
 }
 ```
 
