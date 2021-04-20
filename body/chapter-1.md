@@ -1,4 +1,3 @@
-
 # Chapter 1
 
 ## Coding is easy. Engineering is hard.
