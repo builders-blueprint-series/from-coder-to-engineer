@@ -1,8 +1,7 @@
-# Chapter 7
-
+###### Chapter 3
 ## Code Building Blocks
 
-After completing this chapter you will be able to
+**After completing this chapter you will be able to**
 
 - Understand the purpose of encapsulation, inheritance, polymorphism, and abstraction
 - Apply polymorphism to your advantage
@@ -10,15 +9,46 @@ After completing this chapter you will be able to
 - Know how to combine the best of object-oriented and functional code
 - Use callbacks to their maximum potential
 
-## Introduction
-
 1. The purpose of object-oriented code
 2. The purpose of functional code
 3. OOP and Functional can live together in harmony
 
 ## Object-Oriented Programming
 
-### Encapsulations Purpose
+### Encapsulation
+
+> "D*mn it, you're on a need-to-know basis, and you don't need to know." (Womack).
+
+If you are not familiar with the term "need to know", it is typically used by organizations to describe a certain level of information that a person or entity is entitled to know about. A well-engineered application works the same way. Classes only give up the information and details that is necessary.
+
+Common ways to encapsulate code:
+
+1) Make fields private
+2) Limit public setters
+3) Label classes as internal or private
+
+---
+**Correct** :heavy_check_mark:
+
+Encapsulate your application as much as possible. Keep fields private until they have to public. Keep classes internal until they have to be public.
+
+---
+
+
+---
+**Warning** :warning:
+
+There are some items in your application that need to public because it is required. A lot of these will fall under the *reflection* category where a framework just as an ORM or a JSON serialization library requires a public property in a class.
+
+---
+
+
+---
+**Note** :memo:
+
+Encapsulating data isn't just something for your end-users. The less other developers are privy to details about non mission critical code. The easier your application is to understand for everyone.
+
+---
 
 ### Inheritances Purpose
 
