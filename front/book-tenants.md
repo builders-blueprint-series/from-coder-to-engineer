@@ -51,24 +51,48 @@ Careful - :eyes:
 ## Coding Horror Stories
 
 "I've had great success without unit testing". - Chapter 6, Tests
+
 "We'll catch it in code review". - Chapter 2, Compiler
-Frameworks for the sake of frameworks
+
+Frameworks for the sake of frameworks.
+
 Writing something that already exists (ORM, motorola's stupid queue polling shit)
-People love to over-engineer almost everything
+
+People love to over-engineer almost everything.
+
 ElasticSearch library that was beyond comprehendible, that just copy the same search, "I wrote this for job security"
+
 Three Different DI libraries in the same solution - Chapter 9, Repetition
+
 "Bloated Repository" - Chapter 10, Responsibility
+
 "Have to add more RAM because the server keeps crashing" - Guy at bar
+
 Brian's GroovyScript story
 
 ## Lesson Learned Stories
 
 XML Creation requiring Approvals testing - Chapter 6, Testing
+
 Factories probably don't need an interface - Chapter 8, Coupling
+
 Understanding polymorphism was the key for understanding design patterns - Chapter 5, Patters
+
 Copy and Pasting code is a dead-give away for possible change - Chapter 9, Repetition
+
 Seeing patterns everywhere, you can overuse them.
-Making tradeoffs is normal, nothing is perfect.
+
+Making tradeoffs is normal, nothing is perfect. Software is pretty gray.
+
+Software is commercial art. It has to perform its function, and look nice in the process. No one will live in a building that is ugly, or structurally unstable.
+
+It may take two, three, or four iterations until you are finally happy with something. Don't be happy because "it works" (React search page)
+
+Your customers will break things very quickly. Be flexible and open to change. Don't make assumptions because you believe something is ideal. (Fidel's POS refresh)
+
+People dislike change. When presenting an idea to your team, go into the meeting aware that some may not reject it because they feel uncomfortable even if the idea is objectionably good.
+
+Don't take things personally. Own up to your mistakes. Use failures as lessons.
 
 ## Career Advice
 
@@ -109,6 +133,10 @@ Anything that you allow to happen, will happen
 Every line of code sets a standard
 Cargo cult programming is a real thing
 
+Find a mentor who you can bounce ideas and questions off of! - Chapter 1
+Find someone who will challenge your ideas and make you better.
+This book would not have been possible without the countless people who gave input and helped edit.
+
 ## Real Life Examples
 
 Southwest Airlines - Chapter 1
@@ -143,3 +171,4 @@ Code coverage is not a good indicator of anything.
 
 It's your application, only you know what is truly the best solution. What works for others may be wrong for you, and visa-versa.
 
+Design patterns were inspired from architecture, "A Pattern Language".

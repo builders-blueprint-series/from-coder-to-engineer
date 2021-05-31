@@ -78,7 +78,7 @@ Frameworks aren't friends
 - You are responsible for all code in your application
 (story about xml creation needs approvals)
 (don't use a framework to hide a problem)
-(get brians grooveyscript story)
+(get Brian's GroovyScript story)
 
 ### Chapter 3: Poorly written software harms everyone
 
