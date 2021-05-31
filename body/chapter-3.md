@@ -17,15 +17,30 @@
 
 ### Encapsulation
 
-> "D*mn it, you're on a need-to-know basis, and you don't need to know." (Womack).
+> "You're on a need-to-know basis, and you don't need to know." (Simpson, Bruckheimer, & Bay, 1996).
 
-If you are not familiar with the term "need to know", it is typically used by organizations to describe a certain level of information that a person or entity is entitled to know about. A well-engineered application works the same way. Classes only give up the information and details that is necessary.
+If you are not familiar with the term "need to know", it is typically used by organizations to describe a certain level of information that a person or entity is entitled to know about. A well-engineered application works the same way. Classes only give up the information and details that is necessary. The less internal knowledge available to other classes, the smaller the chance that data may end up in an invalid state.
+
+---
+**Info** :information_source:
+
+Encapsulation goes beyond code, it extends into the architecture of your application as well. Your code maybe encapsulated correct, but your architecture can still leak details about its internals.
+
+---
 
 Common ways to encapsulate code:
 
 1) Make fields private
-2) Limit public setters
-3) Label classes as internal or private
+2) Limit or eliminate public setters
+3) Label classes as internal or private if possible
+
+But *why* should I as a developer go through all the trouble to encapsulate my code?
+
+Why would you use an object-oriented language then if you refuse to encapsulate your data? One of the reasons why object-oriented languages such as C# and Java became so popular is because with a single keyword we can make something disappear from the rest of our application.
+
+For all the same reasons that your encapsulate your own personal data. What would happen if you allowed anyone to know your social security number, address, and mother's maiden name? Your identity could possibly be stolen and you would have to go through a great deal of trouble to correct any bad marks on your record. Software follows the same principles. Someone may use your code in a way that it was not intended to be used. There may not even be malicious intent involved. We should be on guard against any possible misuse of our data, both personally and in code.
+
+As an engineer, our job is to solve problems. Not create new ones. Limiting the number of possibilities in our code is the best way to limit the misuse of said code. When there are fewer possible outcomes, we limit our liability and the chance that something bad or unintentional may happen. Encapsulation is one of the best forms of defensive programming because we are controlling what details we allow the outside world or outside classes to see.
 
 ---
 **Correct** :heavy_check_mark:
@@ -34,11 +49,31 @@ Encapsulate your application as much as possible. Keep fields private until they
 
 ---
 
+##### IDE Disadvantages
+
+One of my biggest gripes with VisualStudio is the default way properties are implemented in the IDE. If you use the keyword *prop* to create a new property, it will automatically have a public getter and setter. You need to be wary that your fellow developers may not care as much as you do about enforcing encapsulation as much as you do.
+
+![Using an auto-property](../images/ch-3-property-shortcut.png)
+**Figure 3-X** Using the "prop" keyword in VisualStudio to add a new property.
+
+![After using the auto property shortcut](../images/ch-3-property-result.png)
+**Figure 3-X** Our new property after using the shortcut.
+
+I have seen far to many classes in my career that had public setters that not only broke encapsulation, but were completely unnecessary in the first place. Many times these will occur in domain models and DTO's. As an engineer, it is your duty to instill a culture of encapsulation on your team.
+
+---
+**Correct** :heavy_check_mark:
+Ideally you should have zero public setters in your application. Modifying a field should go through a method that performs validation before the field is changed.
+
+---
+
+![Class with a method to change a name](../images/ch-3-class-private-setter.png)
+**Figure 3-X** The class above displays a method that uses validation to protect against null or non-alpha characters being used in a name.
 
 ---
 **Warning** :warning:
 
-There are some items in your application that need to public because it is required. A lot of these will fall under the *reflection* category where a framework just as an ORM or a JSON serialization library requires a public property in a class.
+There are some classes in your application that need to public because it is required. A lot of these will fall under the *reflection* category where a framework just as an ORM or a JSON serialization library requires a public property in a class.
 
 ---
 
@@ -50,11 +85,22 @@ Encapsulating data isn't just something for your end-users. The less other devel
 
 ---
 
-### Inheritances Purpose
+### Inheritance
 
-### Polymorphisms Purpose
+### Polymorphism
 
-### Abstraction Purpose
+### Abstraction
+
+---
+**Hint** :bulb:
+
+If you easily confuse encapsulation and abstraction, remember that encapsulation is *explicit* and abstraction is *implicit*.
+
+Encapsulation - "I'm not going to show you."
+Abstraction - "I'm not going to show you how."
+
+---
+
 
 ## Functional Programming
 
