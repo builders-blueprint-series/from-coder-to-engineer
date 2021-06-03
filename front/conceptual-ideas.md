@@ -1,170 +1,174 @@
 # Conceptual Ideas
 
-Introduction
-
-- Software engineering is not black and white, its a sea a gray
-- Software is knowing what not to do
-- Seatbelt/helmet analogy for why testing is possible
-- Only you know your application, so only you can make the best decision
-- Bad code comes from either not knowing, or not caring, you can't know everything, but you can eliminate the second
-
 ## Part 1: An Engineering Mind
 
 ### Chapter 1: Coding is easy. Engineering is hard
 
-Engineer is a mentality, not a title
+#### Introduction
 
-- Good software comes from wanting to write good software (no silver bullet library, framework, architecture)
+- Software engineering is not black and white, its a sea a gray
+- Software is knowing what not to do
+- Bad code comes from either not knowing, or not caring, you can't know everything, but you can eliminate the second
+
+#### Quote (mentality is everything)
+
+"Brevity is the soul of wit." - Polonius, Hamlet
+
+#### Engineer is a mentality, not a title
+
+- Good software comes from wanting to write good software
+- No silver bullet library, framework, architecture
 - Code is a by-product
 - Remove yourself from your code
-- Code and coders are cheap
-- Engineers are rare
+- Code and coders are cheap, engineers are rare and valuable
+- Engineers think long term
 
-Titles and years of experience don't matter
+#### Horror Story
+
+- People love to over-engineer almost everything
+- The Zen of Python (we like simple)
+
+#### Titles and years of experience don't matter
 
 - Titles mean nothing
 - Years mean nothing
 - You're only as good as the last thing you learned
+- Don't be cocky, but don't accept something "just because"
+- Good engineers are humble and let their work speak for themselves
 
-Speak up now, or pay later
+#### Real-Life Example
+
+- Southwest Airlines
+- Simple, one plane, class, point to point, easy fare structure
+
+#### Speak up now, or pay later
 
 - Don't be timid about calling out bad software
 - Precedence doesn't mean correctness
 - Poor software proliferates exponentially
 
-One line a day keeps the refactoring away
+#### Lesson Learned
 
-- Software is imperfect
-- Software is never finished
-- Software is entropic
-- Fix one line a day (make this cultural)
+- Software is commercial art. It has to perform its function, and look nice in the process
+- No one will live in a building that is ugly, or structurally unstable.
 
-### Chapter 2: Favor simplicity over complexity
+#### Did you know?
 
-Southwest Airlines and simplicity
+- There is such a thing as "feeling it" in software. Remember, commercial ART.
 
-- Simplicity is not giving people options, it is removing them
-- Costco only gives you one item, so you have to buy it
+#### Conclusion
 
-The five minute rule
+- Software is hard. So don't be so hard on yourself
+- When in doubt, choose the simple way of doing things
+- Think like an engineer, not a coder
 
-- Can you explain anything to a junior developer in five minutes
-- Complex software doesn't mean complex code
+### Chapter 2: Embrace the compiler. Save the code review
 
-Easier to understand
+#### Introduction
 
-- Simple is easy to learn and memorize
-- Simple is easy to onboard new team members
+- Automation is your friend for menial tasks
+- The compiler is a good guy
+- Other forms of automation such as test suites, and dev ops are good
 
-Easier to work with
+#### Quote (don't do anything someone else can do for you)
 
-- Simple is easy to change
-- Simple is easy to add to
-
-Associate lines with cost
-
-- Everyone line of code costs money (not absolute)
-- Every line adds complexity
-
-Anything that you allow, will happen
-
-- Every line of code sets a standard
-- Cargo cult programming is the norm, not the exception
-
-Frameworks aren't friends
-
-- Frameworks hide problems
-- Frameworks are one more thing you need to know
-- You are responsible for all code in your application
-(story about xml creation needs approvals)
-(don't use a framework to hide a problem)
-(get Brian's GroovyScript story)
-
-### Chapter 3: Poorly written software harms everyone
-
-Bad software hurts customers
-
-- Poor software is under performing
-- Poor software is harder to interact with
-- Customers aren't stupid (people can tell your app is bad)
-(story moving from android to apple because i could tell the
-ios apps were just red-headed stepchild)
-(airline story us airways added wi-fi when people booked away)
-
-Bad software costs money
-
-- Bad code requires more developers
-- Bad code requires more time
-(Story about adding more ram because of crashes)
-- Bad code increases turnover
-
-Bad software hurts developers
-
-- Bad code is frustrating
-- Bad code slows development
-- Bad code hurts culture
-- Bad software reinforces future bad software (cargo cult)
-
-Small things add up
-
-- Bad code has no single underlying issue
-- Small issues cause large ones
-- Fix your broken windows
-
-### Chapter 4: The Engineering Process
-
-<!-- Find better part name -->
-
-Software in an immature process
-
-Software is not a physical science
-
-- Story of Tacoma Narrows Bridge
-(Toyota break controller, 737 max, florida pedestrian bridge)
-- Software does not have a set of mathematical formulas determined by the laws of physics
-
-Need to create your own laws
-
-- Software requires you to enforce laws of good engineering
-
-Automate the engineering process
-
-- Embrace the compiler
-- Embrace your test suite
-- Embrace your dev ops process
-
-Code Reviews Are Sacred
-
-- Embrace code reviews as a feedback mechanism
-- Be tough, but don't be mean
-- Address issues in code review, or face the consequences later
-
-## Part 2: Tools of a Craftsman
-
-<!-- Find better part name -->
-
-### Chapter 5: You can't cheat the compiler
-
-Compiler is the first line of defense
+#### Compiler is the first line of defense
 
 - Shortest feedback loop available
 - The compiler will never lie
 - Use the complier for enforce style
 - Pick a style and stay consistent
 
-Embracing the compiler
+#### Horror Story
+
+- "We'll catch it in code review"
+
+#### Using the compiler
 
 - Style vs Best Practices
 - ESLint, EditorConfigs, StyleGuides, Prettier, Warnings As Errors, Roselyn Analyzers
 - Encapsulation
-
-Embrace the compiler
-
 - Use the plugins, ReSharper
 
-Turn lemmings into lemonade
+#### Real-Life Engineering Disaster
 
+- Tacoma Narrows Bridge
+
+#### Lesson Learned
+
+- Don't take things personally
+- Own up to your mistakes
+- Use failures as lessons
+
+#### Automate everything
+
+- Embrace the compiler
+- Embrace your test suite
+- Embrace your dev ops process
 - Embrace cargo cult programming to your advantage
+
+#### Career Advice
+
+- Find a mentor who you can bounce ideas and questions off of!
+- Find someone who will challenge your ideas and make you better
+- This book would not have been possible without the countless people who gave input and helped edit
+
+#### Code Reviews Are Sacred
+
+- Code reviews are terrible at finding bad code
+- Code reviews should be seen as a last resort
+- Embrace code reviews as a feedback mechanism
+- Be tough, but don't be mean
+- Address issues in code review, or face the consequences later
+
+#### Career Advice
+
+Anything that you allow, will happen
+
+- Every line of code sets a standard
+- Cargo cult programming is the norm, not the exception
+
+#### Food for thought
+
+- It's your application, only you know what is truly the best solution
+- What works for others may be wrong for you, and visa-versa.
+
+#### Conclusion
+
+- Automation saves time
+- Automation will save your sanity
+
+### Chapter 3: Development Fundamentals
+
+#### Introduction
+
+### Encapsulation
+
+#### Quote (need to know basis)
+
+#### Inheritance
+
+#### Quote (get all the good, and all the bad)
+
+#### Polymorphism
+
+#### Quote
+
+#### Abstraction
+
+#### Quote (details are boring anything)
+
+#### Quote
+
+### Functional Programming
+
+#### Minimize Procedural Code
+
+#### Method vs Classes
+
+#### Harnessing Callbacks
+
+#### Conclusion
 
 ### Chapter 6: Tests don't lie
 
@@ -403,18 +407,3 @@ Logic in the wrong place
 - Reverse hour glass code
 - Skinny at the top and bottom
 - Fat in the middle (application, domain)
-
-### Chapter 15: Miscellaneous
-
-Comments
-
-- Comments describe why not how
-
-Naming
-
-- Style
-
-Asynchronous
-
-- Understand what goes on with async
-- The amount of code generated

@@ -52,13 +52,9 @@ Careful - :eyes:
 
 "I've had great success without unit testing". - Chapter 6, Tests
 
-"We'll catch it in code review". - Chapter 2, Compiler
-
 Frameworks for the sake of frameworks.
 
 Writing something that already exists (ORM, motorola's stupid queue polling shit)
-
-People love to over-engineer almost everything.
 
 ElasticSearch library that was beyond comprehendible, that just copy the same search, "I wrote this for job security"
 
@@ -84,68 +80,85 @@ Seeing patterns everywhere, you can overuse them.
 
 Making tradeoffs is normal, nothing is perfect. Software is pretty gray.
 
-Software is commercial art. It has to perform its function, and look nice in the process. No one will live in a building that is ugly, or structurally unstable.
-
 It may take two, three, or four iterations until you are finally happy with something. Don't be happy because "it works" (React search page)
 
 Your customers will break things very quickly. Be flexible and open to change. Don't make assumptions because you believe something is ideal. (Fidel's POS refresh)
 
 People dislike change. When presenting an idea to your team, go into the meeting aware that some may not reject it because they feel uncomfortable even if the idea is objectionably good.
 
-Don't take things personally. Own up to your mistakes. Use failures as lessons.
+Frameworks aren't friends
+
+- Frameworks hide problems
+- Frameworks are one more thing you need to know
 
 ## Career Advice
 
-Code and coders are cheap, engineers are rare and valuable - Chapter 1
-
-Speak up now, or pay later
-Don't be timid about called out bad software
-Precedence doesn't mean correctness
-Poor software proliferates exponentially
-
 Bad software hurts developers
-Bad code is frustrating, slows development, hurts culture, and reinforces future bad software
+
+- Bad code is frustrating
+- Bad code slows development
+- Bad code hurts culture
+- Bad software reinforces future bad software (cargo cult)
 
 Bad software hurts customers
-Under-performing, hard to interact with, customers aren't stupid
-(ios vs android, us airways wi-fi booking)
+
+- Poor software is under performing
+- Poor software is harder to interact with
+- Customers aren't stupid (people can tell your app is bad)
+(story moving from android to apple because i could tell the
+ios apps were just red-headed stepchild)
+(airline story us airways added wi-fi when people booked away)
 
 Bad software costs money
-Requires more developers, more time, increases turnover
 
-Small things add up quickly
-Bad code has no single underlying issue
-Small issues cause large ones
-Fix your broken windows
+- Bad code requires more developers
+- Bad code requires more time
+(Story about adding more ram because of crashes)
+- Bad code increases turnover
 
-The Five Minute Rule
-Can you explain something to a junior developer in five minutes
-Complex software doesn't mean complex code
+Small things add up
+
+- Bad code has no single underlying issue
+- Small issues cause large ones
+- Fix your broken windows
+
+Easier to work with
+
+- Simple is easy to change
+- Simple is easy to add to
+- Simple means more money saved, and more money that can be earned
+
+Easier to understand
+
+- Simple is easy to learn and memorize
+- Simple is easy to onboard new team members
+- How fast can you onboard a new team member?
+- (Motorola can take weeks!)
+
+The five minute rule
+
+- Can you explain anything to a junior developer in five minutes
+- Complex software doesn't mean complex code
 
 One line a day keeps the refactoring away
-Software is imperfect, never finished, entropic, turn a line a day into a cultural impact
+
+- Software is imperfect
+- Software is never finished
+- Software is entropic
+- Fix one line a day (make this cultural)
+- Turn a pr into a cultural impact
 
 The easier way to get a raise or promotion is to save your company money
 Nothing will make your boss/CEO happier than telling him you saved him money
 Saving money comes in a lot of ways
 
-Anything that you allow to happen, will happen
-Every line of code sets a standard
-Cargo cult programming is a real thing
-
-Find a mentor who you can bounce ideas and questions off of! - Chapter 1
-Find someone who will challenge your ideas and make you better.
-This book would not have been possible without the countless people who gave input and helped edit.
-
 ## Real Life Examples
 
-Southwest Airlines - Chapter 1
 Costco - Chapter 3
 In-N-Out - Chapter 5
 Allegiant Airlines - Chapter 7
 Chick-Fil-A - Chapter 9
 
-Tacoma Narrows Bridge - Chapter 2
 Toyota Brake Controller - Chapter 4
 737 MAX - Chapter 6
 MIM-104 Patriot Missile Launcher - Chapter 8
@@ -169,6 +182,21 @@ Common Interfaces are all around us (USB, Electrical sockets, driving a car) - C
 
 Code coverage is not a good indicator of anything.
 
-It's your application, only you know what is truly the best solution. What works for others may be wrong for you, and visa-versa.
+Design patterns were inspired from architecture, "A Pattern Language"
 
-Design patterns were inspired from architecture, "A Pattern Language".
+## Food for thought
+
+- Simplicity is about removing options
+
+Associate lines with cost
+
+- Everyone line of code costs money (not absolute)
+- Every line adds complexity
+
+- Seatbelt/helmet analogy for why testing is possible
+
+- Naming, find a common way of doing things a stick with it.
+
+- Better to be consistent and not perfect than inconsistency perfect
+
+- Comments should describe why you choose to do something, not what the code is doing. (Exception if you're writing a 3rd party library)

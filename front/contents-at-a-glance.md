@@ -1,27 +1,12 @@
 # Contents at a glance
 
-Introduction
-
-## Part 1: A Engineering Mind
-
-Chapter 1: Coding is easy. Engineering is hard
-Chapter 2: Favor simplicity over complexity
-Chapter 3: Poorly written software harms everyone
-Chapter 4: The engineering process
-
-## Part 2: Tools of the trade
-
-Chapter 5: You can't cheat the compiler
-Chapter 6: Tests don't lie
-Chapter 7: Coding building blocks
-Chapter 8: Principles to live by
-Chapter 9: Patterns to remember
-
-## Part 3: Common Issues
-
-Chapter 10: Testing
-Chapter 11: Encapsulation
-Chapter 12: Coupling
-Chapter 13: Repetition
-Chapter 14: Responsibility
-Chapter 15: Miscellaneous
+Chapter 1: Coding is Easy. Engineering is Hard
+Chapter 2: Embrace the Compiler, not the Code Review
+Chapter 3: Development Fundamentals
+Chapter 4: Principles to Live By
+Chapter 5: Patterns to Remember
+Chapter 6: Tests Are Insurance
+Chapter 7: Embrace Encapsulation
+Chapter 8: Crush Coupling
+Chapter 9: Repudiate Repetition
+Chapter 10: Delegate Responsibility
