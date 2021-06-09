@@ -1,188 +1,30 @@
 # Conceptual Ideas
 
-## Part 1: An Engineering Mind
-
-### Chapter 1: Coding is easy. Engineering is hard
-
-#### Introduction
-
-- Software engineering is not black and white, its a sea a gray
-- Software is knowing what not to do
-- Bad code comes from either not knowing, or not caring, you can't know everything, but you can eliminate the second
-
-#### Quote (mentality is everything)
-
-"Brevity is the soul of wit." - Polonius, Hamlet
-
-#### Engineer is a mentality, not a title
-
-- Good software comes from wanting to write good software
-- No silver bullet library, framework, architecture
-- Code is a by-product
-- Remove yourself from your code
-- Code and coders are cheap, engineers are rare and valuable
-- Engineers think long term
-
-#### Horror Story
-
-- People love to over-engineer almost everything
-- The Zen of Python (we like simple)
-
-#### Titles and years of experience don't matter
-
-- Titles mean nothing
-- Years mean nothing
-- You're only as good as the last thing you learned
-- Don't be cocky, but don't accept something "just because"
-- Good engineers are humble and let their work speak for themselves
-
-#### Real-Life Example
-
-- Southwest Airlines
-- Simple, one plane, class, point to point, easy fare structure
-
-#### Speak up now, or pay later
-
-- Don't be timid about calling out bad software
-- Precedence doesn't mean correctness
-- Poor software proliferates exponentially
-
-#### Lesson Learned
-
-- Software is commercial art. It has to perform its function, and look nice in the process
-- No one will live in a building that is ugly, or structurally unstable.
-
-#### Did you know?
-
-- There is such a thing as "feeling it" in software. Remember, commercial ART.
-
-#### Conclusion
-
-- Software is hard. So don't be so hard on yourself
-- When in doubt, choose the simple way of doing things
-- Think like an engineer, not a coder
-
-### Chapter 2: Embrace the compiler. Save the code review
-
-#### Introduction
-
-- Automation is your friend for menial tasks
-- The compiler is a good guy
-- Other forms of automation such as test suites, and dev ops are good
-
-#### Quote (don't do anything someone else can do for you)
-
-#### Compiler is the first line of defense
-
-- Shortest feedback loop available
-- The compiler will never lie
-- Use the complier for enforce style
-- Pick a style and stay consistent
-
-#### Horror Story
-
-- "We'll catch it in code review"
-
-#### Using the compiler
-
-- Style vs Best Practices
-- ESLint, EditorConfigs, StyleGuides, Prettier, Warnings As Errors, Roselyn Analyzers
-- Encapsulation
-- Use the plugins, ReSharper
-
-#### Real-Life Engineering Disaster
-
-- Tacoma Narrows Bridge
-
-#### Lesson Learned
-
-- Don't take things personally
-- Own up to your mistakes
-- Use failures as lessons
-
-#### Automate everything
-
-- Embrace the compiler
-- Embrace your test suite
-- Embrace your dev ops process
-- Embrace cargo cult programming to your advantage
-
-#### Career Advice
-
-- Find a mentor who you can bounce ideas and questions off of!
-- Find someone who will challenge your ideas and make you better
-- This book would not have been possible without the countless people who gave input and helped edit
-
-#### Code Reviews Are Sacred
-
-- Code reviews are terrible at finding bad code
-- Code reviews should be seen as a last resort
-- Embrace code reviews as a feedback mechanism
-- Be tough, but don't be mean
-- Address issues in code review, or face the consequences later
-
-#### Career Advice
-
-Anything that you allow, will happen
-
-- Every line of code sets a standard
-- Cargo cult programming is the norm, not the exception
-
-#### Food for thought
-
-- It's your application, only you know what is truly the best solution
-- What works for others may be wrong for you, and visa-versa.
-
-#### Conclusion
-
-- Automation saves time
-- Automation will save your sanity
-
-### Chapter 3: Development Fundamentals
-
-#### Introduction
-
-### Encapsulation
-
-#### Quote (need to know basis)
-
-#### Inheritance
-
-#### Quote (get all the good, and all the bad)
-
-#### Polymorphism
-
-#### Quote
-
-#### Abstraction
-
-#### Quote (details are boring anything)
-
-#### Quote
-
-### Functional Programming
-
-#### Minimize Procedural Code
-
-#### Method vs Classes
-
-#### Harnessing Callbacks
-
-#### Conclusion
-
 ### Chapter 6: Tests don't lie
+
+#### Quote (something insurance)
 
 The purpose of tests
 
-<!-- Automatic tests can't find everything -->
-
 - Tests provide clarity
 - Tests provide confidence
+
+#### Coding Horror Story
+
+"I've had great success without unit testing".
 
 Tests as a feedback loop
 
 - Tests allow rapid change
 - Test coverage is a lie
+
+#### Lesson Learned
+
+- XML Creation requiring Approvals testing - Chapter 6, Testing
+
+#### Bad Engineering
+
+- 737 MAX
 
 Tests as insurance
 
@@ -190,81 +32,15 @@ Tests as insurance
 - Is it tested properly (conditional, Assert(1).Equals(1))
 - Is it easy to test
 
-### Chapter 7: Coding building blocks
+#### Career Advice
 
-Object Oriented Code
+Bad software hurts customers
 
-- Purpose of encapsulation
-- Purpose of inheritance
-- Purpose of polymorphism (big daddy)
-- Purpose of abstraction
-
-Functional Code
-
-- Purpose of functional code (minimize procedural)
-- OOP and Functional aren't mutually exclusive
-- Methods vs Classes
-- Purpose of callbacks (polymorphism of functional)
-
-### Chapter 8: Principles to live by
-
-Don't do too much
-
-- Purpose of Single Responsibility
-- SRP versus DRY (aren't mutually exclusive)
-
-Interfaces over inheritance
-
-- Keep inheritance limited (1-2 max)
-- Example of introducing an interface over base class
-- Purpose of Open/Closed
-- Purpose of Liskov
-
-Only provide what is needed
-
-- Purpose of Interface Segregation
-
-Ideas over implementations
-
-- Purpose of Dependency Inversion (relate back to polymorphism)
-- DI vs DI (dependency injection) vs DI (inversion of control)
-
-### Chapter 9: Patterns to remember
-
-The purpose of design patterns
-
-- Patterns make life easier
-- Patterns are just an extreme form of polymorphism
-- You can't improve sliced bread, so embrace it
-
-There are no such things as anti-patterns
-
-- Every pattern has a time and place
-- Singleton, Service Locator, ect.
-
-Knowing where is more important than how
-
-- Don't memorize patterns, memorize when to use them
-- Patterns play nicely with each other (pattern composition)
-
-Getting comfortable with patterns
-
-(forward-facing, active users)
-
-- Finding a common interface
-(n-1, IEnumerable, Func vs Action)
-
-Patterns in detail
-
-- Creational Patterns Overview (your di framework does it)
-- Structural Patterns Overview (more architecture)
-- Behavior Patterns Overview
-- Command (Common interface, introduce first, common interface)
-- Builder Pattern (Dapper, SQL query, Predicates)
-- Chain of Responsibility (Complex processes, service call chain)
-- Mediator (Service SRP)
-- Observer (Conditional replacement)
-- Strategy (Conditional replacement)
+- Poor software is under performing
+- Poor software is harder to interact with
+- Customers aren't stupid (people can tell your app is bad)
+(story moving from android to apple because i could tell the
+ios apps were just red-headed stepchild)
 
 ## Part 3: Common Issues
 
@@ -360,7 +136,12 @@ Dependency Injection
 - Over injecting (5+ things in a class)
 - Fancy injecting  (stupid shit you shouldn't good)
 - Inappropriate registration
+- Dependency Swallowing
 - DI should be seen, but not herd
+
+### DI Best Practice
+
+- Single, Scoped, Instance
 
 ### Chapter 13: Repetition
 
