@@ -137,6 +137,10 @@ Anything that you allow, will happen
 
 - Automation saves time
 - Automation will save your sanity
+- The compiler is the first line of defense
+- Shortens the feedback loop
+- Code reviews are a last resort
+- Don't rely on code reviews
 
 ### Chapter 3: Development Fundamentals
 
