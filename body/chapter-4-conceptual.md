@@ -75,6 +75,7 @@ Ideas over implementations
 
 - Purpose of Dependency Inversion (relate back to polymorphism)
 - DI vs DI (dependency injection) vs DI (inversion of control)
+- Composition vs Aggregation
 - Bad injection policies
 
 ### Food for Thought
