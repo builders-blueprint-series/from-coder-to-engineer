@@ -51,6 +51,10 @@ The five minute rule
 
 (n-1, IEnumerable, Func vs Action)
 
+### Did you know?
+
+:thinking: Common Interfaces are all around us (USB, Electrical sockets, driving a car)
+
 ### Patterns in detail
 
 Mostly showcase behavior patterns
