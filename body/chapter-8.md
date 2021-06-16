@@ -229,7 +229,7 @@ While on the surface this may seem ok because; you are using constructor injecti
 ---
 Note :memo:
 
-Before I go over this scenario I was to clear up a misconception that may comes up. I fully realize that the situation I am showing below was used in an example before when we talked about our Mediator example. The difference between the previous example, and the example below is that it was used in library code, where this is application level code. There are subtle and unique differences between writing a library or third-party code, and writing an application. This is one of them where something may be appropriate in one situation, and not appropriate in another.
+Before I go over this scenario I was to clear up a misconception that may come up. I fully realize that the situation I am showing below was used in an example before when we talked about our Mediator example. The difference between the previous example and the example below is that the previous example was used in library code, where this is application level code. There are subtle and unique differences between writing a library or third-party code, and writing an application. This is one of them where something may be appropriate in one situation, and not appropriate in another.
 
 ---
 
@@ -260,7 +260,7 @@ Incorrect :x:
     }
 ```
 
-Similar to the example above, inject the container is doing additional work that the container is already written to solve for you. When you declare a dependency in your constructor, the container will automatically call the GetService for you and pass it into the constructor. So again, while you *could* unit test this; all it would mean is extra work and code that would be costly to maintain in the long run.
+Similar to the previous example, injecting the container  and resolving from it is doing additional work that the container is already written to solve for you. When you declare a dependency in your constructor, the container will automatically call the GetService for you and pass it into the constructor. So again, while you *could* unit test this; all it would mean is extra work and code that would be costly to maintain in the long run.
 
 ---
 
@@ -333,14 +333,14 @@ In the unit test below, you can see how we have to mock a large number of interf
     }
 ```
 
-In the unit test above I left out setting up the mocks for clarity sake. As you can see, there is a lot of code in this unit test already, and more is still needed. Our tests should be just as clean and concise as our executing code is. When you are injecting a large number of dependencies into a class, you are taking on the task of large and complicated tests that may become cumbersome and hard to maintain in the future. By keeping the dependencies in your class to the lowest number possible, you allow for easy testing.
+In the unit test above I left out setting up the mocks for clarity sake. As you can see, there is a lot of code in this unit test already, and more is still needed. Our tests should be just as clean and concise as our executing code is. When you are injecting a large number of dependencies into a class, you are taking on the burden of large and complicated tests that may become cumbersome and hard to maintain in the future. By keeping the dependencies in your class to the lowest number possible, you allow for easy testing.
 
 ---
 
 ---
 Food For Thought :apple:
 
-There is no "hard" number of dependencies that a class should have. My personal maximum is four. If you go over that, look for ways to refactoring your class. This is typically a good area where a Chain of Responsibility may come in handy.
+There is no "hard" number of dependencies that a class should have. My personal maximum is four. If you go over that, look for ways to refactor your class. This is typically a good area where a Chain of Responsibility may come in handy.
 
 ---
 
