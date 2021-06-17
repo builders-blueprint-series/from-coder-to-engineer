@@ -20,6 +20,125 @@
 
 Building on what we discussed in chapter four, dependency inversion is one technique used to build loosely coupled applications. We can design our application services to declare what interfaces they require, and our DI container will inject the necessary dependencies when they are needed. This will allow us to avoid writing complicated factories that may have to create multiple layers of dependencies.
 
+#### How To Approach DI For Your Application
+
+#### Dealing With Concrete Only Classes
+
+One of the more common issue with C# is that the DateTime class does not have an interface. There are plenty of situations where you may need to utilizing the DateTime class in your application.
+
+**Figure 8-X** Class that needs to compare a timestamp.
+
+```csharp
+    public class ServiceThatUsesDateTime : ICustomerService
+    {
+        public void Handle(ChangeCustomerReservationTime request)
+        {
+            if (request.DateTime < DateTime.Now)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+        }
+    }
+```
+
+In the code above, we see that our application service looks to see if the timestamp from the request can be updated. If the timestamp is in the past, we throw an exception. The problem is, how to we unit test this? The Now method in the DateTime class is static. Sure you could pass a DateTime.Max and it would never be smaller than the DateTime.Now; but that would be bad coding. When you use static methods that are out of your control you are introducing undefined behavior into your code. Undefined behavior in code leads to inconsistent results and tests that will fail or succeed randomly. We want tests that will always fail or succeed give a certain condition. Our answer is to introduce an interface that can mimic the exact same methods in the DateTime class.
+
+**Figure 8-X** ISystemClock interface.
+
+```csharp
+    public interface ISystemClock
+    {
+        DateTime Now();
+    }
+```
+
+We have created an interface that has the same method signature as the Now method. All we need to do is wrap the DateTime class in an implementation class.
+
+**Figure 8-X** SystemClock implementation.
+
+```csharp
+    public class SystemClock : ISystemClock
+    {
+        public DateTime Now()
+        {
+            return DateTime.Now;
+        }
+    }
+```
+
+If our SystemClock class, we implement the interface and call the static DateTime methods. We can now update our application service by injection our new ISystemClock interface into the constructor and calling the method.
+
+**Figure 8-X** Updated application service that accepts an ISystemClock interface.
+
+```csharp
+    public class ServiceUsingISystemClock : ICustomerService
+    {
+        private readonly ISystemClock _clock;
+
+        public ServiceUsingISystemClock(ISystemClock clock)
+        {
+            _clock = clock;
+        }
+
+        public void Handle(ChangeCustomerReservationTime request)
+        {
+            if (request.DateTime < _clock.Now())
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+        }
+    }
+```
+
+Our application service now correctly accepts an interface. This means we can easily mock said interface for our unit test.
+
+**Figure 8-X** Unit test for our application service.
+
+```csharp
+    [TestClass]
+    public class ServiceUsingISystemClockTests
+    {
+        private readonly ICustomerService _service;
+
+        public ServiceUsingISystemClockTests()
+        {
+            var clock = new Mock<ISystemClock>();
+            clock.Setup(x => x.Now()).Returns(new DateTime(2000, 1, 1));
+
+            _service = new ServiceUsingISystemClock(clock.Object);
+        }
+
+        [TestMethod]
+        public void Handle_ShouldThrowException()
+        {
+            var request = new ChangeCustomerReservationTime
+            {
+                DateTime = new DateTime(1999, 1, 1),
+            };
+
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => _service.Handle(request));
+        }
+    }   
+```
+
+---
+For For Thought :apple:
+
+One reason for lessening your reliance on static methods that is they can't be mocked. The same goes for extension methods, which are by definition static as well. Every static method in your application should be "Pure". That is, it has no side-effects and produces to the same output every time you give it a certain input.
+
+---
+
+Now that you know how to create a fake interface for the DateTime class. The same rules apply to other commonly classes that may require their own customer interface. The "Random" class for generating numbers, and "HttpClient" may need their own interface if you are using them in your solution. Follow the same method of creating an interface that contains methods with the same signatures as the classes are are wrapping. Then create a concrete wrapper class that will call the same method in the class you are wrapping.
+
+---
+Did you Know? :thinking:
+
+Every mocking framework is just an implementation of the Proxy pattern. And the proxy pattern is simply just one way of implementing polymorphism. That is why you can't mock concrete classes, because you need an interface to begin with.
+
+---
+
+In all of the examples so far, we have looked at the proper way for implementing dependency injection. I want to show you some situations that are incorrect. You will notice in that all of these situations, the ability to unit our code is either non-existent, or greatly hampered. Well engineered code is always easy to test.
+
 #### Resolving From A Static Factory
 
 Lets look at what happens if we decide to forgo the use of dependency inversion. Below we have a standard factory that will create our application service by creating everything manually. We access the service by calling the factory method inside of a controller action.
@@ -344,9 +463,68 @@ There is no "hard" number of dependencies that a class should have. My personal 
 
 ---
 
+##### Inappropriate Registration
+
+I am not calling the next section something to avoid because there are always exceptions to certain rules. However, I would strongly advise against "getting fancy" with registering your dependencies that some containers provide the capability for. Constructor injection should solve 99% of your DI issues. If you feel as if you need to do any of the following, I would strongly advise you to re-think the issue at hand and see if there is an alternative way to what you perceive to be the correct solution.
+
+---
+Careful :eyes:
+
+- Property injection
+- Method injection
+- Child containers
+- Injecting value types
+- Extravagant conditional registration
+- Dynamic registration
+- Writing any library to extend the container
+- Custom lifetimes
+
+---
+
+##### Dependency Swallowing
+
+Something to remember when you register you dependencies is the lifecycle of each dependency and how it relates to other dependencies it may rely on.
+
+Look at following figure below, here we have a class called "RegisteredAsSingleton" which takes a dependency on "RegisteredAsTransient".
+
+<!--  UML Diagram for class relation -->
+
+---
+Incorrect :x:
+
+**Figure 8-X** Singleton class with Transient dependency.
+
+```csharp
+    public class RegisteredAsSingleton
+    {
+        private readonly RegisteredAsTransient _transient;
+
+        public RegisteredAsSingleton(RegisteredAsTransient transient)
+        {
+            _transient = transient;
+        }
+    }
+```
+
+The issue pertains to how each class's lifecycle is registered. Because "RegisteredAsSingleton" will never be disposed on. It will hold onto "RegisteredAsTransient" for its entire life as well. This would effectively turn the transient class into a singleton as well. The same issue would occur for a singleton to hold a scoped dependency, or a scoped dependency to hold a transient one.
+
+The table belows shows what kind of lifecycle a dependency can hold.
+
+| Class Lifetime | Should Only Hold |
+| -------------- | ---------------- |
+| Singleton      | Singleton or nothing |
+| Scoped         | Scoped, Singleton or nothing |
+| Transient      | Anything |
+
+---
+
 ### Dependency Injection Suggestions
 
 - If you are using ASP.NET Core, I suggest going with the built in Microsoft container. It does not support features such as property injection, custom lifetimes, or child containers. This is a good thing. I doubt you will every need any of these features. 99% of what you need in a DI container is just standard constructor injection.
+
+- Do not leak the details of your DI container into your domain or application. Those parts of your code should have no knowledge a DI container exists in the first place.
+
+- If your solution starts to get large, you can use the Module pattern to break up the registration into smaller parts.
 
 #### What should I register my dependencies as?
 
@@ -367,3 +545,25 @@ If you are unsure, the question you want to ask yourself is what is the lifecycl
 - Is its' lifecycle dependent on the request? - Scoped
 
 - Should it never be disposed of? - Singleton
+
+---
+Food For Thought :apple:
+
+If you want to cut down on registering some of your dependencies, you can utilize reflection to automatically register classes that match a particular pattern. The first bit code below takes every class that ends with "Factory" and will register them as transient. The second bit finds all concrete classes that end with "Repository" and registers them alongside the interface they implement. I only suggest doing this if you and your team are comfortable with reflection and understand what you are doing.
+
+```csharp
+    public void Register(IServiceCollection collection)
+    {
+        var assembly = Assembly.GetExecutingAssembly();
+
+        assembly
+            .GetTypes().Where(type => type.Name.EndsWith("Factory"))
+            .ToList().ForEach(type => collection.AddTransient(type));
+
+        assembly
+            .GetTypes().Where(type => type.Name.EndsWith("Repository") && !type.IsAbstract && !type.IsInterface)
+            .ToList().ForEach(type => collection.AddTransient(type.GetInterfaces().First(), type));
+    }        
+```
+
+---
