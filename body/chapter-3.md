@@ -54,9 +54,10 @@ Encapsulate your application as much as possible. Keep fields private until they
 One of my biggest gripes with VisualStudio is the default way properties are implemented in the IDE. If you use the keyword *prop* to create a new property, it will automatically have a public getter and setter. You need to be wary that your fellow developers may not care as much as you do about enforcing encapsulation as much as you do.
 
 ![Using an auto-property](../images/ch-3-property-shortcut.png)
-**Figure 3-X** Using the "prop" keyword in VisualStudio to add a new property.
 
+**Figure 3-X** Using the "prop" keyword in VisualStudio to add a new property.
 ![After using the auto property shortcut](../images/ch-3-property-result.png)
+
 **Figure 3-X** Our new property after using the shortcut.
 
 I have seen far to many classes in my career that had public setters that not only broke encapsulation, but were completely unnecessary in the first place. Many times these will occur in domain models and DTO's. As an engineer, it is your duty to instill a culture of encapsulation on your team.
@@ -68,6 +69,7 @@ Ideally you should have zero public setters in your application. Modifying a fie
 ---
 
 ![Class with a method to change a name](../images/ch-3-class-private-setter.png)
+
 **Figure 3-X** The class above displays a method that uses validation to protect against null or non-alpha characters being used in a name.
 
 ---
