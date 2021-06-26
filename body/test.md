@@ -38,10 +38,24 @@
     border-color: #d6e9c6;
 }
 
-.info {
-    color: #31708f;
-    background-color: #d9edf7;
-    padding: .5rem;
+.panel-warning {
+    border-color: #faebcc;
+}
+
+.panel-warning > .panel-heading {
+    color: #8a6d3b;
+    background-color: #fcf8e3;
+    border-color: #faebcc;
+}
+
+.panel-danger {
+    border-color: #ebccd1;
+}
+
+.panel-danger > .panel-heading {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
 }
 
 </style>
@@ -76,9 +90,30 @@ One reason for lessening your reliance on static methods that is they can't be m
 
 &nbsp;
 
----
- <span class="info">Food for Thought</span>
+<div class="panel panel-warning">
+<div class=panel-heading>Food for Thought</div>
+<div class="panel-body">
 
 One reason for lessening your reliance on static methods that is they can't be mocked. The same goes for extension methods, which are by definition static as well. Every static method in your application should be "Pure". That is, it has no side-effects and produces to the same output every time you give it a certain input.
 
----
+```csharp
+    Console.log('me");
+```
+
+</div>
+</div>
+
+&nbsp;
+
+<div class="panel panel-danger">
+<div class=panel-heading>Food for Thought</div>
+<div class="panel-body">
+
+One reason for lessening your reliance on static methods that is they can't be mocked. The same goes for extension methods, which are by definition static as well. Every static method in your application should be "Pure". That is, it has no side-effects and produces to the same output every time you give it a certain input.
+
+```csharp
+    Console.log('me");
+```
+
+</div>
+</div>
