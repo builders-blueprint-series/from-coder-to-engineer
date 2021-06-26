@@ -121,12 +121,16 @@ Our application service now correctly accepts an interface. This means we can ea
     }   
 ```
 
+&nbsp;
+
 ---
-For For Thought :apple:
+Food For Thought :apple:
 
 One reason for lessening your reliance on static methods that is they can't be mocked. The same goes for extension methods, which are by definition static as well. Every static method in your application should be "Pure". That is, it has no side-effects and produces to the same output every time you give it a certain input.
 
 ---
+
+&nbsp;
 
 Now that you know how to create a fake interface for the DateTime class. The same rules apply to other commonly classes that may require their own customer interface. The "Random" class for generating numbers, and "HttpClient" may need their own interface if you are using them in your solution. Follow the same method of creating an interface that contains methods with the same signatures as the classes are are wrapping. Then create a concrete wrapper class that will call the same method in the class you are wrapping.
 
