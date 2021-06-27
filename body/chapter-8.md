@@ -2,19 +2,143 @@
 
 ## Crush Coupling
 
-**After completing this chapter, you will be able to**
+### After completing this chapter, you will be able to
 
 - Understand how coupling hurts application development
 
 - Understand how coupling inhibits testing
 
-- Learn how to reduce coupling by avoid certain language features
-
 - Know when and where to apply inheritance
+
+- Learn how to reduce coupling by avoid certain language features
 
 - Implement dependency inversion the correct way
 
+### Introduction
+
+---
+
 <!-- Introduction -->
+
+&nbsp;
+
+### The "new" Keyword
+
+---
+
+#### Using "new" in Controllers
+
+#### Using "new" in Application Services
+
+#### Exceptions for Domain Events
+
+#### Pushing Creation Logic into Factories
+
+- Creation logic is boring, dull detail.
+
+#### Using Static Factory Methods
+
+&nbsp;
+
+### Static Cling
+
+---
+
+#### Timestamps
+
+#### Loggers
+
+&nbsp;
+
+### Lesson Learned
+
+---
+
+#### Creating Too Many Interfaces
+
+&nbsp;
+
+### Concrete Dependencies
+
+---
+
+#### Concrete Dependencies in Code
+
+#### Keeping Dependencies Abstract
+
+&nbsp;
+
+### Coding Horror Story
+
+---
+
+#### Not So Groovy GroovyScript
+
+&nbsp;
+
+### Inheritance
+
+---
+
+#### Too Many Inheritance Levels
+
+#### Multiple Inheritance
+
+#### Open-Closed Principle
+
+<!-- Less Logic in base classes the better -->
+<!-- No concrete base classes, prefer interfaces or abstract -->
+
+- Employee class that calculates pay
+- Calculate pay for salaried and non-salaried employees
+
+#### Liskov Substitution
+
+<!-- Base class makes assumptions -->
+<!-- No concrete base classes, prefer interfaces or abstract -->
+
+- Tomatoes and zucchini are berries, broccoli is a flower
+- Is a hot dog a sandwich?
+- LSK is a rule for poorly defined interfaces
+
+&nbsp;
+
+### Career Advise
+
+---
+
+#### Keeping Your Employer Happy
+
+&nbsp;
+
+### Friend and Internal Classes
+
+---
+
+#### C++ Friendships
+
+#### The "Internal" Keyword
+
+&nbsp;
+
+### Engineering Disasters
+
+---
+
+#### MIM-104 Patriot Missile Launcher
+
+**Image 8-X** A Patriot SAM system
+
+![Patriot SAM System](../images/chapter-8/patriot-system.jpg)
+
+On February 25, 1991, a SCUD missile launched by the Iraqi forces during the Gulf War hit a US Army barracks, killing 24 soldiers. Sitting in the way of the Iraqi SCUD was supposed to be the MIM-104 "Patriot" missile launcher system. The MIM-104 was a mobile SAM (surface-to-air-missile) that used a complex set of radar guided missiles to intercept and destroy incoming projectiles launched by enemy forces.
+
+While Patriot had been very successful so far in the conflict, this failure was unfortunate because the lives of these twenty-four soldiers was due to a software bug. Patriot's computers at the time had been running for over 100 hours when the SCUD was initially detected. At this time the internal computer that handles timestamps was inaccurate to about one-third of a second. Translating to an operating error of about 600 meters due to the rate of speed at which the SCUD travels. The computer which handles predicting where the missile will travel to next was not able to calculate where the SCUD's exact placement was. As a result of this disastrous error, the intercept attempt was never made, and twenty-four soldiers lost their lives.
+
+The lesson from Patriot is that software needs to be resistant to long running expose.
+<!-- expand, needs source reference -->
+
+&nbsp;
 
 ### Dependency Inversion
 
@@ -123,12 +247,9 @@ Our application service now correctly accepts an interface. This means we can ea
 
 &nbsp;
 
----
-Food For Thought :apple:
-
-One reason for lessening your reliance on static methods that is they can't be mocked. The same goes for extension methods, which are by definition static as well. Every static method in your application should be "Pure". That is, it has no side-effects and produces to the same output every time you give it a certain input.
-
----
+> Food For Thought :large_blue_circle:
+>
+> One reason for lessening your reliance on static methods that is they can't be mocked. The same goes for extension methods, which are by definition static as well. Every static method in your application should be "Pure". That is, it has no side-effects and produces to the same output every time you give it a certain input.
 
 &nbsp;
 
@@ -522,7 +643,11 @@ The table belows shows what kind of lifecycle a dependency can hold.
 
 ---
 
-### Dependency Injection Suggestions
+##### Relying on a Service Locator instead of Dependency Injection
+
+&nbsp;
+
+#### Dependency Injection Suggestions
 
 - If you are using ASP.NET Core, I suggest going with the built in Microsoft container. It does not support features such as property injection, custom lifetimes, or child containers. This is a good thing. I doubt you will every need any of these features. 99% of what you need in a DI container is just standard constructor injection.
 
@@ -571,3 +696,9 @@ If you want to cut down on registering some of your dependencies, you can utiliz
 ```
 
 ---
+
+### Food for Thought
+
+#### SRP vs DRY
+
+### Conclusion

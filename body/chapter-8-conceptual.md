@@ -71,14 +71,14 @@ MIM-104 Patriot Missile Launcher
 - Inappropriate registration
 - Dependency Swallowing (singleton over a instance)
 
-### Best Practice
+#### Best Practice
 
 - Use the Microsoft base container
 (It has no fancy options, which is a good thing!)
 - DI should be seen, but not heard
 - Instance, Scoped, Singleton
 
-### Food For Thought
+#### Food For Thought
 
 :apple: Reflection "with great power comes great responsibility"
 (With with reflection to auto-register stuff)
