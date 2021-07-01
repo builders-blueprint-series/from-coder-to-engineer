@@ -129,7 +129,7 @@
 
 **Image 8-X** A Patriot SAM system
 
-![Patriot SAM System](../images/chapter-8/patriot-system.jpg)
+![Patriot SAM System](../../images/chapter-8/patriot-system.jpg)
 
 On February 25, 1991, a SCUD missile launched by the Iraqi forces during the Gulf War hit a US Army barracks, killing 24 soldiers. Sitting in the way of the Iraqi SCUD was supposed to be the MIM-104 "Patriot" missile launcher system. The MIM-104 was a mobile SAM (surface-to-air-missile) that used a complex set of radar guided missiles to intercept and destroy incoming projectiles launched by enemy forces.
 
