@@ -1,3 +1,65 @@
+<style>
+
+.panel {
+    margin-top: 5px;
+    border-radius: 5px;
+    border: 1px solid transparent;
+    box-shadow: 0 1px 1px rgba(0,0,0,.05);
+}
+
+.panel .panel-heading {
+    padding: 10px 15px;
+    border-bottom: 1px solid transparent;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
+.panel-body {
+    padding: 15px;
+}
+
+.panel-info > .panel-heading {
+    color: #31708f;
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+}
+
+.panel-info {
+    border-color: #bce8f1;
+}
+
+.panel-success {
+    border-color: #d6e9c6;
+}
+
+.panel-success > .panel-heading {
+    color: #3c763d;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+}
+
+.panel-warning {
+    border-color: #faebcc;
+}
+
+.panel-warning > .panel-heading {
+    color: #8a6d3b;
+    background-color: #fcf8e3;
+    border-color: #faebcc;
+}
+
+.panel-danger {
+    border-color: #ebccd1;
+}
+
+.panel-danger > .panel-heading {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+}
+
+</style>
+
 # Chapter 8
 
 ## Crush Coupling
@@ -129,7 +191,7 @@
 
 **Image 8-X** A Patriot SAM system
 
-![Patriot SAM System](../../images/chapter-8/patriot-system.jpg)
+![Patriot SAM System](../images/chapter-8/patriot-system.jpg)
 
 On February 25, 1991, a SCUD missile launched by the Iraqi forces during the Gulf War hit a US Army barracks, killing 24 soldiers. Sitting in the way of the Iraqi SCUD was supposed to be the MIM-104 "Patriot" missile launcher system. The MIM-104 was a mobile SAM (surface-to-air-missile) that used a complex set of radar guided missiles to intercept and destroy incoming projectiles launched by enemy forces.
 
@@ -145,10 +207,13 @@ The lesson from Patriot is that software needs to be resistant to long running e
 Building on what we discussed in chapter four, dependency inversion is one technique used to build loosely coupled applications. We can design our application services to declare what interfaces they require, and our DI container will inject the necessary dependencies when they are needed. This will allow us to avoid writing complicated factories that may have to create multiple layers of dependencies.
 
 #### How To Approach DI For Your Application
+---
 
 #### Dealing With Concrete Only Classes
 
 One of the more common issue with C# is that the DateTime class does not have an interface. There are plenty of situations where you may need to utilizing the DateTime class in your application.
+
+&nbsp;
 
 **Figure 8-X** Class that needs to compare a timestamp.
 
@@ -167,6 +232,8 @@ One of the more common issue with C# is that the DateTime class does not have an
 
 In the code above, we see that our application service looks to see if the timestamp from the request can be updated. If the timestamp is in the past, we throw an exception. The problem is, how to we unit test this? The Now method in the DateTime class is static. Sure you could pass a DateTime.Max and it would never be smaller than the DateTime.Now; but that would be bad coding. When you use static methods that are out of your control you are introducing undefined behavior into your code. Undefined behavior in code leads to inconsistent results and tests that will fail or succeed randomly. We want tests that will always fail or succeed give a certain condition. Our answer is to introduce an interface that can mimic the exact same methods in the DateTime class.
 
+&nbsp;
+
 **Figure 8-X** ISystemClock interface.
 
 ```csharp
@@ -177,6 +244,8 @@ In the code above, we see that our application service looks to see if the times
 ```
 
 We have created an interface that has the same method signature as the Now method. All we need to do is wrap the DateTime class in an implementation class.
+
+&nbsp;
 
 **Figure 8-X** SystemClock implementation.
 
@@ -191,6 +260,8 @@ We have created an interface that has the same method signature as the Now metho
 ```
 
 If our SystemClock class, we implement the interface and call the static DateTime methods. We can now update our application service by injection our new ISystemClock interface into the constructor and calling the method.
+
+&nbsp;
 
 **Figure 8-X** Updated application service that accepts an ISystemClock interface.
 
@@ -215,6 +286,8 @@ If our SystemClock class, we implement the interface and call the static DateTim
 ```
 
 Our application service now correctly accepts an interface. This means we can easily mock said interface for our unit test.
+
+&nbsp;
 
 **Figure 8-X** Unit test for our application service.
 
@@ -247,26 +320,40 @@ Our application service now correctly accepts an interface. This means we can ea
 
 &nbsp;
 
-> Food For Thought :large_blue_circle:
->
-> One reason for lessening your reliance on static methods that is they can't be mocked. The same goes for extension methods, which are by definition static as well. Every static method in your application should be "Pure". That is, it has no side-effects and produces to the same output every time you give it a certain input.
+<div class="panel panel-info">
+<div class=panel-heading>Minimizing Static</div>
+<div class="panel-body">
+
+One reason for lessening your reliance on static methods that is they can't be mocked. The same goes for extension methods, which are by definition static as well. Every static method in your application should be "Pure". That is, it has no side-effects and produces to the same output every time you give it a certain input.
+
+</div></div>
 
 &nbsp;
 
 Now that you know how to create a fake interface for the DateTime class. The same rules apply to other commonly classes that may require their own customer interface. The "Random" class for generating numbers, and "HttpClient" may need their own interface if you are using them in your solution. Follow the same method of creating an interface that contains methods with the same signatures as the classes are are wrapping. Then create a concrete wrapper class that will call the same method in the class you are wrapping.
 
----
-Did you Know? :thinking:
+&nbsp;
+
+<div class="panel panel-info">
+<div class=panel-heading>Proxy on Steroids</div>
+<div class="panel-body">
 
 Every mocking framework is just an implementation of the Proxy pattern. And the proxy pattern is simply just one way of implementing polymorphism. That is why you can't mock concrete classes, because you need an interface to begin with.
 
----
+</div></div>
+
+&nbsp;
 
 In all of the examples so far, we have looked at the proper way for implementing dependency injection. I want to show you some situations that are incorrect. You will notice in that all of these situations, the ability to unit our code is either non-existent, or greatly hampered. Well engineered code is always easy to test.
 
+&nbsp;
+
 #### Resolving From A Static Factory
+---
 
 Lets look at what happens if we decide to forgo the use of dependency inversion. Below we have a standard factory that will create our application service by creating everything manually. We access the service by calling the factory method inside of a controller action.
+
+&nbsp;
 
 **Figure 8-X** Raw factory creation.
 
@@ -281,6 +368,8 @@ Lets look at what happens if we decide to forgo the use of dependency inversion.
         // Lots more dependencies to wire up. Gets annoying very fast.
     }
 ```
+
+&nbsp;
 
 **Figure 8-X** Using our raw factory inside of a controller action.
 
