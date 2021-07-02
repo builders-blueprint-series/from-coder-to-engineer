@@ -34,26 +34,22 @@
 
 ## Markdown Icons
 
-Info - :information_source:
-
-Note - :memo:
+Info - :large_blue_circle:
 
 Warning - :warning:
-
-Hint - :bulb:
 
 Correct - :heavy_check_mark:
 
 Incorrect - :x:
 
-Careful - :eyes:
+## Sections
 
-Quote - :speech_balloon:
+### Blockquote
 
-Horror Story - :scream:
+> Info :large_blue_circle:
+>
+> Blah blah blah.
 
-Food for Thought - :apple:
+### Horizontal Rules
 
-Did you Know? - :thinking:
-
-Lesson Learned - :school:
+Horizontal rules under the third level headings only.

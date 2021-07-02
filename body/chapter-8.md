@@ -1,70 +1,10 @@
-<style>
-
-.panel {
-    margin-top: 5px;
-    border-radius: 5px;
-    border: 1px solid transparent;
-    box-shadow: 0 1px 1px rgba(0,0,0,.05);
-}
-
-.panel .panel-heading {
-    padding: 10px 15px;
-    border-bottom: 1px solid transparent;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-}
-
-.panel-body {
-    padding: 15px;
-}
-
-.panel-info > .panel-heading {
-    color: #31708f;
-    background-color: #d9edf7;
-    border-color: #bce8f1;
-}
-
-.panel-info {
-    border-color: #bce8f1;
-}
-
-.panel-success {
-    border-color: #d6e9c6;
-}
-
-.panel-success > .panel-heading {
-    color: #3c763d;
-    background-color: #dff0d8;
-    border-color: #d6e9c6;
-}
-
-.panel-warning {
-    border-color: #faebcc;
-}
-
-.panel-warning > .panel-heading {
-    color: #8a6d3b;
-    background-color: #fcf8e3;
-    border-color: #faebcc;
-}
-
-.panel-danger {
-    border-color: #ebccd1;
-}
-
-.panel-danger > .panel-heading {
-    color: #a94442;
-    background-color: #f2dede;
-    border-color: #ebccd1;
-}
-
-</style>
-
 # Chapter 8
 
 ## Crush Coupling
 
 ### After completing this chapter, you will be able to
+
+---
 
 - Understand how coupling hurts application development
 
@@ -76,19 +16,95 @@
 
 - Implement dependency inversion the correct way
 
-### Introduction
-
----
-
 <!-- Introduction -->
-
-&nbsp;
 
 ### The "new" Keyword
 
 ---
 
-#### Using "new" in Controllers
+All applications need to deal with creating and destroying objects for the use in an application. The use and placement of the keyword is just as important as the objects being created. When we use the "new" keyword to create an object, we are taking on the responsibility of attaching ourselves to said object for the duration of its lifespan. We are married to it until death. In certain situations this is not an issue, we welcome the situation, others not so much. It is important that you know where the "new" keyword should and should not be. The general rule is that "new" belongs in factories and factory methods. There are some exceptions to that rule which we will go over such as domain events and request objects. Misuse of the keyword will result in code that is hard or impossible to unit test.
+
+#### Using "new" in the Presentation Layer
+
+The presentation layer is a broad description that can describe a number of possibilities such as:
+
+- Rest API
+- MVC Controller
+- gRPC Service
+- GraphQL Handler
+- SOA Service
+
+All of these protocols deal with "presenting" a result from the application in the form of json, xml, stream, or html result. They represent a barrier between your application and a presentation platform such as a mobile or web application. The following examples show a REST API for the sake of simplicity. Please keep in the mind that all of these protocols are implementation details. The same principle applies for all of them.
+
+##### New For Services
+
+Our presentation layer has two main responsibilities:
+
+1) Accepting a request
+
+2) Producing a response for said request
+
+Once we have accepted a request and validated its' contents the next step is to pass our request to the application layer to process the request and produce a response.
+
+**Figure 8-X** Reservation Controller
+
+```csharp
+    [ApiController]
+    [Route("api/[controller]")]
+    public class ReservationController : ControllerBase
+    {
+        private readonly IReservationService _reservationService;
+
+        public ReservationController()
+        {
+            _reservationService = new ReservationService();
+        }
+
+        [HttpGet]
+        public IActionResult GetAllReservations()
+        {
+            try
+            {
+                var result = _reservationService.FindAllReservations();
+
+                return Ok(result);
+            }
+            catch (Exception exception)
+            {
+                return BadRequest(exception.Message);
+            }
+        }
+    }
+```
+
+Our Reservation Controller has a method to return every reservation and dependency on our ReservationService. The service is "new-ed" in the constructor. The issue is that we are unable to unit any method in our controller because we are married to the concrete implementation of our ReservationService.
+
+**Figure 8-X** Trying to test the GetAllReservationsMethod
+
+```csharp
+    [TestClass]
+    public class ReservationControllerTests
+    {
+        private ReservationController _reservationController;
+
+        public ReservationControllerTests()
+        {
+            _reservationController = new ReservationController();
+        }
+
+        [TestMethod]
+        public void GetAllReservation_OnSuccess_DoesNotThrowException()
+        {
+            // Our test code.
+        }
+    }
+```
+
+Our test code highlights a glaring issue with our controller. We need a way to choose what version of our IReservationService we use at run-time. We want our test code to use a version of the service that does not interact with our persistance or any other communication protocol that may go over a network such as SMTP or a service bus.
+
+##### Dependency Injection To The Rescue
+
+##### New For Requests
 
 #### Using "new" in Application Services
 
@@ -100,8 +116,6 @@
 
 #### Using Static Factory Methods
 
-&nbsp;
-
 ### Static Cling
 
 ---
@@ -110,15 +124,11 @@
 
 #### Loggers
 
-&nbsp;
-
 ### Lesson Learned
 
 ---
 
 #### Creating Too Many Interfaces
-
-&nbsp;
 
 ### Concrete Dependencies
 
@@ -128,15 +138,11 @@
 
 #### Keeping Dependencies Abstract
 
-&nbsp;
-
 ### Coding Horror Story
 
 ---
 
 #### Not So Groovy GroovyScript
-
-&nbsp;
 
 ### Inheritance
 
@@ -163,15 +169,11 @@
 - Is a hot dog a sandwich?
 - LSK is a rule for poorly defined interfaces
 
-&nbsp;
-
 ### Career Advise
 
 ---
 
 #### Keeping Your Employer Happy
-
-&nbsp;
 
 ### Friend and Internal Classes
 
@@ -180,8 +182,6 @@
 #### C++ Friendships
 
 #### The "Internal" Keyword
-
-&nbsp;
 
 ### Engineering Disasters
 
@@ -200,20 +200,19 @@ While Patriot had been very successful so far in the conflict, this failure was 
 The lesson from Patriot is that software needs to be resistant to long running expose.
 <!-- expand, needs source reference -->
 
-&nbsp;
-
 ### Dependency Inversion
+
+---
 
 Building on what we discussed in chapter four, dependency inversion is one technique used to build loosely coupled applications. We can design our application services to declare what interfaces they require, and our DI container will inject the necessary dependencies when they are needed. This will allow us to avoid writing complicated factories that may have to create multiple layers of dependencies.
 
 #### How To Approach DI For Your Application
+
 ---
 
-#### Dealing With Concrete Only Classes
+##### Dealing With Concrete Only Classes
 
 One of the more common issue with C# is that the DateTime class does not have an interface. There are plenty of situations where you may need to utilizing the DateTime class in your application.
-
-&nbsp;
 
 **Figure 8-X** Class that needs to compare a timestamp.
 
@@ -232,8 +231,6 @@ One of the more common issue with C# is that the DateTime class does not have an
 
 In the code above, we see that our application service looks to see if the timestamp from the request can be updated. If the timestamp is in the past, we throw an exception. The problem is, how to we unit test this? The Now method in the DateTime class is static. Sure you could pass a DateTime.Max and it would never be smaller than the DateTime.Now; but that would be bad coding. When you use static methods that are out of your control you are introducing undefined behavior into your code. Undefined behavior in code leads to inconsistent results and tests that will fail or succeed randomly. We want tests that will always fail or succeed give a certain condition. Our answer is to introduce an interface that can mimic the exact same methods in the DateTime class.
 
-&nbsp;
-
 **Figure 8-X** ISystemClock interface.
 
 ```csharp
@@ -244,8 +241,6 @@ In the code above, we see that our application service looks to see if the times
 ```
 
 We have created an interface that has the same method signature as the Now method. All we need to do is wrap the DateTime class in an implementation class.
-
-&nbsp;
 
 **Figure 8-X** SystemClock implementation.
 
@@ -260,8 +255,6 @@ We have created an interface that has the same method signature as the Now metho
 ```
 
 If our SystemClock class, we implement the interface and call the static DateTime methods. We can now update our application service by injection our new ISystemClock interface into the constructor and calling the method.
-
-&nbsp;
 
 **Figure 8-X** Updated application service that accepts an ISystemClock interface.
 
@@ -286,8 +279,6 @@ If our SystemClock class, we implement the interface and call the static DateTim
 ```
 
 Our application service now correctly accepts an interface. This means we can easily mock said interface for our unit test.
-
-&nbsp;
 
 **Figure 8-X** Unit test for our application service.
 
@@ -318,42 +309,23 @@ Our application service now correctly accepts an interface. This means we can ea
     }   
 ```
 
-&nbsp;
-
-<div class="panel panel-info">
-<div class=panel-heading>Minimizing Static</div>
-<div class="panel-body">
-
-One reason for lessening your reliance on static methods that is they can't be mocked. The same goes for extension methods, which are by definition static as well. Every static method in your application should be "Pure". That is, it has no side-effects and produces to the same output every time you give it a certain input.
-
-</div></div>
-
-&nbsp;
+> Info :large_blue_circle:
+>
+> One reason for lessening your reliance on static methods that is they can't be mocked. The same goes for extension methods, which are by definition static as well. Every static method in your application should be "Pure". That is, it has no side-effects and produces to the same output every time you give it a certain input.
 
 Now that you know how to create a fake interface for the DateTime class. The same rules apply to other commonly classes that may require their own customer interface. The "Random" class for generating numbers, and "HttpClient" may need their own interface if you are using them in your solution. Follow the same method of creating an interface that contains methods with the same signatures as the classes are are wrapping. Then create a concrete wrapper class that will call the same method in the class you are wrapping.
 
-&nbsp;
-
-<div class="panel panel-info">
-<div class=panel-heading>Proxy on Steroids</div>
-<div class="panel-body">
-
-Every mocking framework is just an implementation of the Proxy pattern. And the proxy pattern is simply just one way of implementing polymorphism. That is why you can't mock concrete classes, because you need an interface to begin with.
-
-</div></div>
-
-&nbsp;
+> Info :large_blue_circle:
+>
+> Every mocking framework is just an implementation of the Proxy pattern. And the proxy pattern is simply just one way of implementing polymorphism. That is why you can't mock concrete classes, because you need an interface to begin with.
 
 In all of the examples so far, we have looked at the proper way for implementing dependency injection. I want to show you some situations that are incorrect. You will notice in that all of these situations, the ability to unit our code is either non-existent, or greatly hampered. Well engineered code is always easy to test.
 
-&nbsp;
-
 #### Resolving From A Static Factory
+
 ---
 
 Lets look at what happens if we decide to forgo the use of dependency inversion. Below we have a standard factory that will create our application service by creating everything manually. We access the service by calling the factory method inside of a controller action.
-
-&nbsp;
 
 **Figure 8-X** Raw factory creation.
 
@@ -369,7 +341,7 @@ Lets look at what happens if we decide to forgo the use of dependency inversion.
     }
 ```
 
-&nbsp;
+When we write our own factories, we have to "new" everything ourselves. Classes which share the same dependencies mean that we have to repeat ourselves. Writing factories turns into a tedious activity quickly.
 
 **Figure 8-X** Using our raw factory inside of a controller action.
 
@@ -411,6 +383,8 @@ Creating our dependencies manually is not a good idea because of all the drawbac
 
 #### Utilizing A Dependency Injection container
 
+---
+
 Instead of manually creating our dependency chains, we are now using a DI container to register our dependencies. I am using the default Microsoft container that is standard for all ASP.NET Core web applications. You may choose any container if you wish, however I suggest starting out with the default container because of its simplicity and ease of use.
 
 **Figure 8-X** After using a DI container.
@@ -430,12 +404,7 @@ Instead of manually creating our dependency chains, we are now using a DI contai
 
 While it may seem this is more work to register our dependencies this way, your effort will pay off in the long run. Anytime you need any of these dependencies for a future class or handler, they will already be registered for you. You will see later on how we can write a few methods that allow us to automatically register certain classes. This will further cut down on the amount of boiler plate code required to register our DI container.
 
----
-**Note** :memo:
-
 Beware of your dependency chains when you are registering classes. Containers make it very easy to register dependencies, but this comes at a cost of potentially creating very long and complex dependency chains. In a very short time, you may have a tree that is four, five, or even six plus level deep. This becomes very apparent when you are trying to test a class that has a long list of dependencies to inject. If you go over four levels of dependencies, look to see if you can refactor to flatten out things.
-
----
 
 Now that we are relying on our DI container to resolve our dependencies, we can update our controller class accordingly.
 
@@ -499,12 +468,11 @@ Our unit test can now take advantage of constructor injection by allowing us to 
 
 #### Other Dependency Injection Mishaps
 
+The following DI methods all share the same fundamental flaw of inhibiting unit testing, or making it much harder than it should be.
+
 ##### Relying On Dispose
 
 Using dispose instead of property dependency injection is not an acceptable alternative. Dispose is for clearing resources that *we* control. Dependency Injection revolves around declaring what interface is implemented by what class, and then letting the container do all the hard lifting.
-
----
-Incorrect :x:
 
 **Figure 8-X** Relying on dispose instead of dependency injection.
 
@@ -523,8 +491,6 @@ Incorrect :x:
 Another issue with the code above is that you would have to implement the "IDisposable" interface on every class. You would just be adding more code than was is necessary. This code is also not unit testable due to being hard coupled to the concrete implementation of the CustomerRepository.
 
 While Dispose is a good pattern when dealing with files and socket connections, it is not an appropriate means for managing the lifetime of dependencies.
-
----
 
 ##### Injecting The Container
 
@@ -559,12 +525,7 @@ While on the surface this may seem ok because; you are using constructor injecti
 
 ##### Resolving From The Container
 
----
-Note :memo:
-
 Before I go over this scenario I was to clear up a misconception that may come up. I fully realize that the situation I am showing below was used in an example before when we talked about our Mediator example. The difference between the previous example and the example below is that the previous example was used in library code, where this is application level code. There are subtle and unique differences between writing a library or third-party code, and writing an application. This is one of them where something may be appropriate in one situation, and not appropriate in another.
-
----
 
 Resolving from the container is the natural follow up to trying to inject the container from the previous example. In the code below, we inject the container then attempt to resolve the ICustomerRepository directly from the container.
 
@@ -734,8 +695,6 @@ The table belows shows what kind of lifecycle a dependency can hold.
 
 ##### Relying on a Service Locator instead of Dependency Injection
 
-&nbsp;
-
 #### Dependency Injection Suggestions
 
 - If you are using ASP.NET Core, I suggest going with the built in Microsoft container. It does not support features such as property injection, custom lifetimes, or child containers. This is a good thing. I doubt you will every need any of these features. 99% of what you need in a DI container is just standard constructor injection.
@@ -765,7 +724,7 @@ If you are unsure, the question you want to ask yourself is what is the lifecycl
 - Should it never be disposed of? - Singleton
 
 ---
-Food For Thought :apple:
+Info :memo:
 
 If you want to cut down on registering some of your dependencies, you can utilize reflection to automatically register classes that match a particular pattern. The first bit code below takes every class that ends with "Factory" and will register them as transient. The second bit finds all concrete classes that end with "Repository" and registers them alongside the interface they implement. I only suggest doing this if you and your team are comfortable with reflection and understand what you are doing.
 
