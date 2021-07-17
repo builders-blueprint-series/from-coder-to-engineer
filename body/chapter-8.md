@@ -16,13 +16,15 @@
 
 - Implement dependency inversion the correct way
 
-<!-- Introduction -->
+ > "I love the idea of you." - Illustration
+
+Software offers us different ways to couple objects together. Concrete, abstract, and interfaces are the most common choices we have to implement coupling. Choosing the correct implementation is both a skill and art that is learned over time. Each method has certain advantages and disadvantages that must be weighed. Too much coupling can hinder application development and make future changes difficult. We generally like to be as abstract as possible, without making large sacrifices. In this chapter we will learn to how balance coupling with development requirements. We will understand why it is best to avoid certain language features related to coupling. We will apply best practices for interfaces to keep testing easy and simple. Finally, we will leverage the power of polymorphism to implement dependency injection.
 
 ### The "new" Keyword
 
 ---
 
-All applications need to deal with creating and destroying objects for the use in an application. The use and placement of the keyword is just as important as the objects being created. When we use the "new" keyword to create an object, we are taking on the responsibility of attaching ourselves to said object for the duration of its lifespan. We are married to it until death. In certain situations this is not an issue, we welcome the situation, others not so much. It is important that you know where the "new" keyword should and should not be. The general rule is that "new" belongs in factories and factory methods. There are some exceptions to that rule which we will go over such as domain events and request objects. Misuse of the keyword will result in code that is hard or impossible to unit test.
+All applications need to deal with creating and destroying objects to implement core features. In most modern languages, the "new" keyword is synonymous with object creation. The use and placement of the keyword is just as important as the objects being created. When we use the "new" keyword to create an object, we are taking on the responsibility of attaching ourselves the object for the duration of its' lifespan. We are married to it until death. In certain situations this is not an issue, we welcome the situation, others not so much. It is important that you know where the "new" keyword should and should not be. The general rule is that "new" belongs in factories and factory methods. There are some exceptions to that rule which we will go over such as domain events and request objects. Misuse of the keyword will result in code that is hard or impossible to unit test.
 
 #### Using "new" in the Presentation Layer
 
@@ -44,7 +46,7 @@ Our presentation layer has two main responsibilities:
 
 2) Producing a response for said request
 
-Once we have accepted a request and validated its' contents the next step is to pass our request to the application layer to process the request and produce a response.
+We usually associate other responsibilities as well such as validation and exception handling depending on the scenario. The following example is a "GET" request and does not pass an object in the request body to be processed. Our example is responsible to returning all current reservations in our system. The presentation layer will call the appropriate method and return an http response.
 
 **Figure 8-X** Reservation Controller
 
@@ -77,7 +79,7 @@ Once we have accepted a request and validated its' contents the next step is to 
     }
 ```
 
-Our Reservation Controller has a method to return every reservation and dependency on our ReservationService. The service is "new-ed" in the constructor. The issue is that we are unable to unit any method in our controller because we are married to the concrete implementation of our ReservationService.
+Our Reservation Controller has a method to return every reservation. We also declared a dependency on our ReservationService as a private property. The service is initialized in the constructor. The issue is that we are unable to unit any method in our controller because we are married to the concrete implementation of our ReservationService.
 
 **Figure 8-X** Trying to test the GetAllReservationsMethod
 
@@ -100,9 +102,76 @@ Our Reservation Controller has a method to return every reservation and dependen
     }
 ```
 
-Our test code highlights a glaring issue with our controller. We need a way to choose what version of our IReservationService we use at run-time. We want our test code to use a version of the service that does not interact with our persistance or any other communication protocol that may go over a network such as SMTP or a service bus.
+Our test code highlights a glaring issue with our controller. With our current implementation, every test would be connecting to our production level infrastructure and persistence. We do not want test code touching our production environment. We need a way to choose what version of our IReservationService we use at run-time. We want our test code to use a version of the service that does not interact with our persistance or any other communication protocol that may go over a network such as SMTP or a service bus. Imagine the scenario of us testing a feature to email customers when they make a new reservation. The fix for this is very simple. Instead of declaring with implementation of our IReservationService we will use in the constructor body, we pass it as a parameter.
 
 ##### Dependency Injection To The Rescue
+
+Lets look at a stripped down version of our ReservationController:
+
+**Figure 8-X** Stripped down ReservationController
+
+```csharp
+    public class ReservationController : ControllerBase
+    {
+        private readonly IReservationService _reservationService;
+
+        public ReservationController()
+        {
+            _reservationService = new ReservationService();
+        }
+    }
+```
+
+Let's make a small revision to modify our constructor by accepting an interface as a parameter:
+
+**Figure 8-X** ReservationController now accepts an interface
+
+```csharp
+    public class ReservationController : ControllerBase
+    {
+        private readonly IReservationService _reservationService;
+
+        public ReservationController(IReservationService reservationService)
+        {
+            _reservationService = reservationService;
+        }
+    }
+```
+
+This tiny change unlocks the potential of polymorphism and all the accompanying benefits.
+
+For reference, our full controller now becomes:
+
+**Figure 8-X** ReservationController with injected interface
+
+```csharp
+    [ApiController]
+    [Route("api/[controller]")]
+    public class ReservationController : ControllerBase
+    {
+        private readonly IReservationService _reservationService;
+
+        public ReservationController(IReservationService reservationService)
+        {
+            _reservationService = reservationService;
+        }
+
+        [HttpGet]
+        public IActionResult GetAllReservations()
+        {
+            try
+            {
+                var result = _reservationService.FindAllReservations();
+
+                return Ok(result);
+            }
+            catch (Exception exception)
+            {
+                return BadRequest(exception.Message);
+            }
+        }
+    }
+```
 
 ##### New For Requests
 
