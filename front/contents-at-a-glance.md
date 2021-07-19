@@ -10,3 +10,10 @@ Chapter 7: Embrace Encapsulation
 Chapter 8: Crush Coupling
 Chapter 9: Repudiate Repetition
 Chapter 10: Delegate Responsibility
+
+## Working Title
+
+Builder's Blueprint:
+From Coder to Engineer
+
+![Bridge](title_cover.png)

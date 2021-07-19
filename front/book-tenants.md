@@ -53,3 +53,10 @@ Incorrect - :x:
 ### Horizontal Rules
 
 Horizontal rules under the third level headings only.
+
+### Colors
+
+Blue - #4285F4
+Red - #F32013
+Yellow - #EED202
+Green - #03C03C
