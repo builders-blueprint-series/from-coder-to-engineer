@@ -141,6 +141,10 @@ Let's make a small revision to modify our constructor by accepting an interface 
 
 This tiny change unlocks the potential of polymorphism and all the accompanying benefits.
 
+> Warning :warning:
+>
+> In ASP.NET Core, controllers are automatically registered in the default DI container. You will need to manually register your service or the application will throw an exception.
+
 For reference, our full controller now becomes:
 
 **Figure 8-X** ReservationController with injected interface
@@ -207,13 +211,80 @@ Our mock IReservationService can be initialized to return the desired response d
 >
 > The creation of one object inside of another is known as composition. With composition, the child's lifecycle is managed by the parent. Aggregation is when the lifecycle of the parent and child are separate.
 
-<!-- conc -->
+Initializing the reservation service in the constructor limited testing. Moving the creation of the service outside the controller and accepting a parameter opened up the class to a broader range of testing. With a parameter dependent constructor, the quality of our code has improved considerably. The next area to improve is how our presentation layer is interacting with our services.
 
-##### New For Requests
+##### Passing Arguments to a Service
 
-###### Passing Arguments to a Service
+Our method that retrieved all reservations is only one use case in our application. What if we wanted to add a way to final all reservations on a certain date? The code below shows a method we could add to our reservation controller to accept a DateTime via a GET request to our API.
 
-###### Refactoring to a Command
+**Figure 8-X** Method to retrieve all reservations on a particular date
+
+```csharp
+    [HttpGet("/{date:datetime}")]
+    public IActionResult FindAllReservationsOnDate(DateTime date)
+    {
+        if (date == DateTime.MinValue)
+        {
+            return BadRequest();
+        }
+
+        try
+        {
+            var result = _reservationService.FindAllReservationsOnDate(date);
+
+            return Ok(result);
+        }
+        catch (Exception exception)
+        {
+            return BadRequest(exception.Message);
+        }
+    }
+```
+
+Our method "FindAllReservationsOnDate" is very similar to our previous "GetAllReservations" method:
+
+- Declares an action that will accept a GET request
+- Accepts a DateTime that will be passed to the method via model binding
+- Validates the DateTime against default values
+- Surrounds the service call with a try-catch
+- Returns an OK result on success
+- Returns a BadRequest on an exception
+
+The only difference is the validation due to this method accepting a parameter. 
+
+<!-- unit testing skeleton -->
+
+What happens if we need to change our action to accept another parameter? Our product owners tells us that this use case now needs to accept a second DateTime to find all reservations in a date range.
+
+We will need to update the following:
+
+- Our controller action
+- The IReservationService interface
+- Our controller unit tests
+
+Updating our interface from the previous iteration:
+
+**Figure 8-X** IReservationService interface with method declaration
+
+```csharp
+    public interface IReservationService
+    {
+        IEnumerable<Reservation> FindAllReservationsOnDate(DateTime dateTime);
+    }
+```
+
+now becomes...
+
+**Figure 8-X** Updated IReservationService interface
+
+```csharp
+    public interface IReservationService
+    {
+        IEnumerable<Reservation> FindAllReservationsOnDate(DateTime min, DateTime max);
+    }
+```
+
+##### Refactoring to a Command
 
 #### Using "new" in Application Services
 
