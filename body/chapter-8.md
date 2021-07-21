@@ -383,7 +383,7 @@ We need to another another unit test to account for another parameter to validat
     }
 ```
 
-There are two issues with our changes. The first is that any time we need to change the parameters we are passing to our service, we have to update our IReservationService interface. The second is that our growing validation statement is adding new code branches to our code. Remember that every branch requires a new unit test. If our method had three or four parameters and each parameter required multiple validation statements, that would mean six or eight unit tests on validation alone.
+There are two issues with our changes. The first is that any time we need to change the parameters we are passing to our service, we have to update our IReservationService interface. The second is that our growing validation statement is adding new code branches to our code. Remember that every branch requires a new unit test. If our method had three or four parameters and each parameter required multiple validation statements, that would mean six or eight unit tests on validation alone. We want to be coupled to a common interface for both our service interface and validation method. When we use a common interface, we are only coupled to one object instead of one that is constantly changing.
 
 > Info :large_blue_circle:
 >
@@ -391,7 +391,35 @@ There are two issues with our changes. The first is that any time we need to cha
 
 ##### Refactoring to a Command
 
+If you remember from chapter five, one way to create a common interface is the command pattern. Where an object represents n number of possibilities. By consolidating our interfaces to a single object instead of a parameter list, any future changes will only affect the command object.
 
+**Figure 8-X** GetAllReservationsInRange command object
+
+```csharp
+    public class FindAllReservationsInRange
+    {
+        public FindAllReservationsInRange(DateTime min, DateTime max)
+        {
+            Min = min;
+            Max = max;
+        }
+
+        public DateTime Min { get; }
+
+        public DateTime Max { get; }
+    }
+```
+
+We moved our two parameters into a single object. If our use case changes, our primary concern will be this class instead of our interface.
+
+**Figure 8-X** Update IReservationService interface
+
+```csharp
+    public interface IReservationService
+    {
+        IEnumerable<Reservation> FindAllReservationsOnDate(FindAllReservationsInRange request);
+    }
+```
 
 ##### Fixing our Validation
 
