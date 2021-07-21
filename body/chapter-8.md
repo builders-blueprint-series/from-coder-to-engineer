@@ -20,13 +20,13 @@
 
 Software offers us different ways to couple objects together. Concrete, abstract, and interface types are the most common choices we have to implement coupling. Choosing the correct implementation is both a skill and art that is learned over time. Each method has certain advantages and disadvantages that must be weighed. Too much coupling can hinder application development and make future changes difficult. Too abstract, and we lose required details. We prefer to be as abstract as possible without making large sacrifices. In this chapter we will learn to how balance coupling with development requirements. We will understand why it is best to avoid certain language features related to coupling. We will apply best practices for interfaces to keep testing easy and simple. Finally, we will leverage the power of polymorphism to implement dependency injection.
 
-### The "new" Keyword
+### The 'new' Keyword
 
 ---
 
-All applications need to deal with creating and destroying objects to implement core features. In most modern languages, the "new" keyword is synonymous with object creation. The use and placement of the keyword is just as important as the objects being created. When we use the "new" keyword to create an object, we are taking on the responsibility of attaching ourselves to the object for the duration of its' lifespan. We are married to it until death. In certain situations this is not an issue, we welcome the situation, others not so much. It is important that you know where the "new" keyword should and should not be. The general rule is that "new" belongs in factories and factory methods. There are some exceptions to that rule which we will go over such as domain events and request objects. Misuse of the keyword will result in code that is hard or impossible to unit test.
+All applications need to deal with creating and destroying objects to implement core features. In most modern languages, the 'new' keyword is synonymous with object creation. The use and placement of the keyword is just as important as the objects being created. When we use the 'new' keyword to create an object, we are taking on the responsibility of attaching ourselves to the object for the duration of its' lifespan. We are married to it until death. We welcome this marriage in certain situations and shun it in others. It is important that you know where the 'new' keyword should and should not be. The general rule is that 'new' belongs in factories and factory methods. There are some exceptions to that rule which we will go over such as domain events and request objects. Misuse of the keyword will result in code that is hard or impossible to unit test.
 
-#### Using "new" in the Presentation Layer
+#### Using 'new' in the Presentation Layer
 
 The presentation layer is a broad description that can describe a number of possibilities such as:
 
@@ -37,7 +37,7 @@ The presentation layer is a broad description that can describe a number of poss
 - SOA Service
 - Console Interface
 
-All of these protocols deal with "presenting" a result from the application in the form of json, xml, stream, or html result. They represent a barrier between your application and a presentation platform such as a mobile or web application. The following examples show a REST API for the sake of simplicity. Please keep in the mind that all of these protocols are implementation details. The same principle applies for all of them.
+All of these protocols deal with *presenting* a result from the application in the form of JSON, XML, stream, or HTML result. They represent a barrier between your application and a presentation platform such as a mobile or web application. The following examples show a REST API for the sake of simplicity. Please keep in the mind that all of these protocols are implementation details. The same principle applies for all of them.
 
 ##### New For Services
 
@@ -47,7 +47,7 @@ Our presentation layer has two main responsibilities:
 
 2) Producing a response for said request
 
-We usually associate other responsibilities as well such as validation and exception handling depending on the scenario. The following example is a "GET" request and does not pass an object in the request body to be processed. Our example is responsible to returning all current reservations in our system. The presentation layer will call the appropriate method and return an http response.
+We usually associate other responsibilities as well such as validation and exception handling depending on the scenario. The following example is a GET request and does not pass an object in the request body to be processed. Our example is responsible to returning all current reservations in our system. The presentation layer will call the appropriate method and return an HTTP response.
 
 **Figure 8-X** Reservation Controller
 
@@ -74,21 +74,21 @@ We usually associate other responsibilities as well such as validation and excep
             }
             catch (Exception exception)
             {
-                return BadRequest(exception.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, exception.Message);
             }
         }
     }
 ```
 
-Our Reservation Controller has a method to return every reservation. We also declared a dependency on our ReservationService as a private property. The service is initialized in the constructor. The issue is that we are unable to unit any method in our controller because we are married to the concrete implementation of our ReservationService.
+Our ReservationController has a method to return every reservation. We also declared a dependency on our ReservationService as a private property. The service is initialized in the constructor. We then wrote a couple of unit tests to ensure our actions works intended. Our tests verify our actions return the correct HTTP response.
 
-**Figure 8-X** Trying to test the GetAllReservationsMethod
+**Figure 8-X** Trying to test the GetAllReservations method
 
 ```csharp
     [TestClass]
     public class ReservationControllerTests
     {
-        private ReservationController _reservationController;
+        private readonly ReservationController _reservationController;
 
         public ReservationControllerTests()
         {
@@ -96,14 +96,24 @@ Our Reservation Controller has a method to return every reservation. We also dec
         }
 
         [TestMethod]
-        public void GetAllReservation_OnSuccess_DoesNotThrowException()
+        public void GetAllReservations_Success_ReturnsOk()
         {
-            // Our test code.
+            var result = _reservationController.GetAllReservations();
+
+            Assert.IsInstanceOfType(result, typeof(OkObjectResult));
+        }
+
+        [TestMethod]
+        public void GetAllReservations_Exception_ReturnsInternalServerError()
+        {
+            var result = _reservationController.GetAllReservations() as ObjectResult;
+
+            Assert.AreEqual(StatusCodes.Status500InternalServerError, result.StatusCode);
         }
     }
 ```
 
-Our test code highlights a glaring issue with our controller. With our current implementation every test would be connecting to our production level infrastructure and persistence. We do not want test code touching our production environment. We need a way to choose what version of our IReservationService we use at run-time. We want our test code to use a version of the service that does not interact with our persistance or any other communication protocol that may go over a network such as SMTP or a service bus. Imagine the scenario of us testing a feature to email customers when they make a new reservation. With the test coupled to our implementation code every test would email all of our customers. This is not the intended behavior of our test suite. The fix for this is very simple. Instead of declaring an implementation of our IReservationService we will use in the constructor body, we pass it as a parameter.
+Our test code highlights a couple issues with our controller. With our current implementation every test would be connecting to our production level infrastructure and persistence. We do not want test code touching our production environment. We also do not have a way of ensuring our system throws an exception to validate our second test. We need a way to choose what version of our IReservationService we use at run-time. We want our test code to use a version of the service that does not interact with our persistance or any other communication protocol that may go over a network such as SMTP or a service bus. We also need a way to reliably throw an exception. Imagine the scenario of us testing a feature to email customers when they make a new reservation. With the test coupled to our implementation code every test would email all of our customers. This is not the intended behavior of our test suite. The fix for this is very simple. Instead of declaring an implementation of our IReservationService we will use in the constructor body, we pass it as a parameter.
 
 ##### Dependency Injection To The Rescue
 
@@ -139,13 +149,13 @@ Let's make a small revision to modify our constructor by accepting an interface 
     }
 ```
 
-This tiny change unlocks the potential of polymorphism and all the accompanying benefits.
+This tiny change unlocks the potential of polymorphism and all the accompanying benefits. Polymorphism allows us to define any behavior we want to our IReservationService interface through alternative classes or mocks for our unit tests.
 
 > Warning :warning:
 >
 > In ASP.NET Core, controllers are automatically registered in the default DI container. You will need to manually register your service or the application will throw an exception.
 
-For reference, our full controller now becomes:
+Our controller now becomes:
 
 **Figure 8-X** ReservationController with injected interface
 
@@ -172,13 +182,13 @@ For reference, our full controller now becomes:
             }
             catch (Exception exception)
             {
-                return BadRequest(exception.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, exception.Message);
             }
         }
     }
 ```
 
-And our test class can now be updated to accept a mocked version of our IReservationService.
+And our test class can now be updated to use a mocked version of our IReservationService.
 
 **Figure 8-X** Updated Reservation Controller Tests
 
@@ -186,26 +196,40 @@ And our test class can now be updated to accept a mocked version of our IReserva
     [TestClass]
     public class ReservationControllerTests
     {
-        private ReservationController _reservationController;
+        private readonly Mock<IReservationService> _mockService;
+        private readonly ReservationController _reservationController;
 
         public ReservationControllerTests()
         {
-            var mockService = new Mock<IReservationService>();
-
-            // Setup mock.
-
-            _reservationController = new ReservationController(mockService.Object);
+            _mockService = new Mock<IReservationService>();
+            _reservationController = new ReservationController(_mockService.Object);
         }
 
         [TestMethod]
-        public void GetAllReservation_OnSuccess_DoesNotThrowException()
+        public void GetAllReservations_Success_ReturnsOk()
         {
-            // Our test code.
+            _mockService.Setup(x => x.FindAllReservations())
+                .Returns(new List<Reservation>());
+
+            var result = _reservationController.GetAllReservations();
+
+            Assert.IsInstanceOfType(result, typeof(OkObjectResult));
+        }
+
+        [TestMethod]
+        public void GetAllReservations_Exception_ReturnsInternalServerError()
+        {
+            _mockService.Setup(x => x.FindAllReservations())
+                .Throws(new Exception());
+
+            var result = _reservationController.GetAllReservations() as ObjectResult;
+
+            Assert.AreEqual(StatusCodes.Status500InternalServerError, result.StatusCode);
         }
     }
 ```
 
-Our mock IReservationService can be initialized to return the desired response depending on the scenario we want to test. With the old implementation, we would only be able to test a single path. And that single path would be going through the implementation details of our infrastructure and persistence layers. The small change of moving the creation of the service from the constructor to a parameter enabled proper unit testing for our controller.
+Our mock IReservationService can be initialized to return the desired response depending on the scenario we want to test. With the old implementation, we would only be able to test a single path. And that single path would be going through the implementation details of our infrastructure and persistence layers. Moving the creation of the service from the constructor to a passing a parameter enabled proper unit testing for our controller.
 
 > Info :large_blue_circle:
 >
@@ -215,7 +239,7 @@ Initializing the reservation service in the constructor limited testing. Moving 
 
 ##### Passing Arguments to a Service
 
-Our method that retrieved all reservations is only one use case in our application. What if we wanted to add a way to final all reservations on a certain date? The code below shows a method we could add to our reservation controller to accept a DateTime via a GET request to our API.
+Our method that retrieved all reservations is only one use case in our application. What if we wanted to add a way to find all reservations on a certain date. The code below shows a method we added to our reservation controller to accept a DateTime via a GET request to our API.
 
 **Figure 8-X** Method to retrieve all reservations on a particular date
 
@@ -236,7 +260,7 @@ Our method that retrieved all reservations is only one use case in our applicati
         }
         catch (Exception exception)
         {
-            return BadRequest(exception.Message);
+            return StatusCode(StatusCodes.Status500InternalServerError, exception.Message);
         }
     }
 ```
@@ -250,17 +274,52 @@ Our method "FindAllReservationsOnDate" is very similar to our previous "GetAllRe
 - Returns an OK result on success
 - Returns a BadRequest on an exception
 
-The only difference is the validation due to this method accepting a parameter. 
+The only difference is the validation due to this method accepting a parameter. The unit tests required would be:
 
-<!-- unit testing skeleton -->
+**Figure 8-X** Unit tests for the FindAllReservationsOnDate method
 
-What happens if we need to change our action to accept another parameter? Our product owners tells us that this use case now needs to accept a second DateTime to find all reservations in a date range.
+```csharp
+    [TestMethod]
+    public void FindAllReservationsOnDate_DefaultDate_ReturnsBadRequest()
+    {
+        var result = _reservationController.FindAllReservationsOnDate(DateTime.MinValue);
+
+        Assert.IsInstanceOfType(result, typeof(BadRequestResult));
+    }
+
+    [TestMethod]
+    public void FindAllReservationsOnDate_Success_ReturnsOk()
+    {
+        _mockService.Setup(x => x.FindAllReservationsOnDate(It.IsAny<DateTime>()))
+            .Returns(new List<Reservation>());
+
+        var result = _reservationController.FindAllReservationsOnDate(DateTime.Now);
+
+        Assert.IsInstanceOfType(result, typeof(OkObjectResult));
+    }
+
+    [TestMethod]
+    public void FindAllReservationsOnDate_Exception_ReturnsInternalServerError()
+    {
+        _mockService.Setup(x => x.FindAllReservationsOnDate(It.IsAny<DateTime>()))
+            .Throws(new Exception());
+
+        var result = _reservationController.FindAllReservationsOnDate(DateTime.Now) as ObjectResult;
+
+        Assert.AreEqual(StatusCodes.Status500InternalServerError, result.StatusCode);
+    }
+```
+
+##### Updating our Use Case
+
+What happens if we need to change this action to accept another parameter? Our product owners tells us that this use case now needs to accept a second DateTime to find all reservations in a date range.
 
 We will need to update the following:
 
-- Our controller action
-- The IReservationService interface
-- Our controller unit tests
+- IReservationService interface
+- Controller action
+- Controller unit tests
+- Everything downstream
 
 Updating our interface from the previous iteration:
 
@@ -284,7 +343,57 @@ now becomes...
     }
 ```
 
+Our controller needs to accept another parameter and modify the validation block:
+
+**Figure 8-X** Updated controller action to account for new parameter
+
+```csharp
+    [HttpGet("/{min:datetime}/{max:datetime}")]
+    public IActionResult FindAllReservationsOnDate(DateTime min, DateTime max)
+    {
+        if (min == DateTime.MinValue || max == DateTime.MinValue)
+        {
+            return BadRequest();
+        }
+
+        try
+        {
+            var result = _reservationService.FindAllReservationsOnDate(min, max);
+
+            return Ok(result);
+        }
+        catch (Exception exception)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, exception.Message);
+        }
+    }
+```
+
+We need to another another unit test to account for another parameter to validate.
+
+**Figure 8-X** Unit test to cover added DateTime parameter
+
+```csharp
+    [TestMethod]
+    public void FindAllReservationsOnDate_DefaultMaxDateTime_ReturnsBadRequest()
+    {
+        var result = _reservationController.FindAllReservationsOnDate(DateTime.Now, DateTime.MinValue);
+
+        Assert.IsInstanceOfType(result, typeof(BadRequestResult));
+    }
+```
+
+There are two issues with our changes. The first is that any time we need to change the parameters we are passing to our service, we have to update our IReservationService interface. The second is that our growing validation statement is adding new code branches to our code. Remember that every branch requires a new unit test. If our method had three or four parameters and each parameter required multiple validation statements, that would mean six or eight unit tests on validation alone.
+
+> Info :large_blue_circle:
+>
+> A logical branch is created every time a path is created in your code. The easiest way to identify a branch is when a conditional statement is used. The best way to reduce the number of unit tests you need to write is keep conditional statements to a minimum.
+
 ##### Refactoring to a Command
+
+
+
+##### Fixing our Validation
 
 #### Using "new" in Application Services
 
