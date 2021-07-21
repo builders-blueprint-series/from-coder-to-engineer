@@ -60,3 +60,5 @@ Blue - #4285F4
 Red - #F32013
 Yellow - #EED202
 Green - #03C03C
+
+[Color Pallette](https://coolors.co/4285f4-03c03c-eed202-f32013)

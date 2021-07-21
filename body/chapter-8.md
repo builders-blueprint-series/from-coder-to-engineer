@@ -16,15 +16,15 @@
 
 - Implement dependency inversion the correct way
 
- > "I love the idea of you." - Illustration
+ > "I love the idea of you." - (Girl friend-zoning guy) Illustration
 
-Software offers us different ways to couple objects together. Concrete, abstract, and interfaces are the most common choices we have to implement coupling. Choosing the correct implementation is both a skill and art that is learned over time. Each method has certain advantages and disadvantages that must be weighed. Too much coupling can hinder application development and make future changes difficult. We generally like to be as abstract as possible, without making large sacrifices. In this chapter we will learn to how balance coupling with development requirements. We will understand why it is best to avoid certain language features related to coupling. We will apply best practices for interfaces to keep testing easy and simple. Finally, we will leverage the power of polymorphism to implement dependency injection.
+Software offers us different ways to couple objects together. Concrete, abstract, and interface types are the most common choices we have to implement coupling. Choosing the correct implementation is both a skill and art that is learned over time. Each method has certain advantages and disadvantages that must be weighed. Too much coupling can hinder application development and make future changes difficult. Too abstract, and we lose required details. We prefer to be as abstract as possible without making large sacrifices. In this chapter we will learn to how balance coupling with development requirements. We will understand why it is best to avoid certain language features related to coupling. We will apply best practices for interfaces to keep testing easy and simple. Finally, we will leverage the power of polymorphism to implement dependency injection.
 
 ### The "new" Keyword
 
 ---
 
-All applications need to deal with creating and destroying objects to implement core features. In most modern languages, the "new" keyword is synonymous with object creation. The use and placement of the keyword is just as important as the objects being created. When we use the "new" keyword to create an object, we are taking on the responsibility of attaching ourselves the object for the duration of its' lifespan. We are married to it until death. In certain situations this is not an issue, we welcome the situation, others not so much. It is important that you know where the "new" keyword should and should not be. The general rule is that "new" belongs in factories and factory methods. There are some exceptions to that rule which we will go over such as domain events and request objects. Misuse of the keyword will result in code that is hard or impossible to unit test.
+All applications need to deal with creating and destroying objects to implement core features. In most modern languages, the "new" keyword is synonymous with object creation. The use and placement of the keyword is just as important as the objects being created. When we use the "new" keyword to create an object, we are taking on the responsibility of attaching ourselves to the object for the duration of its' lifespan. We are married to it until death. In certain situations this is not an issue, we welcome the situation, others not so much. It is important that you know where the "new" keyword should and should not be. The general rule is that "new" belongs in factories and factory methods. There are some exceptions to that rule which we will go over such as domain events and request objects. Misuse of the keyword will result in code that is hard or impossible to unit test.
 
 #### Using "new" in the Presentation Layer
 
@@ -35,6 +35,7 @@ The presentation layer is a broad description that can describe a number of poss
 - gRPC Service
 - GraphQL Handler
 - SOA Service
+- Console Interface
 
 All of these protocols deal with "presenting" a result from the application in the form of json, xml, stream, or html result. They represent a barrier between your application and a presentation platform such as a mobile or web application. The following examples show a REST API for the sake of simplicity. Please keep in the mind that all of these protocols are implementation details. The same principle applies for all of them.
 
@@ -102,7 +103,7 @@ Our Reservation Controller has a method to return every reservation. We also dec
     }
 ```
 
-Our test code highlights a glaring issue with our controller. With our current implementation, every test would be connecting to our production level infrastructure and persistence. We do not want test code touching our production environment. We need a way to choose what version of our IReservationService we use at run-time. We want our test code to use a version of the service that does not interact with our persistance or any other communication protocol that may go over a network such as SMTP or a service bus. Imagine the scenario of us testing a feature to email customers when they make a new reservation. The fix for this is very simple. Instead of declaring with implementation of our IReservationService we will use in the constructor body, we pass it as a parameter.
+Our test code highlights a glaring issue with our controller. With our current implementation every test would be connecting to our production level infrastructure and persistence. We do not want test code touching our production environment. We need a way to choose what version of our IReservationService we use at run-time. We want our test code to use a version of the service that does not interact with our persistance or any other communication protocol that may go over a network such as SMTP or a service bus. Imagine the scenario of us testing a feature to email customers when they make a new reservation. With the test coupled to our implementation code every test would email all of our customers. This is not the intended behavior of our test suite. The fix for this is very simple. Instead of declaring an implementation of our IReservationService we will use in the constructor body, we pass it as a parameter.
 
 ##### Dependency Injection To The Rescue
 
@@ -173,7 +174,46 @@ For reference, our full controller now becomes:
     }
 ```
 
+And our test class can now be updated to accept a mocked version of our IReservationService.
+
+**Figure 8-X** Updated Reservation Controller Tests
+
+```csharp
+    [TestClass]
+    public class ReservationControllerTests
+    {
+        private ReservationController _reservationController;
+
+        public ReservationControllerTests()
+        {
+            var mockService = new Mock<IReservationService>();
+
+            // Setup mock.
+
+            _reservationController = new ReservationController(mockService.Object);
+        }
+
+        [TestMethod]
+        public void GetAllReservation_OnSuccess_DoesNotThrowException()
+        {
+            // Our test code.
+        }
+    }
+```
+
+Our mock IReservationService can be initialized to return the desired response depending on the scenario we want to test. With the old implementation, we would only be able to test a single path. And that single path would be going through the implementation details of our infrastructure and persistence layers. The small change of moving the creation of the service from the constructor to a parameter enabled proper unit testing for our controller.
+
+> Info :large_blue_circle:
+>
+> The creation of one object inside of another is known as composition. With composition, the child's lifecycle is managed by the parent. Aggregation is when the lifecycle of the parent and child are separate.
+
+<!-- conc -->
+
 ##### New For Requests
+
+###### Passing Arguments to a Service
+
+###### Refactoring to a Command
 
 #### Using "new" in Application Services
 
