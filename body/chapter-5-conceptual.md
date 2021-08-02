@@ -20,9 +20,16 @@
 - Patterns are just an extreme form of polymorphism
 - You can't improve sliced bread, so embrace it
 
+### Quote (from a pattern language)
+
 ### Lesson Learned
 
 :school: Understanding polymorphism was the key for understanding design patterns. It may take you a couple times.
+
+### Knowing where is more important than how
+
+- Don't memorize patterns, memorize when to use them
+- Patterns play nicely with each other (pattern composition)
 
 ### Food for Thought
 
@@ -31,14 +38,13 @@
 - Every pattern has a time and place
 - Singleton, Service Locator, ect.
 
+### Finding a common interface
+
+(n-1, IEnumerable, Func vs Action)
+
 ### Did you know?
 
 :thinking: Design patterns were inspired from architecture, "A Pattern Language"
-
-### Knowing where is more important than how
-
-- Don't memorize patterns, memorize when to use them
-- Patterns play nicely with each other (pattern composition)
 
 ### Career Advice
 

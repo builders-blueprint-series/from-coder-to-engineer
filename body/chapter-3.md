@@ -1,4 +1,5 @@
-###### Chapter 3
+# Chapter 3
+
 ## Code Building Blocks
 
 **After completing this chapter you will be able to**
@@ -53,10 +54,10 @@ Encapsulate your application as much as possible. Keep fields private until they
 
 One of my biggest gripes with VisualStudio is the default way properties are implemented in the IDE. If you use the keyword *prop* to create a new property, it will automatically have a public getter and setter. You need to be wary that your fellow developers may not care as much as you do about enforcing encapsulation as much as you do.
 
-![Using an auto-property](../images/ch-3-property-shortcut.png)
+![Using an auto-property](../images/chapter-3/property-shortcut.png)
 
 **Figure 3-X** Using the "prop" keyword in VisualStudio to add a new property.
-![After using the auto property shortcut](../images/ch-3-property-result.png)
+![After using the auto property shortcut](../images/chapter-3/property-result.png)
 
 **Figure 3-X** Our new property after using the shortcut.
 
@@ -68,7 +69,7 @@ Ideally you should have zero public setters in your application. Modifying a fie
 
 ---
 
-![Class with a method to change a name](../images/ch-3-class-private-setter.png)
+![Class with a method to change a name](../images/chapter-3/class-private-setter.png)
 
 **Figure 3-X** The class above displays a method that uses validation to protect against null or non-alpha characters being used in a name.
 
@@ -78,7 +79,6 @@ Ideally you should have zero public setters in your application. Modifying a fie
 There are some classes in your application that need to public because it is required. A lot of these will fall under the *reflection* category where a framework just as an ORM or a JSON serialization library requires a public property in a class.
 
 ---
-
 
 ---
 **Note** :memo:
@@ -98,11 +98,10 @@ Encapsulating data isn't just something for your end-users. The less other devel
 
 If you easily confuse encapsulation and abstraction, remember that encapsulation is *explicit* and abstraction is *implicit*.
 
-Encapsulation - "I'm not going to show you."
-Abstraction - "I'm not going to show you how."
+Encapsulation - I'm not going to show you.
+Abstraction - I'm not going to show you how.
 
 ---
-
 
 ## Functional Programming
 

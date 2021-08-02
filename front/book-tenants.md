@@ -34,26 +34,31 @@
 
 ## Markdown Icons
 
-Info - :information_source:
-
-Note - :memo:
+Info - :large_blue_circle:
 
 Warning - :warning:
-
-Hint - :bulb:
 
 Correct - :heavy_check_mark:
 
 Incorrect - :x:
 
-Careful - :eyes:
+## Sections
 
-Quote - :speech_balloon:
+### Blockquote
 
-Horror Story - :scream:
+> Info :large_blue_circle:
+>
+> Blah blah blah.
 
-Food for Thought - :apple:
+### Horizontal Rules
 
-Did you Know? - :thinking:
+Horizontal rules under the third level headings only.
 
-Lesson Learned - :school:
+### Colors
+
+Blue - #4285F4
+Red - #F32013
+Yellow - #EED202
+Green - #03C03C
+
+[Color Pallette](https://coolors.co/4285f4-03c03c-eed202-f32013)

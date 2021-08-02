@@ -69,7 +69,6 @@
 
 :thinking: Software is a very immature process, we haven't been doing it for very long
 
-
 #### Code Reviews Are Sacred
 
 - Code reviews are terrible at finding bad code
@@ -96,3 +95,5 @@ Anything that you allow, will happen
 
 - Automation saves time
 - Automation will save your sanity
+- Don't rely on code reviews to catch things
+- Code reviews should be seen as a "last resort"

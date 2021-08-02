@@ -1,6 +1,6 @@
 # Chapter 11
 
-## Encapsulation
+## Embrace Encapsulation
 
 After completing this chapter, you will be able to
 
