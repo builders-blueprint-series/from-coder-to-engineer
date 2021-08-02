@@ -122,7 +122,7 @@ Our application service now correctly accepts an interface. This means we can ea
 ```
 
 ---
-For For Thought :apple:
+Food For Thought :apple:
 
 One reason for lessening your reliance on static methods that is they can't be mocked. The same goes for extension methods, which are by definition static as well. Every static method in your application should be "Pure". That is, it has no side-effects and produces to the same output every time you give it a certain input.
 
