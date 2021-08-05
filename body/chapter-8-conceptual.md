@@ -12,82 +12,96 @@
 - [x] Lots of code
 - [x] Conclusion
 
-## Chapter 8 Crush Coupling
+## Chapter 8 Embrace Encapsulation
 
 ### Introduction
 
-- Code should be a serial dater
-- Don't marry anything you don't have to
-- Coupling makes testing harder
-- Coupling inhibits change later
+- See how bad encapsulation inhibits testings
+- Bad encapsulation forces more unwanted tests
 
-### Quote (don't marry anything you can date)
+### Quote (Don't expose what do you don't want exposed)
 
-### The "new" keyword
+### Public setters
 
-- "new" is glue, no "new" is a weld
-
-### Lesson Learned
-
-:school: - Factories probably don't need an interface
-
-### Concrete dependencies
-
-- Don't marry concrete types
-- Concrete types destroy testing
-- Concrete types inhibit polymorphism
-
-### Coding Horror Story
-
-:scream: Brian's GroovyScript story
-
-### Friend classes
-
-- Friend classes are the highest form of coupling
-- (Internal in other languages)
+- Root of all evil
+- Embrace Constructors
+- Embrace static constructor methods for clarity
 
 ### Career Advice
 
-- The easiest way to get a raise or promotion is to save your company money
-- Nothing will make your boss/CEO happier than telling him you saved him money
-- Saving money comes in a lot of ways
+Easier to work with
 
-### Inheritance
+- Simple is easy to change
+- Simple is easy to add to
+- Simple means more money saved, and more money that can be earned
 
-- Inheritance is the second highest form of coupling
-- O and L in SOLID are because of inheritance
+### Excessive Properties
 
-### Engineering Disaster Stories
+- Encapsulate object details
+- Abstract primitive types (Name class vs 2 strings)
 
-MIM-104 Patriot Missile Launcher
+### Real Life Simplicity
 
-### Dependency Injection
+Allegiant Airlines
 
-- Relying on dispose  
-- Injecting the container  
-- Resolving from the container  
-- Over injecting (5+ things in a class)
-- Fancy injecting  (stupid shit you shouldn't do)
-- Inappropriate registration
-- Dependency Swallowing (singleton over a instance)
+### Private methods
 
-#### Best Practice
+- Second worse thing to public setters
+- Push private methods down
 
-- Use the Microsoft base container
-(It has no fancy options, which is a good thing!)
-- DI should be seen, but not heard
-- Instance, Scoped, Singleton
+### Did you know?
 
-#### Food For Thought
+:thinking: Inheritance vs Encapsulation - not mutually exclusive
 
-:apple: Reflection "with great power comes great responsibility"
-(With with reflection to auto-register stuff)
+### Extension methods
 
-### Did you Know?
+- Purpose of extension methods
+- Visible to all types
+- Can't mock extension methods
 
-:thinking: SRP vs DRY - not mutually exclusive
+### Lesson Learned
+
+:school:
+
+- You will struggle with where and how to apply static methods
+- Very much a learning process
+
+### Food for Thought
+
+:apple: Simplicity is about removing options
+
+### Exposed collections
+
+- Collections are arbitration
+- Collections are naked
+
+### Coding Horror Stories
+
+:scream: ElasticSearch library that was beyond comprehendible, that just copy the same search, "I wrote this for job security"
+
+### Leaky domain
+
+- Clients don't need everything
+- Embrace diverse responses
+- Response objects allow for 1-M with clients
+
+### Lesson Learned Stories
+
+:school: Frameworks aren't friends
+
+- Frameworks hide problems
+- Frameworks are one more thing you need to know
+- You are still responsible for that code
+
+### Entity Framework
+
+- Encapsulation classes
+- Embrace owned types
+- Encapsulate collections
 
 ### Conclusion
 
-- Coupling inhibits testing, change, and quick feedback
-- Code should not take any dependencies it doesn't have to
+- Eliminate public setters and private methods when possible
+- Push logic down to where it belongs
+- Don't expose the domain or collections
+- Encapsulate EF where possible

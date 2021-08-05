@@ -6,10 +6,10 @@ Chapter 3: Development Fundamentals
 Chapter 4: Principles to Live By
 Chapter 5: Patterns to Remember
 Chapter 6: Tests Are Insurance
-Chapter 7: Embrace Encapsulation
-Chapter 8: Crush Coupling
-Chapter 9: Repudiate Repetition
-Chapter 10: Delegate Responsibility
+Chapter 7: Crush Coupling
+Chapter 8: Embrace Encapsulation
+Chapter 9: Delegate Responsibility
+Chapter 10: Repudiate Repetition
 
 ## Working Title
 

@@ -2,82 +2,77 @@
 
 - [x] Introduction of chapter topic
 - [x] Quote/s relating to the topic
-- [x] Did you know?/Hints Light bulb information bits
+- [ ] Did you know?/Hints Light bulb information bits
 - [x] Coding Horror Story
 - [x] Lesson Learned Story
-- [x] Best Practice Guidance
+- [ ] Best Practice Guidance
 - [x] Every page has no more than 2/3 text
 - [x] Career Hints
 - [x] Real Life example relating to the topic
 - [x] Lots of code
 - [x] Conclusion
 
-## Chapter 9 Repudiate Repetition
+## Chapter 9 Delegate Responsibility
 
 ### Introduction
 
-- Don't do the same thing over and over again
-- Don't copy/paste code, find a solution
-- Repetition forces more testing
+- Responsibility deals with what classes are doing and what files are doing
+- Extends to how code is distributed in the solution
 
-### Quote (repetition)
+### Too many conditional statements
 
-:speech_balloon:
-
-### Duplication in the presentation layer
-
-- Controllers have one purpose
-- Its the same process every time (validate, catch, log, return)
-- Consolidate the process
-
-### Coding Horror Story
-
-:scream: Three Different DI libraries in the same solution
-
-### Duplication in the data layer
-
-- Data classes have one purpose
-- Its the same process every time (all, one, add, update, remove)
-- Consolidate the process
+- Minimize procedural code
 
 ### Lesson Learned
 
-:school: Copy and Pasting code is a dead-give away for possible change
+:school:
 
-### Checks everywhere
+People dislike change. When presenting an idea to your team, go into the meeting aware that some may not reject it because they feel uncomfortable even if the idea is objectionably good.
 
-(functional opportunity)
+### Classes doing too much
 
-- If/else/switch hell
-- Fail early and throw
+- God classes
 
-### Career Advice
+### Coding Horror Story
 
-Easier to understand
+:scream: "Bloated Repository"
 
-- Simple is easy to learn and memorize
-- Simple is easy to onboard new team members
-- How fast can you onboard a new team member?
-- (Motorola can take weeks!)
+### Best Practice
 
-### Food for thought
+- Keep everything in a separate file, even simple interfaces
+
+### Methods doing too much
+
+- Embrace events (sending an email after singing up)
+
+### Engineering Diaster Stories
+
+Mars Climate Orbiter - keep everyone on the same page
+
+### Food for Thought
 
 :apple:
 
-- Naming, find a common way of doing things a stick with it.
-- Be descriptive if you have to
+- Comments should describe why you choose to do something, not what the code is doing. (Exception if you're writing a 3rd party library)
 
-### Logging everything
+### Logic in the wrong place
 
-- Logging doesn't replace testing
-- Logging is line noise
+- Reverse hour glass code
+- Skinny at the top and bottom
+- Fat in the middle (application, domain)
 
-### Real Life Simplicity
+### Career Advice
 
-Chick Fil A - The simplicity of six days a week
+One line a day keeps the refactoring away
+
+- Software is imperfect
+- Software is never finished
+- Software is entropic
+- Fix one line a day (make this cultural)
+- Turn a pr into a cultural impact
 
 ### Conclusion
 
-- Duplication wastes time, money, and energy on every developer
-- Remove duplication though finding a common interface
-- Duplication forces you to write more tests
+- Code needs to be distributed evenly
+- There is no hard rule for the length of anything, use your judgement
+- Your code should mostly reside in your domain and application
