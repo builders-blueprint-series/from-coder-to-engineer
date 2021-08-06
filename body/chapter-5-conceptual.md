@@ -53,10 +53,6 @@ The five minute rule
 - Can you explain anything to a junior developer in five minutes
 - Complex software doesn't mean complex code
 
-### Finding a common interface
-
-(n-1, IEnumerable, Func vs Action)
-
 ### Did you know?
 
 :thinking: Common Interfaces are all around us (USB, Electrical sockets, driving a car)
