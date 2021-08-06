@@ -2,6 +2,8 @@
 
 ## Crush Coupling
 
+ > "I love the idea of you." - (Girl friend-zoning guy) Illustration
+
 ### After completing this chapter, you will be able to
 
 ---
@@ -15,8 +17,6 @@
 - Learn how to reduce coupling by avoid certain language features
 
 - Implement dependency inversion the correct way
-
- > "I love the idea of you." - (Girl friend-zoning guy) Illustration
 
 Software offers us different ways to couple objects together. Concrete, abstract, and interface types are the most common choices we have to implement coupling. Choosing the correct implementation is both a skill and art that is learned over time. Each method has certain advantages and disadvantages that must be weighed. Too much coupling can hinder application development and make future changes difficult. Too abstract, and we lose required details. We prefer to be as abstract as possible without making large sacrifices. In this chapter we will learn to how balance coupling with development requirements. We will understand why it is best to avoid certain language features related to coupling. We will apply best practices for interfaces to keep testing easy and simple. Finally, we will leverage the power of polymorphism to implement dependency injection.
 
@@ -236,6 +236,16 @@ Our mock IReservationService can be initialized to return the desired response d
 > The creation of one object inside of another is known as composition. With composition, the child's lifecycle is managed by the parent. Aggregation is when the lifecycle of the parent and child are separate.
 
 Initializing the reservation service in the constructor limited testing. Moving the creation of the service outside the controller and accepting a parameter opened up the class to a broader range of testing. With a parameter dependent constructor, the quality of our code has improved considerably. The next area to improve is how our presentation layer is interacting with our services.
+
+##### Cleaning Up 500 Responses
+
+<!-- Refactor 500 internal into a static method, move to base controller later -->
+
+> Info :large_blue_circle:
+>
+> Small things add up into large differences over the lifespan of a project. Be open to small improvements from your development team. A line saved is a line earned.
+>
+> "If you think you are too small to make a difference, try sleeping with a mosquito." ― Dalai Lama XIV
 
 ##### Passing Arguments to a Service
 

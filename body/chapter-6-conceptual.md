@@ -79,6 +79,11 @@ Testing the wrong thing
 
 :school: XML Creation requiring Approvals testing
 
+### Our Book Project
+
+- Introduce the application we will be working on
+- Slowly improve it over the rest of the chapters
+
 ### Conclusion
 
 - Tests are insurance
