@@ -1,7 +1,7 @@
 # Contents at a glance
 
 Chapter 1: Coding is Easy. Engineering is Hard
-Chapter 2: Embrace the Compiler, not the Code Review
+Chapter 2: Embrace the Compiler, Not the Code Review
 Chapter 3: Development Fundamentals
 Chapter 4: Principles to Live By
 Chapter 5: Patterns to Remember
