@@ -9,9 +9,13 @@
 ---
 
 - Know the difference between coding software and engineering software
+
 - Understand that engineering software is a discipline
+
 - Realize that being a good engineer is not tied to a single entity
+
 - Embrace the idea of simplicity in everything project you work on
+
 - Acknowledge that engineering is a process of making choices
 
 Coding is easy. Engineering is hard. Engineering software and write code are two fundamentally different things. The end goal for both is the same. Both the engineer and the coder want a software solution that accomplishes the desired task in a reasonable amount of time. But the engineer and code get to the same conclusion through different methods. The engineer is retrospective as he works, drawing on past experiences, pausing to give thought, contemplating choices. The coder, codes. He gets to a solution the fastest way possible. If the result works, then the ends have justified the means. The engineer understands that his work is a disciple. They must practice and refine their skills on a weekly basis. The coder looks at some quick documentation or sample code and attempts to piece together a solution. The engineer strives for simplicity everywhere. The coder chases the latest technology trends. The engineer understands that everything involves making a decision, acknowledging that trade-offs are required. The coder goes with their gut without contemplating advantages and disadvantages for each possible decision. Many people take the coding route. It is the path of least resistance. This book is for people who choose the hard path. If you just want to code, stop reading this book as it will have no use for you. If you want to be an engineer, welcome.
@@ -94,6 +98,8 @@ Namespaces are one honking great idea -- let's do more of those!
 #### Southwest Airlines
 
 In the highly competitive and complicated world of air transportation, Southwest airlines has made a name for itself by flying against the air current of convention. Their business model is the definition of simplicity in the airline world. Southwest does not operate hubs, instead they fly mostly point-to-point. This eliminates the need for many travelers to connect. Less connections means passengers do not have to worry about a checked bag not making it to the next plane-or a weather delay causing a missed connection. They only operate one type of plane, the 737. They can save money by only needing to train, perform maintenance, and have pilots qualified for a single aircraft. They only have one type of seating, all coach. Southwest does not sell food on board, and they do not assign seats. In addition, they provide a simple bundled fare system to their customers. Southwest customers know exactly what they are getting when they buy a ticket. A simple, straight forward, no-frills experience that gets them to their destination. Great software is like Southwest airlines. Your end-users should get a consistent experience every time without any undue frustration.
+
+Southwest Airlines was founded in 1967 as an exclusive inter-state airline that only flew inside the state of Texas for the first part of its existence. Today Southwest is the largest domestic airlines in the United States. The foundation for Southwest's success has always been by offering a limited set of options to its' customers. The airline only flies one type of airplanes, has a single class of service and does not serve meals. In addition to a straight forward product, the airline offers a simple fare structure that contains very few restrictions, rules, or extra fees attached to a ticket. By doing so, the airline offers every customers with a bundled solution that contains all the necessary ways to get from one location to another with very little hassle. By forgoing products that only a small subset of its customers would use, lounges, business class, meals, or seat assignments; Southwest has allowed more people to fly by offering far less than most other carriers.
 
 ### Speak up now, or pay later
 

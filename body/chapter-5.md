@@ -2,7 +2,9 @@
 
 ## Patterns To Remember
 
-After completing this chapter, you will be able to
+### After completing this chapter, you will be able to
+
+---
 
 - Understand the purpose of design patterns
 
@@ -52,28 +54,13 @@ Every pattern have a time and place when it can and SHOULD be applied. For some 
 
 This notion goes beyond software anti-patterns, do an internet search for the term "anti-pattern" that you will come back with blog article after blog article of "Product Owner Anti-Patterns", "Scrum Anti-Patterns", and "Dev Ops Anti-Patterns". Some people event assert the notion that design pattern in and of themselves are an anti-pattern. Again, people do not take this absolutism by others as a software dogma that be be adhered to at every possible opportunity. All software applications are different, and each needs to satisfy different requirements.
 
-## Learning Where To Apply Patterns
-
-## Finding A Common Interface
-
 ### Why We Want Common Interfaces
-
-### Real Life Common Interfaces
-
-There are many non-software engineering examples, where less is more. Simplicity is removing options, not providing them. Some of the most successful and respected companies operate by offering their customers very few options all.
-
-In-N-Out burgers is a fast-food chain that originated in Baldwin Park, California in 1948. Their original menu consisted of hamburgers, cheeseburgers, fries, and soft drinks. The menu has changed very little since their inception. This is in contrast to other fast-food chains such as McDonald's or TacoBell which experience a constant churn of product changes, updates, additions, and removals. That is because In-N-Out is not a fast-food company, they are an "experience" company. When you go to any In-N-Out, everything is exactly the same. Their stores all have the same layout and design. Most customers can probably recite the menu from heart because it has so many options. And every order you make is consistent from any other store. The process of going to In-N-Out, from the moment you walk in the door, until you walk out is exactly the same. In-N-Out sells consistency, not hamburgers.
-
-Costco Wholesale is a big-box retail store that was founded in 1994 just outside of Seattle. While Costco sells thousands of items in their store and online, each item they sale typically has very few options available to choose from. If you want to buy ketchup or napkins from Costco, you typically have one name brand and possible a generic brand to choose from. This is intentional on Costco's part because human behavior has a tendency to succumb to analysis paralysis. When people are presented too many options to choose from, they end up not choosing any of them because they are overwhelmed with options. For Costco, this means a loss of possible sales if people aren't buying products from them. Limiting options to customers ends up helping Costco in two ways; it forces customers to buy products, and it helps move product faster, which cuts down on costs.
-
-Southwest Airlines was founded in 1967 as an exclusive inter-state airline that only flew inside the state of Texas for the first part of its existence. Today Southwest is the largest domestic airlines in the United States. The foundation for Southwest's success has always been by offering a limited set of options to its' customers. The airline only flies one type of airplanes, has a single class of service and does not serve meals. In addition to a straight forward product, the airline offers a simple fare structure that contains very few restrictions, rules, or extra fees attached to a ticket. By doing so, the airline offers every customers with a bundled solution that contains all the necessary ways to get from one location to another with very little hassle. By forgoing products that only a small subset of its customers would use, lounges, business class, meals, or seat assignments; Southwest has allowed more
-people to fly by offering far less than most other carriers.
-
-Great software functions the exact same way as these companies, it finds a way to only offer what is absolutely necessary. It purposely restricts options to both end-users, and other engineers so that the correct decision in many cases is the only decision available.
 
 ### Common Interface Examples
 
 Existing examples of common interfaces in software are both ubiquitous, but rarely explained in computed science programs or software engineering books. Being able to identity and create common interfaces in software is a skill that must be learned over time. This books goal is to train to mind to look and think in terms of find common interfaces. As the master of your own application, it is your job to continuously explore and discover possible ways to condense code and exact a common interface.
+
+<!-- usb, power sockets -->
 
 #### IEnumerable<T>
 
@@ -299,10 +286,32 @@ Keep in mind that there are many instances of using an interface with the greate
 
 #### Factorials
 
-## Patterns In Detail
+### Patterns In Detail
 
-### Creational Patterns
+#### Command
 
-### Structural Patterns
+#### Builder
 
-### Behavioral Patterns
+#### Chain of Responsibility
+
+#### Mediator
+
+#### Observer
+
+#### Strategy
+
+### Real Life Example
+
+---
+
+#### In-n-Out Burgers
+
+In-N-Out burgers is a fast-food chain that originated in Baldwin Park, California in 1948. Their original menu consisted of hamburgers, cheeseburgers, fries, and soft drinks. The menu has changed very little since their inception. This is in contrast to other fast-food chains such as McDonald's or TacoBell which experience a constant churn of product changes, updates, additions, and removals. That is because In-N-Out is not a fast-food company, they are an "experience" company. When you go to any In-N-Out, everything is exactly the same. Their stores all have the same layout and design. Most customers can probably recite the menu from heart because it has so many options. And every order you make is consistent from any other store. The process of going to In-N-Out, from the moment you walk in the door, until you walk out is exactly the same. In-N-Out sells consistency, not hamburgers.
+
+Costco Wholesale is a big-box retail store that was founded in 1994 just outside of Seattle. While Costco sells thousands of items in their store and online, each item they sale typically has very few options available to choose from. If you want to buy ketchup or napkins from Costco, you typically have one name brand and possible a generic brand to choose from. This is intentional on Costco's part because human behavior has a tendency to succumb to analysis paralysis. When people are presented too many options to choose from, they end up not choosing any of them because they are overwhelmed with options. For Costco, this means a loss of possible sales if people aren't buying products from them. Limiting options to customers ends up helping Costco in two ways; it forces customers to buy products, and it helps move product faster, which cuts down on costs.
+
+### Conclusion
+
+- Patterns turn everything problems into simple solutions
+- Trusted, tried, and easy
+- Patterns are just us exploiting standard oop principles
