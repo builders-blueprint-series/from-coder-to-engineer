@@ -1,10 +1,10 @@
 # Title
 
+## Key Terms
+
 ## Introduction
 
 ## Goals
-
-## Key Terms
 
 ## Wisdom
 

@@ -1,12 +1,20 @@
 # Encapsulation
 
+## Key Terms
+
+Encapsulation
+
 ## Introduction
 
 ## Goals
 
-## Key Terms
+After completing this chapter will you will be able to...
 
-Encapsulation 
+Understand how public setters breaks encapsulation.
+
+Identity where methods belong and how access modifies affect the ability to test code.
+
+Spot where naked collections and property can be consolidated.
 
 ## Wisdom
 
@@ -20,7 +28,93 @@ In the highly competitive and complicated world of air transportation, Southwest
 
 ### The Problem with Public Setters
 
-#### The Inability to Test Public Setters Properly
+#### Introduce topic of restaurant reservation system
+
+**Figure 1-1** The first iteration of our Customer class.
+
+```csharp
+    public class Customer
+    {
+        public Guid Id { get; set; }
+
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
+        public string Email { get; set; }
+    }
+```
+
+The Customer class will initially represent customer who wish to dine in our restaurant.
+
+#### Public setters allow for anything and everything
+
+- Public setters mean that any client can assign any value they wish.
+
+**Figure 1-2** Public setters allow for clients to do anything to the contents.
+
+```csharp
+    public void AnythingCanHappen()
+    {
+        var customer = new Customer
+        {
+            Id = Guid.Empty,
+            FirstName = "Jimbo123",
+            LastName = null,
+            Email = "notValid@spam",
+        };
+    }
+```
+
+- Public setters allow clients to initialize properties with any value, valid or not.
+
+#### Public setters do not support internal validation
+
+- Validation outside of a class leaks details about its internals.
+
+**Figure 1-3** Validation occurs in some outside method, not the class.
+
+```csharp
+    public void HaveToValidateOutsideCustomer(string first, string last, string email)
+    {
+        if (first != null && last != null && email != null)
+        {
+            var customer = new Customer
+            {
+                Id = Guid.NewGuid(),
+                FirstName = first,
+                LastName = last,
+                Email = email,
+            };
+        }
+        else
+        {
+            throw new ArgumentNullException();
+        }
+    }
+```
+
+- A class know what is the its ideal situation. Should not rely on outside influences.
+
+#### Public setters expose a public api for private details
+
+- You want to keep classes closed as much as possible.
+
+**Figure 1-4** Any method has access to every class property.
+
+```csharp
+    public Customer ICanDoAnything(Customer customer)
+    {
+        customer.Id = Guid.NewGuid();
+        customer.FirstName = "RazzleDazzle";
+
+        return customer;
+    }
+```
+
+- Anything that you permit to happen, will happen.
+
+#### The Frustration from Testing Public Setters Properly
 
 #### Transforming Public Setters to Private
 
@@ -65,10 +159,10 @@ What road will you take?
 
 Engineer is a mentality, not a title.
 
-
-
 ## Automation
 
+Automate your decision making process.
 
+Automation is not limited to just menial tasks that involve your application.
 
 ## Conclusion
