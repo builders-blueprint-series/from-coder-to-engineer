@@ -44,6 +44,15 @@ Incorrect - :x:
 
 ## Sections
 
+### Box
+
+---
+:large_blue_circle: Working with Static Methods
+
+
+
+---
+
 ### Blockquote
 
 > Info :large_blue_circle:
@@ -59,6 +68,6 @@ Horizontal rules under the third level headings only.
 Blue - #4285F4
 Red - #F32013
 Yellow - #EED202
-Green - #03C03C
+Green - #00E000
 
-[Color Pallette](https://coolors.co/4285f4-03c03c-eed202-f32013)
+[Color Pallette](https://coolors.co/4285f4-00e000-eed202-f32013)

@@ -1,0 +1,8 @@
+{
+    "recommendations": [
+        "streetsidesoftware.code-spell-checker",
+        "davidanson.vscode-markdownlint",
+        "pkief.material-icon-theme",
+        "shd101wyy.markdown-preview-enhanced"
+    ]
+}

@@ -6,8 +6,6 @@
 
 ### After completing this chapter, you will be able to
 
----
-
 - Know the difference between coding software and engineering software
 
 - Understand that engineering software is a discipline
