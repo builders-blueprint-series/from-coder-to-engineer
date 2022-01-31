@@ -44,6 +44,14 @@ Chapter 10: Repudiate Repetition
    2. Repetition in the application layer - Common Interface
    3. Repetition in the data layer - Common Interface
 
+## Quotes
+
+"Brevity is the sole of wit."
+
+"Everything should as simple as possible, but not simpler."
+
+"The enemy of perfection is good enough."
+
 ## Working Title
 
 Builder's Blueprint:

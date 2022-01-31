@@ -14,7 +14,7 @@ Understand how public setters breaks encapsulation.
 
 Identity where methods belong and how access modifies affect the ability to test code.
 
-Spot where naked collections and property can be consolidated.
+Spot where naked collections and properties can be consolidated.
 
 ## Wisdom
 
@@ -28,7 +28,11 @@ In the highly competitive and complicated world of air transportation, Southwest
 
 ### The Problem with Public Setters
 
+- Public setters are one of the most abused issues in software. But they are also one of the easiest to fix.
+
 #### Introduce topic of restaurant reservation system
+
+- This book will use the example of a fake reservation system for code samples. A reservation system allows us to cover a breadth of topics that have real life business applications.
 
 **Figure 1-1** The first iteration of our Customer class.
 
@@ -45,7 +49,7 @@ In the highly competitive and complicated world of air transportation, Southwest
     }
 ```
 
-The Customer class will initially represent customer who wish to dine in our restaurant.
+- The Customer class will initially represent customers who wish to dine in our restaurant.
 
 #### Public setters allow for anything and everything
 
@@ -94,7 +98,12 @@ The Customer class will initially represent customer who wish to dine in our res
     }
 ```
 
-- A class know what is the its ideal situation. Should not rely on outside influences.
+---
+:large_blue_circle: Encapsulation goes beyond just basic getters and setters. A class should be the sole source of truth for its logic. That includes validation and state changes.
+
+---
+
+- Classes should not rely on outside influences about how they should conduct their business.
 
 #### Public setters expose a public api for private details
 
@@ -116,13 +125,304 @@ The Customer class will initially represent customer who wish to dine in our res
 
 #### The Frustration from Testing Public Setters Properly
 
+- The biggest issue with testing public setters is the number of possible permutations. The number of possible permutations is almost infinite.
+
+**Figure 1-5** Attempting to figure out how many branches to test
+
+```csharp
+    [TestClass]
+    public class TestingPublicSetters
+    {
+        [TestMethod]
+        public void Customer_Is_In_Correct_State()
+        {
+            var customer = new Customer
+            {
+                FirstName = "UghOh,No1AlphaNumer1C",
+                LastName = "Sp@CiAlCharactersNotGood",
+                Email = "notValidEmail.com",
+
+                // Forgot to assign Id
+            };
+
+            // A lot of Asserts down here.
+        }
+    }
+```
+
+- Encapsulation reduces the number of possibilities the state of our objects can be in. This translates into less undefined behavior and bugs in our software.
+
+---
+:warning: In C# and other dotnet languages, Guid is a value type. If you forget to assign a value, it will default to all zeros. You will never get a null reference unless you make it nullable.
+
+---
+
 #### Transforming Public Setters to Private
 
-##### Step N1
+- Transitioning our class to using private setters will allow us to fix the issues of having an open property api and the lack of internal validation.
+
+##### Step 1: Making all setters private
+
+- The first step is to remove all public setters from our code. By doing so, this will force anyone to wants to create an instance of a Customer via the constructor.
+
+**Figure 1-6** Our Customer class after applying basic encapsulation
+
+```csharp
+    public class EncapsulatedCustomer
+    {
+        public EncapsulatedCustomer(string firstName, string lastName, string email)
+        {
+            Id = Guid.NewGuid();
+            FirstName = firstName;
+            LastName = lastName;
+            Email = email;
+        }
+
+        public Guid Id { get; }
+
+        public string FirstName { get; }
+
+        public string LastName { get; }
+
+        public string Email { get; }
+    }
+```
+
+---
+:heavy_check_mark: Constructors are one of the many examples of common interfaces we will discuss in this book. Common interfaces enforce a consistent state in our code which constrains options and reduces bugs, leading to better software.
+
+---
+
+**Figure 1-7** Clients required to now use the Customer constructor
+
+```csharp
+    public class ClientsHaveToUseAConstructor
+    {
+        public void MakeANewCustomer(string firstName, string lastName, string email)
+        {
+            // Force clients to use a constructor.
+            var customer = new EncapsulatedCustomer(firstName, lastName, email);
+
+            // Will not compile.
+            var badCustomer = new EncapsulatedCustomer
+            {
+                FirstName = firstName,
+                LastName = lastName,
+                Email = email,
+                Id = Guid.NewGuid(),
+            };
+        }
+    }
+```
+
+- The example above shows the before and after of moving the initialization of our object from naked properties to a constructor. Moving initialization has also allowed us to reduce the line count in our application.
+
+---
+:large_blue_circle: Every line in an application has a cost associated with it. A good engineer looks to reduce line count where possible, but not at the expense of readability.
+
+---
+
+##### Step 2: Moving validation into the Customer object
+
+- Currently our Customer object is validated from the outside. Moving the validation into the Customer object itself will simplify our code and testing.
+
+**Figure 1-8** Validation of Customer is now internalized
+
+```csharp
+    public class CustomerWithInternalValidation
+    {
+        public CustomerWithInternalValidation(string firstName, string lastName, string email)
+        {
+            if (firstName != null && lastName != null && email != null)
+            {
+                Id = Guid.NewGuid();
+                FirstName = firstName;
+                LastName = lastName;
+                Email = email;
+            }
+            else
+            {
+                throw new ArgumentNullException();
+            }
+        }
+
+        public Guid Id { get; }
+
+        public string FirstName { get; }
+
+        public string LastName { get; }
+
+        public string Email { get; }
+    }
+```
+
+- Moving our validation statement into the constructor has allowed us to encapsulate our validation of the object as well. Unfortunately this does present a series of issues when we attempt to test this new implementation.
+
+**Figure 1-9** Unit testing our updated Customer validation logic
+
+```csharp
+    [TestClass]
+    public class TestingInternalCustomerValidation
+    {
+        [TestMethod]
+        public void Customer_OnInitialization_HasCorrectProperties()
+        {
+            const string firstName = "Billy";
+            const string lastName = "Bob";
+            const string email = "Billy@Bob.com";
+
+            var customer = new CustomerWithInternalValidation(firstName, lastName, email);
+
+            Assert.AreEqual(firstName, customer.FirstName);
+            Assert.AreEqual(lastName, customer.LastName);
+            Assert.AreEqual(email, customer.Email);
+        }
+
+        [TestMethod]
+        [DataRow("Billy", "Bob", null)]
+        [DataRow("Billy", null, "Billy@Bob.com")]
+        [DataRow(null, "Bob", "Billy@Bob.com")]
+        public void Customer_OnNullInitialization_ThrowsException(string firstName, string lastName, string email)
+        {
+            Assert.ThrowsException<ArgumentNullException>(() => new CustomerWithInternalValidation(firstName, lastName, email));
+        }
+    }
+```
+
+---
+:large_blue_circle: When testing multiple scenarios that only differ via their arguments like our test above, you can utilize the DataRow attribute to avoid having to write the same test boiler plate over and over again.
+
+---
+
+- In our tests we are ensuring that our constructor does not throw and exception when it is supplied with valid arguments. Our second test confirms that any null value will result in an exception being thrown.
+
+---
+:x: Do not use the DataRow attribute to hide bad programming. Excessive use of the attribute is mostly likely a sign of too many logical branches in your code.
+
+---
+
+- What happens if we have to add more properties to our class? Or test more than one scenario with our constructor? Current codes does not look for empty strings. Our validation does not work in other classes as well, we want easy reuse with our code.
+
+**Figure 1-10** Our Customer validating more specific scenarios
+
+```csharp
+    public TooMuchCustomerValidationLogic(string firstName, string lastName, string email)
+    {
+        if (firstName != null
+                && firstName != string.Empty
+                && lastName != null
+                && lastName != string.Empty
+                && email != null
+                && email != string.Empty
+                && Regex.IsMatch(firstName, @"^[a-zA-Z]+$")
+                && Regex.IsMatch(lastName, @"^[a-zA-Z]+$")
+                && Regex.IsMatch(email, @"\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b"))
+        {
+            Id = Guid.NewGuid();
+            FirstName = firstName;
+            LastName = lastName;
+            Email = email;
+        }
+        else
+        {
+            throw new ArgumentNullException();
+        }
+    }
+
+    public Guid Id { get; }
+
+    public string FirstName { get; }
+
+    public string LastName { get; }
+
+    public string Email { get; }
+}
+```
+
+- This will require a lot of unit testing to make sure all the possible branches are covered. Our one class is going to need dozens of tests to make this work. We need to allow our validation to move between classes and make it easy to read.
+
+##### Step 3: Encapsulating our Validation logic
+
+- Much like how our constructor encapsulated the creation of our Customer object, we need to encapsulate the details of our validation logic. Our Customer object should not be privy to the finite details of what makes an email valid, it just wants to know if the parameter is valid or not.
+
+**Figure 1-11** Validation moved to a series of static methods
+
+```csharp
+    public static class Validator
+    {
+        public static void StringIsNotEmptyOrNull(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+        }
+
+        public static void ValidNameFormat(string name)
+        {
+            if (!Regex.IsMatch(name, @"^[a-zA-Z]+$"))
+            {
+                throw new ArgumentException("Name is not match the required pattern.", nameof(name));
+            }
+        }
+
+        public static void ValidEmail(string email)
+        {
+            if (!Regex.IsMatch(email, @"\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b"))
+            {
+                throw new ArgumentException("Email is not in a valid format.", nameof(email));
+            }
+        }
+    }
+```
+
+**Figure 1-12** Updated tests for our new Validation class
+
+```csharp
+    [TestClass]
+    public class ValidationTests
+    {
+        [TestMethod]
+        public void StringIsNotEmptyOrNull_ValidObject_DoesNotThrowException()
+        {
+            Validator.StringIsNotEmptyOrNull("Valid");
+        }
+
+        [TestMethod]
+        public void StringIsNotEmptyOrNull_InvalidObject_ThrowsException()
+        {
+            Assert.ThrowsException<ArgumentNullException>(() => Validator.StringIsNotEmptyOrNull(string.Empty));
+        }
+
+        [TestMethod]
+        public void ValidNameFormat_ValidName_DoesNotThrowException()
+        {
+            Validator.ValidNameFormat("Billy");
+        }
+
+        [TestMethod]
+        public void ValidNameFormat_InvalidName_ThrowsException()
+        {
+            Assert.ThrowsException<ArgumentException>(() => Validator.ValidNameFormat("B1l)y"));
+        }
+
+        [TestMethod]
+        public void ValidEmailFormat_ValidEmail_DoesNotThrowException()
+        {
+            Validator.ValidEmail("BILLY@BOB.COM");
+        }
+
+        [TestMethod]
+        public void ValidEmailFormat_InvalidEmail_ThrowsException()
+        {
+            Assert.ThrowsException<ArgumentException>(() => Validator.ValidEmail("Billy.com@Bob"));
+        }
+    }
+```
 
 #### The Result of Zero Public Setters
 
-#### The Easiness of Testing a Closed Class
+#### The Easiness of Testing a Closed Classes
 
 ### The Problem with Private Methods
 

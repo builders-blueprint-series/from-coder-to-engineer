@@ -49,8 +49,6 @@ Incorrect - :x:
 ---
 :large_blue_circle: Working with Static Methods
 
-
-
 ---
 
 ### Blockquote
