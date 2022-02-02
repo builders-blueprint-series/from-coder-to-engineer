@@ -376,6 +376,8 @@ In the highly competitive and complicated world of air transportation, Southwest
     }
 ```
 
+- Validation logic is now encapsulated in a set of methods. This allows us to reuse these methods in other classes that require the same kind of validation.
+
 **Figure 1-12** Updated tests for our new Validation class
 
 ```csharp
