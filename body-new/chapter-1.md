@@ -20,6 +20,8 @@ Spot where naked collections and properties can be consolidated.
 
 > "You're on a need-to-know basis, and you don't need to know." (Simpson, Bruckheimer, & Bay, 1996).
 
+Great software echos the words of Dr. Stanley Goodspeed. Not everyone needs to know everything, including your fellow developers. Classes, abstractions, and architecture should be closed by default. Only give your clients the absolute minimum they need to complete their tasks. Providing more than what is necessary only invites trouble into your code base.
+
 ## The Success of Southwest Airlines - Simplicity In the Air
 
 In the highly competitive and complicated world of air transportation, Southwest airlines has made a name for itself by flying against the air current of convention. Their business model is the definition of simplicity in the airline world. Southwest does not operate hubs, instead they fly mostly point-to-point. This eliminates the need for many travelers to connect. Less connections means passengers do not have to worry about a checked bag not making it to the next plane-or a weather delay causing a missed connection. They only operate one type of plane, the 737. They can save money by only needing to train, perform maintenance, and have pilots qualified for a single aircraft. They only have one type of seating, all coach. Southwest does not sell food on board, and they do not assign seats. In addition, they provide a simple bundled fare system to their customers. Southwest customers know exactly what they are getting when they buy a ticket. A simple, straight forward, no-frills experience that gets them to their destination. Great software is like Southwest airlines. Your end-users should get a consistent experience every time without any undue frustration.
@@ -30,7 +32,7 @@ In the highly competitive and complicated world of air transportation, Southwest
 
 - Public setters are one of the most abused issues in software. But they are also one of the easiest to fix.
 
-#### Introduce topic of restaurant reservation system
+#### Code Domain
 
 - This book will use the example of a fake reservation system for code samples. A reservation system allows us to cover a breadth of topics that have real life business applications.
 
@@ -422,19 +424,274 @@ In the highly competitive and complicated world of air transportation, Southwest
     }
 ```
 
+- With our validation logic encapsulated and tested, we can reuse these methods in any other domain classes that needed validation. We made it easier to test our application and promote code reuse in the same step.
+
 #### The Result of Zero Public Setters
+
+- The final result of our Customer object has its properties and validation fully encapsulated. It can only be instantiated via its' constructor which promotes a singular way of creating the object. All properties are now read-only which removes the ability of clients being able to change values at will.
+
+**Figure 1-13** Final Customer object
+
+```csharp
+    public class FullyEncapsulatedCustomer
+    {
+        public FullyEncapsulatedCustomer(string firstName, string lastName, string email)
+        {
+            Validator.ValidNameFormat(firstName);
+            Validator.ValidNameFormat(lastName);
+            Validator.ValidEmail(email);
+
+            Id = Guid.NewGuid();
+            FirstName = firstName;
+            LastName = lastName;
+            Email = email;
+        }
+
+        public Guid Id { get; }
+
+        public string FirstName { get; }
+
+        public string LastName { get; }
+
+        public string Email { get; }
+    }
+```
+
+- If we need to add any more properties to this class, we can just use a validator we have already written, or write a new one without having to change or modify the existing class.
+
+---
+:large_blue_circle: If you are working in dotnet, FluentValidation is a great library that has many built in validators that is perfect for validating domain objects.
+
+---
 
 #### The Easiness of Testing a Closed Classes
 
+- The best feature of our new class is that we've done all the testing in our validator tests. Because we are using auto-properties, there is nothing special to test.
+
+---
+:x: Do not test getters and setters in your code unless they perform logic. These are built in features of the language you are using and should not be tested.
+
+---
+
 ### The Problem with Private Methods
+
+- Private methods are problem areas in our application because they do not provide a public interface for testing. The issue with private methods is that they typically are performing logic in the wrong place. The main fix for these issues to to push the code down and provide a public API from where the code can be called and tested from.
+
+#### Private methods do not expose a public API
+
+- Let's assume that our Reservation Service needs to check if a reservation slot matches what a customer has provided between a range of DateTimes.
+
+**Figure 1-14** Customer object updated with DateTime properties
+
+```csharp
+    public class Customer
+    {
+        // Other properties and methods omitted for brevity.
+
+        public DateTime AvailableMinimum { get; }
+
+        public DateTime AvailableMaximum { get; }
+    }
+```
+
+- Customer object has two DateTime's that represent a range for for reservation availability.
+
+- Our Customer object is used by our Reservation Service in two different methods. The first method takes care of when a reservation is cancelled and looks for customers that fit a specific reservation range. The second method encompasses a standard reservation booking.
+
+**Figure 1-15** Reservation service that utilizes the Customer availability range
+
+```csharp
+    public class ReservationService
+    {
+        public void FindAvailableCustomers(List<Customer> customers, DateTime availability)
+        {
+            var fitAvailability = customers.Where(customer => AvailabilityMatchesCustomer(availability, customer.AvailableMinimum, customer.AvailableMaximum));
+
+            // Take a customer and create reservation.
+        }
+
+        public void BookReservation(Customer customer, DateTime availability)
+        {
+            if (AvailabilityMatchesCustomer(availability, customer.AvailableMinimum, customer.AvailableMaximum))
+            {
+                // Book their reservation.
+            }
+        }
+
+        private bool AvailabilityMatchesCustomer(DateTime reservationAvailability, DateTime min, DateTime max)
+        {
+            return reservationAvailability >= min && reservationAvailability <= max;
+        }
+    }
+```
+
+- Both the FindAvailableCustomers and BookReservation methods use the AvailabilityMatchesCustomers method to see if the time range the customer has specified matches the availability time slot.
 
 #### The Inability to Test Private Methods
 
+**Figure 1-16** Attempting to unit test the AvailabilityMatchesCustomer method
+
+```csharp
+    [TestClass]
+    public class ReservationServiceTests
+    {
+        [TestMethod]
+        public void AvailabilityMatchesCustomer_DateTimeMatchesRange_ReturnsTrue()
+        {
+            var service = new ReservationService();
+
+            // Does not compile, inaccessible due to protection level.
+            var result = service.AvailabilityMatchesCustomer(DateTime.UtcNow, DateTime.MinValue, DateTime.MaxValue);
+
+            Assert.IsTrue(result);
+        }
+    }
+```
+
+- Our issue is stark, the compiler does not allow us to access private methods because the are by definition private. What we need is a public API to create unit tests from, but we do not want to change our method from private to public because we would be exposing a method that was not intended to be exposed.
+
+---
+:x: Do not test private methods by testing a public method that calls said private methods. This would be exposing the underlying details of the public method which breaks encapsulation.
+
+---
+
 #### Pushing Private Methods Down
 
-##### Step N2
+- We have a small conundrum in our hands. We need to have a public method in order to write a test, but our method as it currently stands should not be public because it is not required by clients. Our solution for this issue is solved by moving our method from the ReservationService class to our Customer class. This create a number of positive side effects:
+
+1) Solves our initial issue not not being able to test the method
+2) Removes the need of our ReservationService from calling the min and max properties
+3) Creates a more encapsulated Customer object by allowing us to remove the min and max getters
+
+##### Step 1: Pushing logic down in the application
+
+- The process of moving our logic is very simple and straight forward. We are going to move the method from the service to the Customer object and update the references.
+
+**Figure 1-17** Customer object with new method
+
+```csharp
+        public class CustomerWithAvailabilityMethod
+    {
+        // Other properties and methods omitted for brevity.
+
+        public DateTime AvailableMinimum { get; }
+
+        public DateTime AvailableMaximum { get; }
+
+        public bool AvailabilityMatchesCustomer(DateTime reservationAvailability, DateTime min, DateTime max)
+        {
+            return reservationAvailability >= min && reservationAvailability <= max;
+        }
+    }
+```
+
+- Our ReservationService can remove the method from its body.
+
+**Figure 1-18** ReservationService sans our method
+
+```csharp
+    public class ReservationServiceWithOutMethod
+    {
+        public void FindAvailableCustomers(List<CustomerWithAvailabilityMethod> customers, DateTime availability)
+        {
+            var fitAvailability = customers.Where(customer => customer.AvailabilityMatchesCustomer(availability, customer.AvailableMinimum, customer.AvailableMaximum));
+
+            // Take a customer and create reservation.
+        }
+
+        public void BookReservation(CustomerWithAvailabilityMethod customer, DateTime availability)
+        {
+            if (customer.AvailabilityMatchesCustomer(availability, customer.AvailableMinimum, customer.AvailableMaximum))
+            {
+                // Book their reservation.
+            }
+        }
+    }
+```
+
+##### Step 2: Update the method to streamline the parameters
+
+- Because our method is now defined inside of the Customer class, the ReservationService has no need to call the min and max property. We can update the method to just accept a single dateTime.
+
+**Figure 1-19** Customer with update method parameters
+
+```csharp
+    public class CustomerWithUpdatedMethod
+    {
+        // Other properties and methods omitted for brevity.
+
+        public DateTime AvailableMinimum { get; }
+
+        public DateTime AvailableMaximum { get; }
+
+        public bool AvailabilityMatchesCustomer(DateTime reservationAvailability)
+        {
+            return reservationAvailability >= AvailableMinimum && reservationAvailability <= AvailableMaximum;
+        }
+    }
+```
+
+**Figure 1-20** ReservationService with updated method calls
+
+```csharp
+    public class ReservationServiceWithUpdateMethodCalls
+    {
+        public void FindAvailableCustomers(List<CustomerWithUpdatedMethod> customers, DateTime availability)
+        {
+            var fitAvailability = customers.Where(customer => customer.AvailabilityMatchesCustomer(availability));
+
+            // Take a customer and create reservation.
+        }
+
+        public void BookReservation(CustomerWithUpdatedMethod customer, DateTime availability)
+        {
+            if (customer.AvailabilityMatchesCustomer(availability))
+            {
+                // Book their reservation.
+            }
+        }
+    }
+```
+
+- My having the AvailabilityMatchesCustomer method now use the Customer internal properties instead of accepting them as parameters we have simplified our method and how it is called in the ReservationService significantly.
+
+---
+:large_blue_circle: It may not be apparent, but reducing our parameter count has increased the encapsulation of our application. Our reservation is know unaware of what the parameter it is passing is being compared against.
+
+---
+
+##### Step 3: Converting the range properties to private
+
+- Since our min and max properties now have zero references besides those from the Customer object itself, they no longer have a reason to remain public.
+
+**Figure 1-21** Customer with private min and max values
+
+```csharp
+    public class CustomerWithPrivateValues
+    {
+        // Other properties and methods omitted for brevity.
+
+        private readonly DateTime _availableMinimum;
+
+        private readonly DateTime _availableMaximum;
+
+        public bool AvailabilityMatchesCustomer(DateTime reservationAvailability)
+        {
+            return reservationAvailability >= _availableMinimum && reservationAvailability <= _availableMaximum;
+        }
+    }
+```
+
+- Our Customer class now has private methods which *further* increases the encapsulation of our object. Now outside clients have zero knowledge that such properties even exist in the first place. All these outside clients know is that there is a method they can call by passing a DateTime that will return a boolean that states if the customer is available or not at that time slot.
+
+---
+:heavy_check_mark: Every private property in an application should either be readonly or const to ensure they are not allowed to change after their initialization.
+
+---
 
 #### The Result of Moving Logic Down
+
+- Our final Customer and ReservationObjects are a lot easier to understand afterwards because we have moved logic around to 
 
 #### The Ability to Test Easily Accessible Methods
 
