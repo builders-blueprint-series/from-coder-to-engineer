@@ -14,13 +14,13 @@ Chapter 10: Repudiate Repetition
 1. Encapsulation
    1. Public setters
    2. Private methods
-   3. Naked properties & collections
+   3. Naked properties
 2. Inheritance
    1. Adding to Implementations - Virtual and abstract
    2. Multiple base classes
    3. Unimplemented Interfaces - Segregate Interfaces
 3. Polymorphism
-   1. Relying on implementations - Dependency Inversion
+   1. Relying on implementations - Dependency Inversion (DateTime, HttpClient)
    2. Bad Dependencies - Dependency Injection
    3. Small Variations - Generics & Constraints
 4. Coupling

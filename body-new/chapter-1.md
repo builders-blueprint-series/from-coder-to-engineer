@@ -691,11 +691,178 @@ In the highly competitive and complicated world of air transportation, Southwest
 
 #### The Result of Moving Logic Down
 
-- Our final Customer and ReservationObjects are a lot easier to understand afterwards because we have moved logic around to 
+- Our final Customer and ReservationObjects are a lot easier to understand afterwards because we have moved logic around to where it logically belongs.
+
+**Figure 1-22** Final Customer class with method and encapsulated properties
+
+```csharp
+    public class CustomerWithPrivateValues
+    {
+        private readonly DateTime _availableMinimum;
+
+        private readonly DateTime _availableMaximum;
+
+        public CustomerWithPrivateValues(DateTime minAvailability, DateTime maxAvailability)
+        {
+            _availableMinimum = minAvailability;
+            _availableMaximum = maxAvailability;
+        }
+
+        public bool AvailabilityMatchesCustomer(DateTime reservationAvailability)
+        {
+            return reservationAvailability >= _availableMinimum && reservationAvailability <= _availableMaximum;
+        }
+    }
+```
 
 #### The Ability to Test Easily Accessible Methods
 
-### The Problem with Naked Properties and Collections
+- Now that our method is both private and the details of its implementation are encapsulated, testing is a straight forward process.
+
+**Figure 1-23** Tests for our Customer class
+
+```csharp
+    [TestClass]
+    public class CustomerTests
+    {
+        private readonly CustomerWithPrivateValues _customer;
+
+        public CustomerTests()
+        {
+            var min = new DateTime(2000, 1, 1, 18, 0, 0);
+            var max = new DateTime(2000, 1, 1, 19, 0, 0);
+            _customer = new CustomerWithPrivateValues(min, max);
+        }
+
+        [TestMethod]
+        public void AvailabilityMatchesCustomer_OutOfRange_ReturnsFalse()
+        {
+            var availability = new DateTime(2000, 1, 1, 17, 45, 0);
+
+            var result = _customer.AvailabilityMatchesCustomer(availability);
+
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        public void AvailabilityMatchesCustomer_InRange_ReturnsTrue()
+        {
+            var availability = new DateTime(2000, 1, 1, 18, 30, 0);
+
+            var result = _customer.AvailabilityMatchesCustomer(availability);
+
+            Assert.IsTrue(result);
+        }
+    }
+```
+
+---
+:x: Avoid using DateTime.Now or DateTime.UtcNow in test code. Every time your test suite runs, the value will changes, leading to undefined behavior in your tests.
+
+---
+
+---
+:warning: DateTime.Min and DateTime.Max may seem like better alternatives to DateTime.Now, but these values do not accurately represent a probable application state.
+
+---
+
+### The Problem with Naked Properties
+
+- Some properties in an object may hold a loose association with other properties in the object. So in certain cases, this association is strong enough to warrant these properties to belong to their own object.
+
+**Figure 1-24** Revising our Customer class with name properties
+
+```csharp
+public class Customer
+    {
+        // Certain properties omitted for brevity
+
+        public Customer(string firstName, string lastName)
+        {
+            Validator.ValidNameFormat(firstName);
+            Validator.ValidNameFormat(lastName);
+
+            FirstName = firstName;
+            LastName = lastName;
+        }
+
+        public string FirstName { get; }
+
+        public string LastName { get; }
+    }
+```
+
+- The issue is not readily apparent here, but in many situations a name is far more complicated with many more options and properties. A name is typically not just a first and last, but also a middle, a preferred Nickname and optional titles and suffixes.
+
+**Figure 1-25** Common name honorifics
+
+```csharp
+    public enum Honorifics
+    {
+        None = 0,
+        Mr = 1,
+        Mrs = 2,
+        Miss = 3,
+        Ms = 4,
+        Dr = 5,
+        Dds = 6,
+        Esq = 7,
+    }
+```
+
+**Figure 1-26** Common name suffixes
+
+```csharp
+    public enum Suffix
+    {
+        None = 0,
+        Sr = 1,
+        Jr = 2,
+        Second = 3,
+        Third = 4,
+        Fourth = 5,
+        Fifth = 6,
+        PhD = 7,
+    }
+```
+
+- When we have to combine all of these properties together, we get a Customer object below that is already very complicated. When we have naked properties it is very easy to get large objects with dozens of properties.
+
+**Figure 1-27** Common name properties
+
+```csharp
+    public class CustomerWithComplexName
+    {
+        public CustomerWithComplexName(string firstName, string lastName, string middleName, string preferredName, Honorifics honorifics, Suffix suffix)
+        {
+            Validator.ValidNameFormat(firstName);
+            Validator.ValidNameFormat(lastName);
+            Validator.ValidNameFormat(middleName);
+            Validator.ValidNameFormat(preferredName);
+
+            FirstName = firstName;
+            MiddleName = middleName;
+            LastName = lastName;
+            PreferredName = preferredName;
+            Honorifics = honorifics;
+            Suffix = suffix;
+        }
+
+        public string FirstName { get; }
+
+        public string MiddleName { get; set; }
+
+        public string LastName { get; }
+
+        public string PreferredName { get; set; }
+
+        public Honorifics Honorifics { get; set; }
+
+        public Suffix Suffix { get; set; }
+    }
+```
+
+- Much like our other examples of how encapsulation, our Customer object should not be aware of how a name is structured or any operations on that name. All our Customer should know is that it has a name and that Name object has a certain set of operations available.
 
 #### The Frustration with Testing Naked Properties and Collections
 
