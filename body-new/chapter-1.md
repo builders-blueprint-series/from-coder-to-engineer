@@ -22,9 +22,9 @@ Spot where naked collections and properties can be consolidated.
 
 Great software echos the words of Dr. Stanley Goodspeed. Not everyone needs to know everything, including your fellow developers. Classes, abstractions, and architecture should be closed by default. Only give your clients the absolute minimum they need to complete their tasks. Providing more than what is necessary only invites trouble into your code base.
 
-## The Success of Southwest Airlines - Simplicity In the Air
+## The Success of Simplicity - How Southwest Stays Simple
 
-In the highly competitive and complicated world of air transportation, Southwest airlines has made a name for itself by flying against the air current of convention. Their business model is the definition of simplicity in the airline world. Southwest does not operate hubs, instead they fly mostly point-to-point. This eliminates the need for many travelers to connect. Less connections means passengers do not have to worry about a checked bag not making it to the next plane-or a weather delay causing a missed connection. They only operate one type of plane, the 737. They can save money by only needing to train, perform maintenance, and have pilots qualified for a single aircraft. They only have one type of seating, all coach. Southwest does not sell food on board, and they do not assign seats. In addition, they provide a simple bundled fare system to their customers. Southwest customers know exactly what they are getting when they buy a ticket. A simple, straight forward, no-frills experience that gets them to their destination. Great software is like Southwest airlines. Your end-users should get a consistent experience every time without any undue frustration.
+Airlines are software companies. In the highly competitive and complicated world of air transportation, Southwest Airlines has made a name for itself by flying against the air current of convention. Their business model is the definition of simplicity in the airline world. Southwest does not operate hubs; instead, they fly mostly point-to-point. This eliminates the need for many travelers to make connecting flights. Fewer connections means passengers do not have to worry about a checked bag not making it to the next plane or a weather delay, causing a missed connection. They only operate one type of plane--the Boeing 737. They can save money by standardizing training, maintenance, and qualifications for pilots all with a single aircraft type. Seating is only coach. Southwest does not sell food on board, and they do not assign seats. In addition, they provide a simple bundled fare system to their customers, who know exactly what to expect. A simplistic, straight-forward, no-frills experience that gets them to their destination. Your end-users should get a consistent experience every time without any undue frustration. Great software is like Southwest Airlines. 
 
 ## Code
 
@@ -72,7 +72,7 @@ In the highly competitive and complicated world of air transportation, Southwest
     }
 ```
 
-- Public setters allow clients to initialize properties with any value, valid or not.
+- Public setters allow clients to initialize properties with any value--valid or not.
 
 #### Public setters do not support internal validation
 
@@ -548,7 +548,7 @@ In the highly competitive and complicated world of air transportation, Southwest
     }
 ```
 
-- Our issue is stark, the compiler does not allow us to access private methods because the are by definition private. What we need is a public API to create unit tests from, but we do not want to change our method from private to public because we would be exposing a method that was not intended to be exposed.
+- Our issue is stark-the compiler does not allow us to access private methods because the are by definition private. What we need is a public API to create unit tests from, but we do not want to change our method from private to public because we would be exposing a method that was not intended to be exposed.
 
 ---
 :x: Do not test private methods by testing a public method that calls said private methods. This would be exposing the underlying details of the public method which breaks encapsulation.
@@ -570,7 +570,7 @@ In the highly competitive and complicated world of air transportation, Southwest
 **Figure 1-17** Customer object with new method
 
 ```csharp
-        public class CustomerWithAvailabilityMethod
+    public class CustomerWithAvailabilityMethod
     {
         // Other properties and methods omitted for brevity.
 

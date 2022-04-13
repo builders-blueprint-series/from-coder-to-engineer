@@ -58,3 +58,7 @@ Builder's Blueprint:
 From Coder to Engineer
 
 ![Bridge](title_cover.png)
+
+## Horror Stories
+
+"Can't tell you the last time we deployed to production."
