@@ -32,16 +32,16 @@ Chapter 10: Repudiate Repetition
    2. Excessive parameters - Command
    3. Excessive dependencies - Chain of Responsibility
 6. Responsibility
-   1. God classes - Observer
+   1. God classes - Observer (just send the event, push into domain in ch. 8)
    2. Complex creations - Builder
    3. Complex procedural code - Strategy
 7. Common Interfaces
-   1. Responses - Envelope
+   1. Responses - Envelope (null is a bad abstraction)
    2. Services - Mediator
    3. Similar Queries - Query Object
 8. Repetition
    1. Repetition in the presentation layer - Common Interface
-   2. Repetition in the application layer - Common Interface
+   2. Repetition in the application layer - Common Interface (base handlers, base chains, domain services, events to repo/aggregate root)
    3. Repetition in the data layer - Common Interface
 
 ## Quotes
