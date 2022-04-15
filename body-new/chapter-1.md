@@ -24,7 +24,7 @@ Great software echos the words of Dr. Stanley Goodspeed. Not everyone needs to k
 
 ## The Success of Simplicity - How Southwest Stays Simple
 
-Airlines are software companies. In the highly competitive and complicated world of air transportation, Southwest Airlines has made a name for itself by flying against the air current of convention. Their business model is the definition of simplicity in the airline world. Southwest does not operate hubs; instead, they fly mostly point-to-point. This eliminates the need for many travelers to make connecting flights. Fewer connections means passengers do not have to worry about a checked bag not making it to the next plane or a weather delay, causing a missed connection. They only operate one type of plane--the Boeing 737. They can save money by standardizing training, maintenance, and qualifications for pilots all with a single aircraft type. Seating is only coach. Southwest does not sell food on board, and they do not assign seats. In addition, they provide a simple bundled fare system to their customers, who know exactly what to expect. A simplistic, straight-forward, no-frills experience that gets them to their destination. Your end-users should get a consistent experience every time without any undue frustration. Great software is like Southwest Airlines. 
+Airlines are software companies. In the highly competitive and complicated world of air transportation, Southwest Airlines has made a name for itself by flying against the air current of convention. Their business model is the definition of simplicity in the airline world. Southwest does not operate hubs; instead, they fly mostly point-to-point. This eliminates the need for many travelers to make connecting flights. Fewer connections means passengers do not have to worry about a checked bag not making it to the next plane or a weather delay, causing a missed connection. They only operate one type of plane--the Boeing 737. They can save money by standardizing training, maintenance, and qualifications for pilots all with a single aircraft type. Seating is only coach. Southwest does not sell food on board, and they do not assign seats. In addition, they provide a simple bundled fare system to their customers, who know exactly what to expect. A simplistic, straight-forward, no-frills experience that gets them to their destination. Your end-users should get a consistent experience every time without any undue frustration. Great software is like Southwest Airlines.
 
 ## Code
 
@@ -685,7 +685,7 @@ Airlines are software companies. In the highly competitive and complicated world
 - Our Customer class now has private methods which *further* increases the encapsulation of our object. Now outside clients have zero knowledge that such properties even exist in the first place. All these outside clients know is that there is a method they can call by passing a DateTime that will return a boolean that states if the customer is available or not at that time slot.
 
 ---
-:heavy_check_mark: Every private property in an application should either be readonly or const to ensure they are not allowed to change after their initialization.
+:heavy_check_mark: Every private field in an application should either be readonly or const to ensure they are not allowed to change after their initialization.
 
 ---
 
@@ -872,23 +872,31 @@ public class Customer
 
 ## Hard Truth
 
-Coding is easy. Engineering is hard.
+### Coding is easy. Engineering is hard
 
 Writing code and engineering software are two fundamentally different things. The end goal for both is the same. Both the engineer and the coder want a software solution that accomplishes the desired task in a reasonable amount of time. But the engineer and code get to the same conclusion through different methods. The engineer is retrospective as he works, drawing on past experiences, pausing to give thought, and contemplating choices. The coder, codes. He gets to a solution the fastest way possible. If the result works, then the ends have justified the means. The engineer understands that his work is a disciple. They must practice and refine their skills on a weekly basis. The coder looks at some quick documentation or sample code and attempts to piece together a solution. The engineer strives for simplicity everywhere. The coder chases the latest technology trends. The engineer understands that everything involves making a decision, acknowledging that trade-offs are required. The coder goes with their gut without contemplating advantages and disadvantages for each possible decision. Many people take the coding route. It is the path of least resistance.
 
-Robert Frost's poem, "The Road Not Taken", express the decision at hand, "Two roads diverged in a wood, / and I—
-I took the one less traveled by, / And that has made all the difference."
+> "Two roads diverged in a wood, / and I—
+I took the one less traveled by, / And that has made all the difference." (Frost, lines 1-2)
 
 What road will you take?
 
 ## Vocation
 
-Engineer is a mentality, not a title.
+### Engineer is a mentality, not a title
+
+Being an engineer derives from *wanting* to be an engineer. Software is different in that we do not (as of this book) not have hard standards for what qualifies as an engineer. Other engineering disciples have testing requirements and tests that one must pass before they can receive their qualifications. Software is more of a wild-west situation. It is difficult to separate the coders from the engineers. Wanting to write great software is just the start. The mentality of an engineer is to seek perfection, knowing your never get there-but always striving for the best.
 
 ## Automation
 
-Automate your decision making process.
+### Automate your decision making process
 
-Automation is not limited to just menial tasks that involve your application.
+Automation is not limited to just menial tasks that involve your application. We must automate our decision making process. This saves us the time from going back and forth between possible solutions. By adopting a set of "engineering values", our decisions are made for us. It is up to us to coming up with our own principles, but I suggest the following while getting started.
+
+1) Consistent over irregular
+2) Simplicity over complexity
+3) Testable over unverified
+4) Automated over manual
+5) Supported over niche
 
 ## Conclusion

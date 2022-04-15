@@ -20,7 +20,7 @@ Chapter 10: Repudiate Repetition
    2. Multiple base classes
    3. Unimplemented Interfaces - Segregate Interfaces
 3. Polymorphism
-   1. Relying on implementations - Dependency Inversion (DateTime, HttpClient)
+   1. Relying on implementations - Dependency Inversion (DateTime, HttpClient, DbContext, SqlConnection)
    2. Bad Dependencies - Dependency Injection
    3. Small Variations - Generics & Constraints
 4. Coupling
@@ -28,7 +28,7 @@ Chapter 10: Repudiate Repetition
    2. Static - Bad vs Good, Loggers everywhere
    3. Friendship/Internal
 5. Abstraction
-   1. Logic in the wrong place - Validation in app
+   1. Logic in the wrong place - everything data fetch/Validation/logic in app
    2. Excessive parameters - Command
    3. Excessive dependencies - Chain of Responsibility
 6. Responsibility
@@ -55,10 +55,19 @@ Chapter 10: Repudiate Repetition
 ## Working Title
 
 Builder's Blueprint:
-From Coder to Engineer
+
+From Code to Software
+From Code to Components
+From Code to Patterns
+From Code to Construction
 
 ![Bridge](title_cover.png)
 
 ## Horror Stories
 
 "Can't tell you the last time we deployed to production."
+
+Emphasize moving from code to software
+
+Tests are insurance. Your code gets so bad that an insurance company refuses to cover you.
+Your code is so bad that writing and maintaining tests is almost impossible.
