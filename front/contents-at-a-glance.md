@@ -56,10 +56,11 @@ Chapter 10: Repudiate Repetition
 
 Builder's Blueprint:
 
-From Code to Software
-From Code to Components
-From Code to Patterns
-From Code to Construction
+From Code to Software - Golden Gate
+From Code to Components - Brooklyn
+From Code to Patterns - Tower
+From Code to Architecture - Pont du Gard
+From Code to Clouds - Coronado/Sunshine Skyway
 
 ![Bridge](title_cover.png)
 
