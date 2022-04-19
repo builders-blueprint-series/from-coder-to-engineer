@@ -20,8 +20,8 @@ Chapter 10: Repudiate Repetition
    2. Multiple base classes
    3. Unimplemented Interfaces - Segregate Interfaces
 3. Polymorphism
-   1. Relying on implementations - Dependency Inversion (DateTime, HttpClient, DbContext, SqlConnection, Loggers)
-   2. Bad Dependencies - Dependency Injection
+   1. Bad Dependencies - Dependency Injection
+   2. Relying on implementations - Dependency Inversion (DateTime, HttpClient, DbContext, SqlConnection, Loggers)
    3. Small Variations - Generics & Constraints
 4. Coupling
    1. "new" keyword - Factory, Factory method

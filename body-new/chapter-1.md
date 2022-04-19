@@ -773,7 +773,7 @@ Airlines are software companies. In the highly competitive and complicated world
 **Figure 1-24** Revising our Customer class with name properties
 
 ```csharp
-public class Customer
+    public class Customer
     {
         // Certain properties omitted for brevity
 
