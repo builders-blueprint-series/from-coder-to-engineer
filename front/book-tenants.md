@@ -69,3 +69,5 @@ Yellow - #EED202
 Green - #00E000
 
 [Color Pallette](https://coolors.co/4285f4-00e000-eed202-f32013)
+
+[Alt colors](https://coolors.co/b81d13-efb700-008450-005a8c)
