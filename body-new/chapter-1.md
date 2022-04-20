@@ -1,3 +1,4 @@
+
 # Encapsulation
 
 ## Key Terms
@@ -22,7 +23,7 @@ Spot where naked collections and properties can be consolidated.
 
 Great software echos the words of Dr. Stanley Goodspeed. Not everyone needs to know everything, including your fellow developers. Classes, abstractions, and architecture should be closed by default. Only give your clients the absolute minimum they need to complete their tasks. Providing more than what is necessary only invites trouble into your code base.
 
-## The Success of Simplicity - How Southwest Stays Simple
+## Simple Success - SouthWest Airlines
 
 Airlines are software companies. In the highly competitive and complicated world of air transportation, Southwest Airlines has made a name for itself by flying against the air current of convention. Their business model is the definition of simplicity in the airline world. Southwest does not operate hubs; instead, they fly mostly point-to-point. This eliminates the need for many travelers to make connecting flights. Fewer connections means passengers do not have to worry about a checked bag not making it to the next plane or a weather delay, causing a missed connection. They only operate one type of plane--the Boeing 737. They can save money by standardizing training, maintenance, and qualifications for pilots all with a single aircraft type. Seating is only coach. Southwest does not sell food on board, and they do not assign seats. In addition, they provide a simple bundled fare system to their customers, who know exactly what to expect. A simplistic, straight-forward, no-frills experience that gets them to their destination. Your end-users should get a consistent experience every time without any undue frustration. Great software is like Southwest Airlines.
 
@@ -883,7 +884,7 @@ What road will you take?
 
 ## Vocation
 
-### Engineer is a mentality, not a title
+### "Engineer" is a Mentality--not a Title
 
 Being an engineer derives from *wanting* to be an engineer. Software is different in that we do not (as of this book) not have hard standards for what qualifies as an engineer. Other engineering disciples have testing requirements and tests that one must pass before they can receive their qualifications. Software is more of a wild-west situation. It is difficult to separate the coders from the engineers. Wanting to write great software is just the start. The mentality of an engineer is to seek perfection, knowing your never get there-but always striving for the best.
 

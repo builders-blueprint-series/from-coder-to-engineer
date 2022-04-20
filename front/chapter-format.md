@@ -4,11 +4,35 @@
 
 ## Introduction
 
+### Simple paragraph that states why the goals. Why x, y, z
+
 ## Goals
+
+### Code Topic 1
+
+### Code Topic 2
+
+### Code Topic 3
 
 ## Wisdom
 
-## The Failure/Success of X
+### Quote
+
+#### Frame the quote in relation to the Chapter
+
+## Simple Success
+
+### Name of Entity
+
+### Headliner
+
+#### 2nd Idea of title (topic sentence)
+
+##### Supporting Evidence
+
+#### 2nd Mirror
+
+### Bottom-liner
 
 ## Code 3x
 
@@ -28,7 +52,9 @@
 
 ### The Ability to Test Y
 
-## Hard Truth
+## Truth
+
+### Another form of wisdom
 
 ## Vocation
 

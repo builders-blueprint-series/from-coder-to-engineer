@@ -46,7 +46,7 @@ Chapter 10: Repudiate Repetition
 
 ## Quotes
 
-"Brevity is the sole of wit."
+"Brevity is the soul of wit."
 
 "Everything should as simple as possible, but not simpler."
 
