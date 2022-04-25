@@ -2,9 +2,11 @@
 
 ## Key Terms
 
+### Can be 1 to N number of terms
+
 ## Introduction
 
-### Simple paragraph that states why the goals. Why x, y, z
+### Simple paragraph that states why the goals. Why x, y, z, bring this back to testing
 
 ## Goals
 
@@ -58,6 +60,12 @@
 
 ## Vocation
 
+### Career Advice
+
 ## Automation
 
+### Automate your processes
+
 ## Conclusion
+
+### Simple paragraph that comes back to testing. Two sentences for summary, transition, go to next steps.

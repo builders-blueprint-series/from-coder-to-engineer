@@ -849,17 +849,19 @@ Airlines are software companies. In the highly competitive and complicated world
             Suffix = suffix;
         }
 
+        // Other properties and methods omitted for brevity.
+
         public string FirstName { get; }
 
-        public string MiddleName { get; set; }
+        public string MiddleName { get; }
 
         public string LastName { get; }
 
-        public string PreferredName { get; set; }
+        public string PreferredName { get; }
 
-        public Honorifics Honorifics { get; set; }
+        public Honorifics Honorifics { get; }
 
-        public Suffix Suffix { get; set; }
+        public Suffix Suffix { get; }
     }
 ```
 
@@ -867,9 +869,252 @@ Airlines are software companies. In the highly competitive and complicated world
 
 #### The Frustration with Testing Naked Properties and Collections
 
-##### Step N3
+- Testing our customer class with naked properties can be frustrating due to the number of parameters that are required to be passed to the constructor.
+
+**Figure 1-28** Writing a test for our complex customer
+
+```csharp
+    [TestClass]
+    public class CustomerWithComplexNameTests
+    {
+        [TestMethod]
+        public void CustomerWithComplexName_IsInCorrectState()
+        {
+            var customer = new CustomerWithComplexName("Bob", "Bobber", "Bobbert", "Bobby", Honorifics.Esq, Suffix.PhD);
+
+            // Our customer class is still missing Email and available DateTimes from earlier.
+        }
+    }
+```
+
+- There is not *technically* wrong with this test--but we are approaching the limit to how many parameters we should be passing into the constructor.
+
+// ADD ANOTHER SECTION WITH TESTING THE DATE RANGE BUT HAVING TO PASS IN NAME PARAMETERS !!!!!!!!
+
+---
+:large_blue_circle: There isn't a hard rule for how many parameters you should or should not pass into a domain object's constructor.
+
+---
+
+- What we are really passing into our Customer object should not be an assortment of random name-like values, but a name object itself.
+
+##### Step 1: Create an encapsulated Name object
+
+- The best way to both increase encapsulation in our solution and reduce the number of parameters in our Customer object is to create a Name object that can stand by itself.
+
+**Figure 1-29** A separate name object
+
+```csharp
+    public class Name
+    {
+        public Name(string firstName, string lastName, string middleName, string preferredName, Honorifics honorifics = Honorifics.None, Suffix suffix = Suffix.None)
+        {
+            Validator.ValidNameFormat(firstName);
+            Validator.ValidNameFormat(lastName);
+            Validator.ValidNameFormat(middleName);
+            Validator.ValidNameFormat(preferredName);
+
+            FirstName = firstName;
+            MiddleName = middleName;
+            LastName = lastName;
+            PreferredName = preferredName;
+            Honorifics = honorifics;
+            Suffix = suffix;
+        }
+
+        public string FirstName { get; }
+
+        public string MiddleName { get; }
+
+        public string LastName { get; }
+
+        public string PreferredName { get; }
+
+        public Honorifics Honorifics { get; }
+
+        public Suffix Suffix { get; }
+    }
+```
+
+- Our Name object is now separate from our Customer object. With Name now being reusable, other objects in our application may use it if they desire.
+
+##### Step 2: Updating our Customer object
+
+- Now that Name is a separate object, our Customer object is much simpler than before.
+
+**Figure 1-30** Customer with separate name object
+
+```csharp
+    public class CustomerWithEncapsulatedName
+    {
+        public CustomerWithEncapsulatedName(Name name)
+        {
+            Name = name;
+        }
+
+        public Name Name { get; }
+
+        // Other properties and methods omitted for brevity.
+    }
+```
+
+- We have gained numerous advantages to this new design:
+
+1) Our objects are far more encapsulated
+2) Customer provides a better abstraction
+3) Our Name object can be updated without affecting the functionality of the Customer
+
+- We can do the same thing with our Email and DateTime ranges to provide a better level of encapsulation for those properties as well.
+
+**Figure 1-31** Email object shell
+
+```csharp
+    public class Email
+    {
+        // Properties and methods in here
+    }
+```
+
+**Figure 1-32** Availability range object
+
+```csharp
+    public class AvailabilityRange
+    {
+        public AvailabilityRange(DateTime minimum, DateTime maximum)
+        {
+            Minimum = minimum;
+            Maximum = maximum;
+        }
+
+        // Other properties and methods omitted for brevity.
+
+        public DateTime Minimum { get; }
+
+        public DateTime Maximum { get; }
+    }
+```
+
+- The new Email and AvailabilityRange objects share the same advantages as Name does. They can be updated and changed without affecting our Customer object.
+
+**Figure 1-33** Customer object with new objects
+
+```csharp
+    public class CustomerWithEncapsulatedObjects
+    {
+        public CustomerWithEncapsulatedObjects(Name name, Email email, AvailabilityRange availabilityRange)
+        {
+            Name = name;
+            Email = email;
+            AvailabilityRange = availabilityRange;
+        }
+
+        public Name Name { get; }
+
+        public Email Email { get; }
+
+        public AvailabilityRange AvailabilityRange { get; }
+    }
+```
+
+- Our Customer object now accepts properties in the shape of formal objects. We have reduced the number of parameters from close to a dozen to three.
+
+##### Step 3: Condensing our Validators
+
+- We can even take our list of validators for our objects and condense those as well.
+
+**Figure 1-34** Revisiting our Name class
+
+```csharp
+    public class Name
+    {
+        public Name(string firstName, string lastName, string middleName, string preferredName, Honorifics honorifics = Honorifics.None, Suffix suffix = Suffix.None)
+        {
+            Validator.ValidNameFormat(firstName);
+            Validator.ValidNameFormat(lastName);
+            Validator.ValidNameFormat(middleName);
+            Validator.ValidNameFormat(preferredName);
+
+            // Probably more Validators here
+
+            FirstName = firstName;
+            MiddleName = middleName;
+            LastName = lastName;
+            PreferredName = preferredName;
+            Honorifics = honorifics;
+            Suffix = suffix;
+        }
+
+        public string FirstName { get; }
+
+        public string MiddleName { get; }
+
+        public string LastName { get; }
+
+        public string PreferredName { get; }
+
+        public Honorifics Honorifics { get; }
+
+        public Suffix Suffix { get; }
+    }
+```
+
+- If you remember what we did in the past when we had to many parameters, we encapsulated those into a separate object. We can do the same thing with our validators as well!
+
+**Figure 1-35** The Name Validator class
+
+```csharp
+    public class NameValidator
+    {
+        public void Validate(Name name)
+        {
+            Validator.ValidNameFormat(name.FirstName);
+            Validator.ValidNameFormat(name.LastName);
+            Validator.ValidNameFormat(name.MiddleName);
+            Validator.ValidNameFormat(name.PreferredName);
+
+            // Probably more Validators down here.
+        }
+    }
+```
+
+- Just like we did with our Name class, we have pushed all of our validators into an object. This allows us to add and remove validators to our Name object without cluttering the constructor.
+
+**Figure 1-36** Name with encapsulated validation
+
+```csharp
+    public class NameWithEncapsulatedValidation
+    {
+        public NameWithEncapsulatedValidation(string firstName, string lastName, string middleName, string preferredName, Honorifics honorifics = Honorifics.None, Suffix suffix = Suffix.None)
+        {
+            FirstName = firstName;
+            MiddleName = middleName;
+            LastName = lastName;
+            PreferredName = preferredName;
+            Honorifics = honorifics;
+            Suffix = suffix;
+
+            new NameValidator().Validate(this);
+        }
+
+        public string FirstName { get; }
+
+        public string MiddleName { get; }
+
+        public string LastName { get; }
+
+        public string PreferredName { get; }
+
+        public Honorifics Honorifics { get; }
+
+        public Suffix Suffix { get; }
+    }
+```
+
+- Our Name object's constructor is updated to create a validator for itself and calls the Validate method. The result is a Name object with its validation encapsulated.
 
 #### The Result after Encapsulating Properties and Collections
+
+#### The Ability to Test Encapsulated Properties
 
 ## Hard Truth
 
