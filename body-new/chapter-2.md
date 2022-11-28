@@ -1,20 +1,24 @@
-# Title
+# Inheritance
 
 ## Key Terms
 
-### Can be 1 to N number of terms
+- Inheritance
+
+- Virtual and Abstract
 
 ## Introduction
 
-### Simple paragraph that states why the goals. Why x, y, z, bring this back to testing
+- Even though inheritance is a key pillar to object-oriented programming, we need to keep it to a minimum. The more inheritance we introduce in our system, the more issues we are inviting to happen.
 
 ## Goals
 
-### Code Topic 1
+After completing this chapter will you will be able to...
 
-### Code Topic 2
+Understand how adding to already implemented classes can cause issues.
 
-### Code Topic 3
+Recognize that inheriting from multiple classes is unideal.
+
+Realize that giving clients unimplemented interfaces will produce frustration.
 
 ## Wisdom
 
@@ -35,10 +39,6 @@
 #### 2nd Mirror
 
 ### Bottom-liner
-
-## Horror Story
-
-### Relate to Code Samples
 
 ## Code 3x
 

@@ -556,6 +556,11 @@ Airlines are software companies. In the highly competitive and complicated world
 
 ---
 
+---
+:x: Do not use reflection to invoke private methods in a unit test. Reflection should not be used to invoke private functions.
+
+---
+
 #### Pushing Private Methods Down
 
 - We have a small conundrum in our hands. We need to have a public method in order to write a test, but our method as it currently stands should not be public because it is not required by clients. Our solution for this issue is solved by moving our method from the ReservationService class to our Customer class. This create a number of positive side effects:
