@@ -3,7 +3,7 @@
 
 ## Key Terms
 
-Encapsulation
+- Encapsulation
 
 ## Introduction
 
@@ -23,7 +23,7 @@ Spot where naked collections and properties can be consolidated.
 
 Great software echos the words of Dr. Stanley Goodspeed. Not everyone needs to know everything, including your fellow developers. Classes, abstractions, and architecture should be closed by default. Only give your clients the absolute minimum they need to complete their tasks. Providing more than what is necessary only invites trouble into your code base.
 
-## Simple Success - SouthWest Airlines
+## Simple Success - Southwest Airlines
 
 Airlines are software companies. In the highly competitive and complicated world of air transportation, Southwest Airlines has made a name for itself by flying against the air current of convention. Their business model is the definition of simplicity in the airline world. Southwest does not operate hubs; instead, they fly mostly point-to-point. This eliminates the need for many travelers to make connecting flights. Fewer connections means passengers do not have to worry about a checked bag not making it to the next plane or a weather delay, causing a missed connection. They only operate one type of plane--the Boeing 737. They can save money by standardizing training, maintenance, and qualifications for pilots all with a single aircraft type. Seating is only coach. Southwest does not sell food on board, and they do not assign seats. In addition, they provide a simple bundled fare system to their customers, who know exactly what to expect. A simplistic, straight-forward, no-frills experience that gets them to their destination. Your end-users should get a consistent experience every time without any undue frustration. Great software is like Southwest Airlines.
 
@@ -965,9 +965,9 @@ Airlines are software companies. In the highly competitive and complicated world
 
 - We have gained numerous advantages to this new design:
 
-1) Our objects are far more encapsulated
-2) Customer provides a better abstraction
-3) Our Name object can be updated without affecting the functionality of the Customer
+1. Our objects are far more encapsulated
+2. Customer provides a better abstraction
+3. Our Name object can be updated without affecting the functionality of the Customer
 
 - We can do the same thing with our Email and DateTime ranges to provide a better level of encapsulation for those properties as well.
 
@@ -1144,10 +1144,10 @@ Being an engineer derives from *wanting* to be an engineer. Software is differen
 
 Automation is not limited to just menial tasks that involve your application. We must automate our decision making process. This saves us the time from going back and forth between possible solutions. By adopting a set of "engineering values", our decisions are made for us. It is up to us to coming up with our own principles, but I suggest the following while getting started.
 
-1) Consistent over irregular
-2) Simplicity over complexity
-3) Testable over unverified
-4) Automated over manual
-5) Supported over niche
+1. Consistent over irregular
+2. Simplicity over complexity
+3. Testable over unverified
+4. Automated over manual
+5. Supported over niche
 
 ## Conclusion
