@@ -40,7 +40,7 @@ Realize that giving clients unimplemented interfaces will produce frustration.
 
 ## Code
 
-### The Problem with Adding to Implementations
+### The Problem with Adding to Implementations (open/closed)
 
 #### The Inability to Test X
 
@@ -56,7 +56,7 @@ Realize that giving clients unimplemented interfaces will produce frustration.
 
 #### The Ability to Test Y
 
-### The Problem with Multiple Base Classes
+### The Problem with Multiple Base Classes (liskov)
 
 #### The Inability to Test X
 
@@ -72,7 +72,7 @@ Realize that giving clients unimplemented interfaces will produce frustration.
 
 #### The Ability to Test Y
 
-### The Problem with Unimplemented Interfaces
+### The Problem with Unimplemented Interfaces (interface segregation)
 
 #### The Inability to Test X
 
