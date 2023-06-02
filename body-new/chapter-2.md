@@ -28,7 +28,7 @@ Realize that giving clients unimplemented interfaces will produce frustration.
 
 ## Simple Success - Costco
 
-### Headliner - Coscto breaths simplicity.
+### Headliner - Costco breaths simplicity.
 
 #### 2nd Idea of title (topic sentence) - Costco gives you very few options.
 
