@@ -28,15 +28,7 @@ Realize that giving clients unimplemented interfaces will produce frustration.
 
 ## Simple Success - Costco
 
-### Headliner - Costco breaths simplicity.
-
-#### 2nd Idea of title (topic sentence) - Costco gives you very few options.
-
-##### Supporting Evidence - Carry one name and one generic brand. Grocery store carries everything.
-
-#### 2nd Mirror - This is to get you to remove decisions and get you through the store as fast as possible.
-
-### Bottom-liner - Costco is the definition of simplicity.
+Costco Wholesale is a big-box retail store that was founded in 1994 just outside of Seattle. While Costco sells thousands of items in their store and online, each item they sale typically has very few options available to choose from. If you want to buy ketchup or napkins from Costco, you typically have one name brand and possible a generic brand to choose from. This is intentional on Costco's part because human behavior has a tendency to succumb to analysis paralysis. When people are presented too many options to choose from, they end up not choosing any of them because they are overwhelmed with options. For Costco, this means a loss of possible sales if people aren't buying products from them. Limiting options to customers ends up helping Costco in two ways; it forces customers to buy products, and it helps move product faster, which cuts down on costs.
 
 ## Code
 

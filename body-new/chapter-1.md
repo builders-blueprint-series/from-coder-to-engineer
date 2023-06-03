@@ -309,6 +309,8 @@ Airlines are software companies. In the highly competitive and complicated world
 **Figure 1-10** Our Customer validating more specific scenarios
 
 ```csharp
+public class TooMuchCustomerValidationLogic
+{
     public TooMuchCustomerValidationLogic(string firstName, string lastName, string email)
     {
         if (firstName != null
@@ -1136,7 +1138,7 @@ What road will you take?
 
 ### "Engineer" is a Mentality--not a Title
 
-Being an engineer derives from *wanting* to be an engineer. Software is different in that we do not (as of this book) not have hard standards for what qualifies as an engineer. Other engineering disciples have testing requirements and tests that one must pass before they can receive their qualifications. Software is more of a wild-west situation. It is difficult to separate the coders from the engineers. Wanting to write great software is just the start. The mentality of an engineer is to seek perfection, knowing your never get there-but always striving for the best.
+Being an engineer derives from *wanting* to be an engineer. Software is different in that we do not (as of this book) have hard standards for what qualifies as an engineer. Other engineering disciples have testing requirements and required certifications that one must pass before they can receive their qualifications. Software is more of a wild-west situation. It is difficult to separate the coders from the engineers. Wanting to write great software is just the start. The mentality of an engineer is to seek perfection, knowing your never get there-but always striving for the best.
 
 ## Automation
 
