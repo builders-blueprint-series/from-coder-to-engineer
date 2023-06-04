@@ -36,6 +36,14 @@ Costco Wholesale is a big-box retail store that was founded in 1994 just outside
 
 #### The Inability to Test X
 
+> :large_blue_circle: We are using a switch expression which is a more compact type of switch statement. The logic is the same as a normal switch statement.
+
+> :heavy_check_mark: Removing a constructor parameter has further encapsulated our class. Clients now have zero knowledge that our CustomerStatus enum exists.
+
+- Breaking our Customer class into specific classes for each type of customer is an example of SRP. (Single Responsibility Principle) Each class is only responsible for dealing with a specific customer type.
+
+> :warning: Don't fret about applying SRP everywhere. Like most things in software engineering, there's a place and time for everything.
+
 #### Transforming X to Y
 
 ##### Step 1
@@ -51,6 +59,8 @@ Costco Wholesale is a big-box retail store that was founded in 1994 just outside
 ### The Problem with Multiple Base Classes (liskov)
 
 #### The Inability to Test X
+
+:warning: Use abstract classes judiciously. Ideally you only touch an abstract class once. Having to update an abstract class is a potential sign refactoring is needed.
 
 #### Transforming X to Y
 
@@ -96,17 +106,10 @@ Costco Wholesale is a big-box retail store that was founded in 1994 just outside
 
 ### Simple paragraph that comes back to testing. Two sentences for summary, transition, go to next steps
 
----
 :x: Multiple inheritance is not allowed in most modern language because it produces far more problems than it solves.
 
----
-
----
 :warning: Inheritance is the second highest form of coupling after friendship. Stay vigilant against excessive inheritance as it _will_ cause problems.
 
----
-
----
 :large_blue_circle: Software is about have the least amount of dependencies as possible. The fewer dependencies, the more our software can adapt and change at will.
 
----
+:large_blue_circle: It's easy to confuse abstract and virtual. The key to remember is that virtual methods _may_ be overridden, while abstract methods _must_ be overridden.
