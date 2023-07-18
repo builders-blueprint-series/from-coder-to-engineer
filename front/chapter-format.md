@@ -4,11 +4,11 @@
 
 ### Can be 1 to N number of terms
 
+## Goals
+
 ## Introduction
 
 ### Simple paragraph that states why the goals. Why x, y, z, bring this back to testing
-
-## Goals
 
 ### Code Topic 1
 
@@ -72,4 +72,4 @@
 
 ## Conclusion
 
-### Simple paragraph that comes back to testing. Two sentences for summary, transition, go to next steps.
+### Simple paragraph that comes back to testing. Two sentences for summary, transition, go to next steps

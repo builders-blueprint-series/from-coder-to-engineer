@@ -6,7 +6,7 @@
    3. Naked properties
 2. Inheritance
    1. Adding to Implementations - Virtual and abstract
-   2. Bad Base Classes - liskov (pre/post-conditions/invariants, use interfaces)
+   2. Bad Base Classes - Liskov (pre/post-conditions/invariants, use interfaces)
    3. Unimplemented Interfaces - Segregate Interfaces
 3. Coupling
    1. "new" keyword - Factory, Factory method
