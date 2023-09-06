@@ -52,6 +52,8 @@ Airlines are software companies. In the highly competitive and complicated world
     }
 ```
 
+- We will avoid using asynchronous code for most of this book. This is done to keep the code samples simpler and easier to understand. However, translating our synchronous code to asynchronous code is not a difficult task.
+
 - The Customer class will initially represent customers who wish to dine in our restaurant.
 
 #### Public setters allow for anything and everything
