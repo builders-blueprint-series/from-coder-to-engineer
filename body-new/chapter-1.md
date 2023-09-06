@@ -5,8 +5,6 @@
 
 - Encapsulation
 
-## Introduction
-
 ## Goals
 
 After completing this chapter will you will be able to...
@@ -16,6 +14,8 @@ Understand how public setters breaks encapsulation.
 Identity where methods belong and how access modifies affect the ability to test code.
 
 Spot where naked collections and properties can be consolidated.
+
+## Introduction
 
 ## Wisdom
 
