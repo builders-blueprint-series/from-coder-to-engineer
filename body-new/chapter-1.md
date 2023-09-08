@@ -1,21 +1,28 @@
-
-# Encapsulation
+# Chapter 1 - Encapsulation
 
 ## Key Terms
 
 - Encapsulation
 
+- Access modifiers
+
 ## Goals
 
 After completing this chapter will you will be able to...
 
-Understand how public setters breaks encapsulation.
+Understand how public setters breaks encapsulation
 
-Identity where methods belong and how access modifies affect the ability to test code.
+Identity where methods belong and how access modifies affect the ability to test code
 
-Spot where naked collections and properties can be consolidated.
+Spot where naked collections and properties can be consolidated
 
 ## Introduction
+
+- Encapsulation is the foundation for a quality code-base
+- A lack of encapsulation will causes issues to compound into larger issues
+- Proper encapsulation leads to easier, and more trusty-worthy tests
+- Properly encapsulated code limits options, shortens the feedback loop, and enforces simplicity through a common interface
+- If you only take away one idea from this book, it is to protect the integrity of your applications' encapsulation at all costs
 
 ## Wisdom
 
@@ -52,7 +59,7 @@ Airlines are software companies. In the highly competitive and complicated world
     }
 ```
 
-- We will avoid using asynchronous code for most of this book. This is done to keep the code samples simpler and easier to understand. However, translating our synchronous code to asynchronous code is not a difficult task.
+- We will avoid using asynchronous code for most of this book. This is done to keep the code samples simpler and easier to understand. However, translating our synchronous code to asynchronous code is not a difficult task (pun not intended).
 
 - The Customer class will initially represent customers who wish to dine in our restaurant.
 
@@ -76,6 +83,12 @@ Airlines are software companies. In the highly competitive and complicated world
 ```
 
 - Public setters allow clients to initialize properties with any value--valid or not.
+
+---
+
+:warning: Anything that you allow to happen in software--will happen. It's only a matter of time. Including objects being initialized with improper values.
+
+---
 
 #### Public setters do not support internal validation
 
@@ -104,6 +117,7 @@ Airlines are software companies. In the highly competitive and complicated world
 ```
 
 ---
+
 :large_blue_circle: Encapsulation goes beyond just basic getters and setters. A class should be the sole source of truth for its logic. That includes validation and state changes.
 
 ---
@@ -158,6 +172,7 @@ Airlines are software companies. In the highly competitive and complicated world
 - Encapsulation reduces the number of possibilities the state of our objects can be in. This translates into less undefined behavior and bugs in our software.
 
 ---
+
 :warning: In C# and other dotnet languages, Guid is a value type. If you forget to assign a value, it will default to all zeros. You will never get a null reference unless you make it nullable.
 
 ---
@@ -194,6 +209,7 @@ Airlines are software companies. In the highly competitive and complicated world
 ```
 
 ---
+
 :heavy_check_mark: Constructors are one of the many examples of common interfaces we will discuss in this book. Common interfaces enforce a consistent state in our code which constrains options and reduces bugs, leading to better software.
 
 ---
@@ -223,6 +239,7 @@ Airlines are software companies. In the highly competitive and complicated world
 - The example above shows the before and after of moving the initialization of our object from naked properties to a constructor. Moving initialization has also allowed us to reduce the line count in our application.
 
 ---
+
 :large_blue_circle: Every line in an application has a cost associated with it. A good engineer looks to reduce line count where possible, but not at the expense of readability.
 
 ---
@@ -295,6 +312,7 @@ Airlines are software companies. In the highly competitive and complicated world
 ```
 
 ---
+
 :large_blue_circle: When testing multiple scenarios that only differ via their arguments like our test above, you can utilize the DataRow attribute to avoid having to write the same test boiler plate over and over again.
 
 ---
@@ -302,6 +320,7 @@ Airlines are software companies. In the highly competitive and complicated world
 - In our tests we are ensuring that our constructor does not throw and exception when it is supplied with valid arguments. Our second test confirms that any null value will result in an exception being thrown.
 
 ---
+
 :x: Do not use the DataRow attribute to hide bad programming. Excessive use of the attribute is mostly likely a sign of too many logical branches in your code.
 
 ---
@@ -465,6 +484,7 @@ public class TooMuchCustomerValidationLogic
 - If we need to add any more properties to this class, we can just use a validator we have already written, or write a new one without having to change or modify the existing class.
 
 ---
+
 :large_blue_circle: If you are working in dotnet, FluentValidation is a great library that has many built in validators that is perfect for validating domain objects.
 
 ---
@@ -474,6 +494,7 @@ public class TooMuchCustomerValidationLogic
 - The best feature of our new class is that we've done all the testing in our validator tests. Because we are using auto-properties, there is nothing special to test.
 
 ---
+
 :x: Do not test getters and setters in your code unless they perform logic. These are built in features of the language you are using and should not be tested.
 
 ---
@@ -556,11 +577,13 @@ public class TooMuchCustomerValidationLogic
 - Our issue is stark-the compiler does not allow us to access private methods because the are by definition private. What we need is a public API to create unit tests from, but we do not want to change our method from private to public because we would be exposing a method that was not intended to be exposed.
 
 ---
+
 :x: Do not test private methods by testing a public method that calls said private methods. This would be exposing the underlying details of the public method which breaks encapsulation.
 
 ---
 
 ---
+
 :x: Do not use reflection to invoke private methods in a unit test. Reflection should not be used to invoke private functions.
 
 ---
@@ -569,9 +592,9 @@ public class TooMuchCustomerValidationLogic
 
 - We have a small conundrum in our hands. We need to have a public method in order to write a test, but our method as it currently stands should not be public because it is not required by clients. Our solution for this issue is solved by moving our method from the ReservationService class to our Customer class. This create a number of positive side effects:
 
-1) Solves our initial issue not not being able to test the method
-2) Removes the need of our ReservationService from calling the min and max properties
-3) Creates a more encapsulated Customer object by allowing us to remove the min and max getters
+1. Solves our initial issue not not being able to test the method
+2. Removes the need of our ReservationService from calling the min and max properties
+3. Creates a more encapsulated Customer object by allowing us to remove the min and max getters
 
 ##### Step 1: Pushing logic down in the application
 
@@ -666,6 +689,7 @@ public class TooMuchCustomerValidationLogic
 - My having the AvailabilityMatchesCustomer method now use the Customer internal properties instead of accepting them as parameters we have simplified our method and how it is called in the ReservationService significantly.
 
 ---
+
 :large_blue_circle: It may not be apparent, but reducing our parameter count has increased the encapsulation of our application. Our reservation is know unaware of what the parameter it is passing is being compared against.
 
 ---
@@ -692,9 +716,10 @@ public class TooMuchCustomerValidationLogic
     }
 ```
 
-- Our Customer class now has private methods which *further* increases the encapsulation of our object. Now outside clients have zero knowledge that such properties even exist in the first place. All these outside clients know is that there is a method they can call by passing a DateTime that will return a boolean that states if the customer is available or not at that time slot.
+- Our Customer class now has private methods which _further_ increases the encapsulation of our object. Now outside clients have zero knowledge that such properties even exist in the first place. All these outside clients know is that there is a method they can call by passing a DateTime that will return a boolean that states if the customer is available or not at that time slot.
 
 ---
+
 :heavy_check_mark: Every private field in an application should either be readonly or const to ensure they are not allowed to change after their initialization.
 
 ---
@@ -767,11 +792,13 @@ public class TooMuchCustomerValidationLogic
 ```
 
 ---
+
 :x: Avoid using DateTime.Now or DateTime.UtcNow in test code. Every time your test suite runs, the value will changes, leading to undefined behavior in your tests.
 
 ---
 
 ---
+
 :warning: DateTime.Min and DateTime.Max may seem like better alternatives to DateTime.Now, but these values do not accurately represent a probable application state.
 
 ---
@@ -896,11 +923,12 @@ public class TooMuchCustomerValidationLogic
     }
 ```
 
-- There is not *technically* wrong with this test--but we are approaching the limit to how many parameters we should be passing into the constructor.
+- There is not _technically_ wrong with this test--but we are approaching the limit to how many parameters we should be passing into the constructor.
 
 // ADD ANOTHER SECTION WITH TESTING THE DATE RANGE BUT HAVING TO PASS IN NAME PARAMETERS !!!!!!!!
 
 ---
+
 :large_blue_circle: There isn't a hard rule for how many parameters you should or should not pass into a domain object's constructor.
 
 ---
@@ -1132,7 +1160,7 @@ public class TooMuchCustomerValidationLogic
 Writing code and engineering software are two fundamentally different things. The end goal for both is the same. Both the engineer and the coder want a software solution that accomplishes the desired task in a reasonable amount of time. But the engineer and code get to the same conclusion through different methods. The engineer is retrospective as he works, drawing on past experiences, pausing to give thought, and contemplating choices. The coder, codes. He gets to a solution the fastest way possible. If the result works, then the ends have justified the means. The engineer understands that his work is a disciple. They must practice and refine their skills on a weekly basis. The coder looks at some quick documentation or sample code and attempts to piece together a solution. The engineer strives for simplicity everywhere. The coder chases the latest technology trends. The engineer understands that everything involves making a decision, acknowledging that trade-offs are required. The coder goes with their gut without contemplating advantages and disadvantages for each possible decision. Many people take the coding route. It is the path of least resistance.
 
 > "Two roads diverged in a wood, / and I—
-I took the one less traveled by, / And that has made all the difference." (Frost, lines 1-2)
+> I took the one less traveled by, / And that has made all the difference." (Frost, lines 1-2)
 
 What road will you take?
 
@@ -1140,7 +1168,7 @@ What road will you take?
 
 ### "Engineer" is a Mentality--not a Title
 
-Being an engineer derives from *wanting* to be an engineer. Software is different in that we do not (as of this book) have hard standards for what qualifies as an engineer. Other engineering disciples have testing requirements and required certifications that one must pass before they can receive their qualifications. Software is more of a wild-west situation. It is difficult to separate the coders from the engineers. Wanting to write great software is just the start. The mentality of an engineer is to seek perfection, knowing your never get there-but always striving for the best.
+Being an engineer derives from _wanting_ to be an engineer. Software is different in that we do not (as of this book) have hard standards for what qualifies as an engineer. Other engineering disciples have testing requirements and required certifications that one must pass before they can receive their qualifications. Software is more of a wild-west situation. It is difficult to separate the coders from the engineers. Wanting to write great software is just the start. The mentality of an engineer is to seek perfection, knowing your never get there-but always striving for the best.
 
 ## Automation
 

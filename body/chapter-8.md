@@ -439,46 +439,6 @@ Code details
 2. Private setters with constructors limit these possibilities, resulting in less code, fewer bugs, and a simplified code base
 3. Static construction methods provide clarity for objects with confusing or excessive constructors.
 
-### Private Methods
-
-#### Private Methods In The Customer Service Class
-
-#### Issues With Private Methods
-
-1. Revisiting the Customer Service class
-
-**Listing 11-X** Customer Service class
-
-##### Private methods can't be tested
-
-##### Private methods indicate poorly placed code
-
-#### Solutions For Private Methods
-
-##### Pushing private methods down
-
-#### Advantages After Removing Private Methods
-
-#### Private Methods Conclusion
-
-### Excessive Properties
-
-#### Excessive Properties In The Customer Class
-
-#### Issues With Excessive Properties
-
-##### Relying on Primitive Types
-
-##### Objects Themselves Break Encapsulation
-
-#### Solutions For Excessive Properties
-
-##### Moving Properties To Objects
-
-#### Advantages After Reducing Excessive Properties
-
-#### Excessive Properties Conclusion
-
 ### Extension Methods
 
 1. Some things require extension methods

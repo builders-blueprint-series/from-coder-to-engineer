@@ -28,6 +28,8 @@ Apply object-oriented concepts to traditionally procedural code.
 ### The Problem with God Classes
 
 - God classes are considered objects that have too many responsibilities.
+- They may be considered testable where all branches have coverage. But the amount of tests required per class may be too high.
+- Traditionally God classes form when they are performing logic that should be done by another object or performed in a different layer.
 
 #### God classes performing after-effects
 
@@ -164,7 +166,7 @@ public interface INotification
 
 ---
 
-- Because our entities will all be able to publish events, we can add the necessary code to store them in our base Entity class.
+- Because our entities will all be able to publish events, we need to add the necessary code to store them in our base Entity class.
 
 **Figure 5-x** Entity base class updated for notifications
 
@@ -230,3 +232,14 @@ public class ReservationCreated : INotification
 :x: Notifications should have no methods or functions. They should always be plain objects that exist only to carry the necessary properties to their respective handlers.
 
 ---
+
+
+##### Step 2: Updating our domain object
+
+- The responsibility for the creation of events will be in our domain objects.
+
+**Figure 5-x** Updated reservation object with event creation
+
+```csharp
+
+```
