@@ -35,7 +35,7 @@
 
 ## Quotes
 
-"Brevity is the soul of wit."
+"Brevity is the soul of wit." - Polonius, Hamlet
 
 "Everything should as simple as possible, but not simpler."
 

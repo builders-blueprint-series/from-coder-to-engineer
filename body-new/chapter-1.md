@@ -6,6 +6,8 @@
 
 - Access modifiers
 
+- Private, public, protected
+
 ## Goals
 
 After completing this chapter will you will be able to...
@@ -39,10 +41,12 @@ Airlines are software companies. In the highly competitive and complicated world
 ### The Problem with Public Setters
 
 - Public setters are one of the most abused issues in software. But they are also one of the easiest to fix.
+- You can solve a lot of potential issues in your code by simply removing most if not all public setters from your code base.
 
 #### Code Domain
 
 - This book will use the example of a fake reservation system for code samples. A reservation system allows us to cover a breadth of topics that have real life business applications.
+- Think of the code samples as a proxy for your line of work-the concepts are more important than the details.
 
 **Figure 1-1** The first iteration of our Customer class.
 
@@ -83,6 +87,7 @@ Airlines are software companies. In the highly competitive and complicated world
 ```
 
 - Public setters allow clients to initialize properties with any value--valid or not.
+- This breaks any constraints that we want to enforce-or test on our code. Classes should only expose a minimal API to transform or initialize data.
 
 ---
 
@@ -115,6 +120,9 @@ Airlines are software companies. In the highly competitive and complicated world
         }
     }
 ```
+
+- Even though the values in this method may pass validation-there is no guarantee that they stay in a valid state.
+- There is a real possibility that the object's values are transformed in a future operation that invalidates the object state.
 
 ---
 
@@ -1167,6 +1175,18 @@ What road will you take?
 ## Vocation
 
 ### "Engineer" is a Mentality--not a Title
+
+How do you write good code?
+
+Do a lot of side projects? Have good scores on LeetCode? Answer a bunch of questions on StackOverflow? All of these may help you get better at a certain aspect of development. But writing good code is no different than baking a cake, riding a bicycle, or throwing a baseball.
+
+Writing good code comes from _wanting_ to write good code.
+
+It means practice, self-directed learning, exploration, experimentation, and most importantly, having the mentality of an engineer. If you currently are not developing professionally for a living, here is a secret to share with you. Engineers in this professional are hard to find. Very hard to find. Many people consider themselves developers, programmers, or coders because they don't take the next step in their career development.
+
+But you are reading this book, which means you want to take the next step in your journey.
+
+You want to be more than just a coder. Because lets be honest. Coding is easy. Anyone can do it. Look at how many "Get into coding in 20 minutes" courses are available out there. If you have three months and some money, you can take a coding deep dive curriculum and be "job ready" in three months.
 
 Being an engineer derives from _wanting_ to be an engineer. Software is different in that we do not (as of this book) have hard standards for what qualifies as an engineer. Other engineering disciples have testing requirements and required certifications that one must pass before they can receive their qualifications. Software is more of a wild-west situation. It is difficult to separate the coders from the engineers. Wanting to write great software is just the start. The mentality of an engineer is to seek perfection, knowing your never get there-but always striving for the best.
 

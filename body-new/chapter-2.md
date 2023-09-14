@@ -8,6 +8,9 @@
 
 ## Introduction
 
+- Software engineering is not black and white, its a sea a gray
+- Software is knowing what not to do
+- Bad code comes from either not knowing, or not caring, you can't know everything, but you can eliminate the second
 - Even though inheritance is a key pillar to object-oriented programming, we need to keep it to a minimum. The more inheritance we introduce in our system, the more issues we are inviting to happen.
 
 ## Goals
@@ -112,4 +115,4 @@ Costco Wholesale is a big-box retail store that was founded in 1994 just outside
 
 :large_blue_circle: Software is about have the least amount of dependencies as possible. The fewer dependencies, the more our software can adapt and change at will.
 
-:large_blue_circle: It's easy to confuse abstract and virtual. The key to remember is that virtual methods _may_ be overridden, while abstract methods _must_ be overridden.
+:large*blue_circle: It's easy to confuse abstract and virtual. The key to remember is that virtual methods \_may* be overridden, while abstract methods _must_ be overridden.
