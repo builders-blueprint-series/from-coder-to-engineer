@@ -43,6 +43,11 @@ Airlines are software companies. In the highly competitive and complicated world
 - Public setters are one of the most abused issues in software. But they are also one of the easiest to fix.
 - You can solve a lot of potential issues in your code by simply removing most if not all public setters from your code base.
 
+---
+:large_blue_circle: There are some instances where private setters may be necessary by a third-part framework.
+
+---
+
 #### Code Domain
 
 - This book will use the example of a fake reservation system for code samples. A reservation system allows us to cover a breadth of topics that have real life business applications.
@@ -91,7 +96,7 @@ Airlines are software companies. In the highly competitive and complicated world
 
 ---
 
-:warning: Anything that you allow to happen in software--will happen. It's only a matter of time. Including objects being initialized with improper values.
+:warning: Anything that you allow to happen in software, will happen. It's only a matter of time-including objects being initialized with improper values.
 
 ---
 
@@ -134,7 +139,7 @@ Airlines are software companies. In the highly competitive and complicated world
 
 #### Public setters expose a public api for private details
 
-- You want to keep classes closed as much as possible.
+- An open object means that properties can be both accessed or changed at any time.
 
 **Figure 1-4** Any method has access to every class property.
 
@@ -148,7 +153,13 @@ Airlines are software companies. In the highly competitive and complicated world
     }
 ```
 
-- Anything that you permit to happen, will happen.
+- Similar to the last example, an object that can be updated or changed at any time is undefined behavior waiting to happen.
+- Changing the internal state of an object should only be allowed through an explicit method that guards against any unintentional values.
+
+---
+:warning: Just because you would not make errant code change does not mean someone else would do the same. Defensive programming means guarding against yourself, and others.
+
+---
 
 #### The Frustration from Testing Public Setters Properly
 
@@ -178,6 +189,7 @@ Airlines are software companies. In the highly competitive and complicated world
 ```
 
 - Encapsulation reduces the number of possibilities the state of our objects can be in. This translates into less undefined behavior and bugs in our software.
+- Due to 
 
 ---
 
