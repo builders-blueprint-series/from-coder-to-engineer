@@ -12,6 +12,7 @@
 - Software is knowing what not to do
 - Bad code comes from either not knowing, or not caring, you can't know everything, but you can eliminate the second
 - Even though inheritance is a key pillar to object-oriented programming, we need to keep it to a minimum. The more inheritance we introduce in our system, the more issues we are inviting to happen.
+- There is good and bad inheritance in software, the key is knowing how to minimize the bad while taking full advantage of the good
 
 ## Goals
 
@@ -19,7 +20,9 @@ After completing this chapter will you will be able to...
 
 Understand how adding to already implemented classes can cause issues.
 
-Recognize that inheriting from multiple classes is unideal.
+Recognize that inheriting from multiple classes is not recommended.
+
+Distinguish between good and bad forms of inheritance.
 
 Realize that giving clients unimplemented interfaces will produce frustration.
 
@@ -35,7 +38,9 @@ Costco Wholesale is a big-box retail store that was founded in 1994 just outside
 
 ## Code
 
-### The Problem with Adding to Implementations (open/closed)
+### The Problem with Multiple Implementations (working title)
+
+- 
 
 #### The Inability to Test X
 

@@ -8,6 +8,8 @@
 
 ## Organization of this book
 
+- It is best to read this book from the start, chapter by chapter. Each chapter builds on the previous one.
+
 ## Errata
 
 ## Feedback

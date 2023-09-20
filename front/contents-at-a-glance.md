@@ -5,13 +5,32 @@
    2. Private methods
    3. Naked properties
 2. Inheritance
-   1. Adding to Implementations - Virtual and abstract
+   1. Many Implementations - Virtual and abstract (too many classes)
+      * Duplicated testing (status for elite customers)
+      * Unnecessary Inheritance (silver customer, gold customer)
+      * Inconsistent code
    2. Bad Base Classes - Liskov (pre/post-conditions/invariants, use interfaces)
+      (single class does too much)
+      * Break pre-condition (strengthen, require special condition for status)
+      * Break post-condition (weaken, allow elites to book with no availability)
+      * (Second highest form of coupling)
    3. Unimplemented Interfaces - Segregate Interfaces
+      * Inconsistent customer API
+      * Bad abstraction
 3. Coupling
    1. "new" keyword - Factory, Factory method
+      * Raw constructors are not declarative
+      * Raw constructors may be changed multiple times
+      * Raw constructors don't return anything
    2. Static - Bad vs Good, Loggers everywhere
+      * Good vs Bad static
+      * Factories can be static (no private fields)
+      * Utility functions can be static
+      * Instance members make bad static
+      * Class members depends
    3. Friendship/Internal
+      * Friendship breaks encapsulation (highest form of coupling)
+      * Friendship is a bad abstraction
 4. Polymorphism
    1. Bad Dependencies - Dependency Injection
    2. Relying on implementations - Dependency Inversion (DateTime, HttpClient, DbContext, SqlConnection, Loggers)
@@ -25,7 +44,7 @@
    2. Complex creations - Builder
    3. Complex procedural code - Strategy
 7. Common Interfaces
-   1. Responses - Envelope (null is a bad abstraction)
+   1. Responses - Envelope (null is a bad abstraction, exceptions are not control flow, update constructor validation with base Valid attribute)
    2. Services - Mediator
    3. Similar Queries - Query Object
 8. Repetition

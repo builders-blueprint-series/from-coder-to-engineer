@@ -43,6 +43,12 @@ Airlines are software companies. In the highly competitive and complicated world
 - Public setters are one of the most abused issues in software. But they are also one of the easiest to fix.
 - You can solve a lot of potential issues in your code by simply removing most if not all public setters from your code base.
 
+---
+
+:large_blue_circle: There are some instances where private setters may be necessary by a third-party framework.
+
+---
+
 #### Code Domain
 
 - This book will use the example of a fake reservation system for code samples. A reservation system allows us to cover a breadth of topics that have real life business applications.
@@ -91,7 +97,7 @@ Airlines are software companies. In the highly competitive and complicated world
 
 ---
 
-:warning: Anything that you allow to happen in software--will happen. It's only a matter of time. Including objects being initialized with improper values.
+:warning: Anything that you allow to happen in software, will happen. It's only a matter of time-including objects being initialized with improper values.
 
 ---
 
@@ -134,7 +140,7 @@ Airlines are software companies. In the highly competitive and complicated world
 
 #### Public setters expose a public api for private details
 
-- You want to keep classes closed as much as possible.
+- An open object means that properties can be both accessed or changed at any time.
 
 **Figure 1-4** Any method has access to every class property.
 
@@ -148,7 +154,14 @@ Airlines are software companies. In the highly competitive and complicated world
     }
 ```
 
-- Anything that you permit to happen, will happen.
+- Similar to the last example, an object that can be updated or changed at any time is undefined behavior waiting to happen.
+- Changing the internal state of an object should only be allowed through an explicit method that guards against any unintentional values.
+
+---
+
+:warning: Just because you would not make errant code change does not mean someone else would do the same. Defensive programming means guarding against yourself, and others.
+
+---
 
 #### The Frustration from Testing Public Setters Properly
 
@@ -178,6 +191,13 @@ Airlines are software companies. In the highly competitive and complicated world
 ```
 
 - Encapsulation reduces the number of possibilities the state of our objects can be in. This translates into less undefined behavior and bugs in our software.
+- Due to the infinite number of logical branches due to public setters, you would never be able to fully tests this code.
+
+---
+
+:warning: Static code analyzers do a good job, but not perfect with giving code coverage feedback. A class with public setters is never "fully" tested on a branch, line, or statement basis.
+
+---
 
 ---
 
@@ -286,7 +306,7 @@ Airlines are software companies. In the highly competitive and complicated world
     }
 ```
 
-- Moving our validation statement into the constructor has allowed us to encapsulate our validation of the object as well. Unfortunately this does present a series of issues when we attempt to test this new implementation.
+- Moving our validation statement into the constructor has allowed us to encapsulate our validation of the object as well. Unfortunately this presents a series of issues when we attempt to test this new implementation.
 
 **Figure 1-9** Unit testing our updated Customer validation logic
 
@@ -325,7 +345,7 @@ Airlines are software companies. In the highly competitive and complicated world
 
 ---
 
-- In our tests we are ensuring that our constructor does not throw and exception when it is supplied with valid arguments. Our second test confirms that any null value will result in an exception being thrown.
+- In our tests we are ensuring that our constructor does not throw an exception when it is supplied with valid arguments. Our second test confirms that any null value will result in an exception being thrown.
 
 ---
 
@@ -333,7 +353,7 @@ Airlines are software companies. In the highly competitive and complicated world
 
 ---
 
-- What happens if we have to add more properties to our class? Or test more than one scenario with our constructor? Current codes does not look for empty strings. Our validation does not work in other classes as well, we want easy reuse with our code.
+- What happens if we have to add more properties to our class? Or test more than one scenario with our constructor? The current code does not look for empty strings. Our validation will not work in other classes as well, we want easy reuse with our code.
 
 **Figure 1-10** Our Customer validating more specific scenarios
 
@@ -342,12 +362,9 @@ public class TooMuchCustomerValidationLogic
 {
     public TooMuchCustomerValidationLogic(string firstName, string lastName, string email)
     {
-        if (firstName != null
-                && firstName != string.Empty
-                && lastName != null
-                && lastName != string.Empty
-                && email != null
-                && email != string.Empty
+        if (!string.IsNullOrEmpty(firstName)
+                && !string.IsNullOrEmpty(lastName)
+                && !string.IsNullOrEmpty(email)
                 && Regex.IsMatch(firstName, @"^[a-zA-Z]+$")
                 && Regex.IsMatch(lastName, @"^[a-zA-Z]+$")
                 && Regex.IsMatch(email, @"\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b"))
@@ -456,7 +473,7 @@ public class TooMuchCustomerValidationLogic
     }
 ```
 
-- With our validation logic encapsulated and tested, we can reuse these methods in any other domain classes that needed validation. We made it easier to test our application and promote code reuse in the same step.
+- With our validation logic encapsulated and tested, we can reuse these methods in any other domain classes that need validation. We made it easier to test our application and promote code reuse in the same step.
 
 #### The Result of Zero Public Setters
 
@@ -582,7 +599,7 @@ public class TooMuchCustomerValidationLogic
     }
 ```
 
-- Our issue is stark-the compiler does not allow us to access private methods because the are by definition private. What we need is a public API to create unit tests from, but we do not want to change our method from private to public because we would be exposing a method that was not intended to be exposed.
+- Our issue is stark-the compiler does not allow us to access private methods because they are by definition private. What we need is a public API to create unit tests from, but we do not want to change our method from private to public because we would be exposing a method that was not intended to be exposed.
 
 ---
 
@@ -694,7 +711,7 @@ public class TooMuchCustomerValidationLogic
     }
 ```
 
-- My having the AvailabilityMatchesCustomer method now use the Customer internal properties instead of accepting them as parameters we have simplified our method and how it is called in the ReservationService significantly.
+- By having the AvailabilityMatchesCustomer method now use the Customer internal properties instead of accepting them as parameters we have simplified our method and how it is called in the ReservationService significantly.
 
 ---
 
@@ -932,8 +949,6 @@ public class TooMuchCustomerValidationLogic
 ```
 
 - There is not _technically_ wrong with this test--but we are approaching the limit to how many parameters we should be passing into the constructor.
-
-// ADD ANOTHER SECTION WITH TESTING THE DATE RANGE BUT HAVING TO PASS IN NAME PARAMETERS !!!!!!!!
 
 ---
 
