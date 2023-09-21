@@ -40,7 +40,206 @@ Costco Wholesale is a big-box retail store that was founded in 1994 just outside
 
 ### The Problem with Multiple Implementations (working title)
 
-- 
+#### Code Domain
+
+- We will continue with our Reservation system. Our business requirements have changed to allow for a loyalty system that rewards frequent guests.
+- The business wants a system that allow us to identify and reward elite customers with benefits for being a frequent customer.
+
+---
+
+:large_blue_circle: Constantly changing requirements are a reality in all businesses. Legal, leadership, and customer demands are constantly changing-and your software will have to adapt.
+
+---
+
+- Our domain has a new class to identify an elite customer. This class will contain base logic for all elite customer.
+- Any special elite tiers will be a separate class to hold specific logic related to that elite tier.
+
+**Figure 2-x** Elite customer classes
+
+```csharp
+public class EliteCustomer : Customer
+{
+    // Properties and methods for Elite customers
+
+    public virtual decimal ApplyDiscount(decimal amount)
+    {
+        return amount * .90m;
+    }
+}
+```
+
+- Our first class will be an "EliteCustomer" that inherits from Customer so we get to enjoy the benefits of inheritance.
+- This class contains logic related to all elite customers and will serve as a base class for all future elite tiers.
+
+**Figure 2-x** Silver elite customer
+
+```csharp
+public class SilverCustomer : EliteCustomer
+{
+    // More overrides for Silver elites.
+
+    public override decimal ApplyDiscount(decimal amount)
+    {
+        return amount * .85m;
+    }
+}
+```
+
+- Our first tier is for Silver elites. Currently Silver elites enjoy a larger discount that is accomplished by overriding the base method.
+
+**Figure 2-x** Gold elite customer
+
+```csharp
+public class GoldCustomer : EliteCustomer
+{
+    // More overrides for Gold elites.
+
+    public override decimal ApplyDiscount(decimal amount)
+    {
+        return amount * .80m;
+    }
+}
+```
+
+- Our highest tier is for Gold elites who enjoy the largest discount from their status.
+
+#### Multiple Implementations require extra testing
+
+- Having multiple implementations means that each class will require its own suite of unit tests.
+- Since each of our classes is overriding the same method, there is a degree of duplication between the tests since we are testing the same functionality in each class.
+
+**Figure 2-x** Unit tests for elite customers
+
+```csharp
+[TestClass]
+public class EliteCustomerTests
+{
+    [TestMethod]
+    public void ApplyDiscount_IsCorrect()
+    {
+        var customer = new EliteCustomer();
+
+        var result = customer.ApplyDiscount(100m);
+
+        Assert.AreEqual(90m, result);
+    }
+}
+```
+
+```csharp
+[TestClass]
+public class SilverCustomerTests
+{
+    [TestMethod]
+    public void ApplyDiscount_IsCorrect()
+    {
+        var customer = new SilverCustomer();
+
+        var result = customer.ApplyDiscount(100m);
+
+        Assert.AreEqual(85m, result);
+    }
+}
+```
+
+```csharp
+[TestClass]
+public class GoldCustomerTests
+{
+    [TestMethod]
+    public void ApplyDiscount_IsCorrect()
+    {
+        var customer = new GoldCustomer();
+
+        var result = customer.ApplyDiscount(100m);
+
+        Assert.AreEqual(80m, result);
+    }
+}
+```
+
+- Having to perform the same unit test for each class is tedious and is error prone when one is tempted to copy and paste code that is similar.
+
+#### Changes in base classes may cascade unwanted changes
+
+- When a change is made in a base class that is a dependency for other classes down the line, it may warrant unwanted changes.
+- One situation for this may be to only allow elite customers to only have X amount of discounts in a certain time frame.
+
+**Figure 2-x** Elite customer with an updated method
+
+```csharp
+public class EliteCustomerUpdated : Customer
+{
+    // Properties and methods for Elite customers
+
+    public virtual decimal ApplyDiscount(decimal amount, bool isEligible)
+    {
+        if (isEligible)
+        {
+            return amount * .90m;
+        }
+
+        return amount;
+    }
+}
+```
+
+- Our method to apply a discount has been updated to accept a boolean flag to signal a customer is eligible for a discount.
+
+**Figure 2-x** Updated silver customer
+
+```csharp
+public class SilverCustomerUpdated : EliteCustomerUpdated
+{
+    public override decimal ApplyDiscount(decimal amount, bool isEligible)
+    {
+        if (isEligible)
+        {
+            return amount * .85m;
+        }
+
+        return amount;
+    }
+}
+```
+
+- And our Gold elite customer would be updated as so.
+
+```csharp
+public class GoldCustomer : EliteCustomerUpdated
+{
+    // More overrides for Gold elites.
+
+    public override decimal ApplyDiscount(decimal amount, bool isEligible)
+    {
+        if (isEligible)
+        {
+            return amount * .80m;
+        }
+
+        return amount;
+    }
+}
+```
+
+- Our Silver and Gold elite customers are updated as well to account for the method signature change in our base class.
+
+---
+
+:x: Small changes that result in many changes downstream is commonly referred to as "Shotgun Surgery" due to a single source inflicting multiple wounds.
+
+---
+
+#### Changes in base classes may result in undefined behavior
+
+- One side effect from the updated EliteCustomer may be undefined behavior that cascades into derived classes.
+- What if our Gold elite customer had no cap on their discount eligibility?
+
+**Figure 2-x** Gold elite customer can ignore eligibility
+
+```csharp
+
+```
 
 #### The Inability to Test X
 
