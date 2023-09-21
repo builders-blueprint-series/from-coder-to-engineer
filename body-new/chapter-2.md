@@ -38,7 +38,7 @@ Costco Wholesale is a big-box retail store that was founded in 1994 just outside
 
 ## Code
 
-### The Problem with Multiple Implementations (working title)
+### The Problem with Multiple Implementations
 
 #### Code Domain
 
@@ -160,7 +160,7 @@ public class GoldCustomerTests
 
 - Having to perform the same unit test for each class is tedious and is error prone when one is tempted to copy and paste code that is similar.
 
-#### Changes in base classes may cascade unwanted changes
+#### Changes in base classes cascade new behavior
 
 - When a change is made in a base class that is a dependency for other classes down the line, it may warrant unwanted changes.
 - One situation for this may be to only allow elite customers to only have X amount of discounts in a certain time frame.
@@ -205,6 +205,8 @@ public class SilverCustomerUpdated : EliteCustomerUpdated
 
 - And our Gold elite customer would be updated as so.
 
+**Figure 2-x** Updated gold customer
+
 ```csharp
 public class GoldCustomer : EliteCustomerUpdated
 {
@@ -223,6 +225,38 @@ public class GoldCustomer : EliteCustomerUpdated
 ```
 
 - Our Silver and Gold elite customers are updated as well to account for the method signature change in our base class.
+- These changes may not seems like much, but we will have to update our unit tests as well.
+
+**Figure 2-x** Our elite customer updated with new unit tests
+
+```csharp
+[TestClass]
+public class EliteCustomerUpdatedTests
+{
+    [TestMethod]
+    public void ApplyDiscount_Eligible_IsCorrect()
+    {
+        var customer = new EliteCustomerUpdated();
+
+        var result = customer.ApplyDiscount(100m, true);
+
+        Assert.AreEqual(90m, result);
+    }
+
+    [TestMethod]
+    public void ApplyDiscount_InEligible_IsCorrect()
+    {
+        var customer = new EliteCustomerUpdated();
+
+        var result = customer.ApplyDiscount(100m, false);
+
+        Assert.AreEqual(100m, result);
+    }
+}
+```
+
+- We would still need to update **both** our silver and gold customer unit tests as well.
+- It should be obvious that just by adding a single parameter to a base class has resulting in an exponential amount of changes that much occur downstream.
 
 ---
 
@@ -234,22 +268,87 @@ public class GoldCustomer : EliteCustomerUpdated
 
 - One side effect from the updated EliteCustomer may be undefined behavior that cascades into derived classes.
 - What if our Gold elite customer had no cap on their discount eligibility?
+- We still need to keep the flag for the other tiers, so the answer is to simply ignore it for gold customers.
 
 **Figure 2-x** Gold elite customer can ignore eligibility
 
 ```csharp
+public class GoldCanIgnoreEligibility : EliteCustomerUpdated
+{
+    // More overrides for Gold elites.
 
+    public override decimal ApplyDiscount(decimal amount, bool isEligible)
+    {
+        return amount * .80m;
+    }
+}
 ```
 
-#### The Inability to Test X
+- In this situation our "isEligible" parameter goes unused and is discarded by the method.
+- Clients are unaware that this property is discarded and may result in undefined behavior if they try to pass in the value true for the flag.
 
-> :large_blue_circle: We are using a switch expression which is a more compact type of switch statement. The logic is the same as a normal switch statement.
+**Figure 2-x** Updated unit tests with undefined behavior
 
-> :heavy_check_mark: Removing a constructor parameter has further encapsulated our class. Clients now have zero knowledge that our CustomerStatus enum exists.
+```csharp
+[TestClass]
+public class GoldCanIgnoreEligibilityTests
+{
+    [TestMethod]
+    public void ApplyDiscount_Eligible_IsCorrect()
+    {
+        var customer = new GoldCanIgnoreEligibility();
 
-- Breaking our Customer class into specific classes for each type of customer is an example of SRP. (Single Responsibility Principle) Each class is only responsible for dealing with a specific customer type.
+        var result = customer.ApplyDiscount(100m, true);
 
-> :warning: Don't fret about applying SRP everywhere. Like most things in software engineering, there's a place and time for everything.
+        Assert.AreEqual(80m, result);
+    }
+
+    [TestMethod]
+    public void ApplyDiscount_InEligible_IsCorrect()
+    {
+        var customer = new GoldCanIgnoreEligibility();
+
+        var result = customer.ApplyDiscount(100m, false);
+
+        // This will fail even though we tell the method not to apply the discount.
+        Assert.AreEqual(100m, result);
+    }
+}
+```
+
+- In our second test the method requires us to pass the eligibility flag which we have set the false. While we expect the assertion to be correct, it will fail since the flag is ignored by the method.
+
+#### The Frustration with Testing Multiple Implementations
+
+**Figure 2-x** Class dependency diagram for customers
+
+![customer class diagram](../images/chapter-2/customer_class_diagram.png)
+
+- A UML class diagram shows how our classes hold dependencies to other classes. The root of the issue is that we have multiple levels of inheritance.
+- When a change is made is Customer or EliteCustomer, any change must trickle down to all other classes that inherit from these base classes.
+
+---
+
+:heavy_check_mark: Inheritance is best when employed in a minimum dependency chain. The fewer levels, the easier you codebase can adapt to change.
+
+---
+
+- If we only had one level of inheritance, our code would be much easier to maintain and test.
+- One level of inheritance would allow us to keep all common code in our Customer class, then override anything required in derived classes.
+
+---
+
+:warning: Inheritance is the second highest form of coupling after friendship. Stay vigilant against excessive inheritance as you are aware it _will_ cause problems.
+
+---
+
+- Language like C# and Java have made it easier to deal with inheritance by explicating now allowing you to employ multiple inheritance. Multiple inheritance suffers from the "triangle problem" where classes B and C inherit from A, but class D inherits from both B and C.
+
+---
+
+:x: C# still allows you to use multiple inheritance via interfaces. The triangle problem will still exist in a less punishing form.
+
+---
 
 #### Transforming X to Y
 
@@ -283,6 +382,14 @@ public class GoldCustomer : EliteCustomerUpdated
 
 ### The Problem with Unimplemented Interfaces (interface segregation)
 
+- We saw a similar issue with an unused interface with our original gold customer class when it discarded the eligibility flag.
+
+---
+
+:warning: Interface segregation goes beyond ignoring a method signature. It applies to any property, field, or method parameter that goes unused.
+
+---
+
 #### The Inability to Test X
 
 #### Transforming X to Y
@@ -313,10 +420,18 @@ public class GoldCustomer : EliteCustomerUpdated
 
 ### Simple paragraph that comes back to testing. Two sentences for summary, transition, go to next steps
 
-:x: Multiple inheritance is not allowed in most modern language because it produces far more problems than it solves.
-
-:warning: Inheritance is the second highest form of coupling after friendship. Stay vigilant against excessive inheritance as it _will_ cause problems.
-
 :large_blue_circle: Software is about have the least amount of dependencies as possible. The fewer dependencies, the more our software can adapt and change at will.
 
-:large*blue_circle: It's easy to confuse abstract and virtual. The key to remember is that virtual methods \_may* be overridden, while abstract methods _must_ be overridden.
+---
+
+:large_blue_circle: It's easy to confuse abstract and virtual. The key to remember is that virtual methods may be overridden, while abstract methods must be overridden.
+
+---
+
+> :large_blue_circle: We are using a switch expression which is a more compact type of switch statement. The logic is the same as a normal switch statement.
+
+> :heavy_check_mark: Removing a constructor parameter has further encapsulated our class. Clients now have zero knowledge that our CustomerStatus enum exists.
+
+- Breaking our Customer class into specific classes for each type of customer is an example of SRP. (Single Responsibility Principle) Each class is only responsible for dealing with a specific customer type.
+
+> :warning: Don't fret about applying SRP everywhere. Like most things in software engineering, there's a place and time for everything.

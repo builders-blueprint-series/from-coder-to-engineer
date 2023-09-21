@@ -5,10 +5,7 @@
    2. Private methods
    3. Naked properties
 2. Inheritance
-   1. Many Implementations - Virtual and abstract (too many classes) (multiple inheritance, customer -> elite customer -> silver and gold from elite)
-      * Duplicated testing (status for elite customers)
-      * Unnecessary Inheritance (silver customer, gold customer)
-      * Inconsistent code
+   1. Multiple Implementations
    2. Bad Base Classes - Liskov (pre/post-conditions/invariants, use interfaces)
       (single class does too much)
       * Break pre-condition (strengthen, require special condition for status)
