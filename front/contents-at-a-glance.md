@@ -5,7 +5,7 @@
    2. Private methods
    3. Naked properties
 2. Inheritance
-   1. Many Implementations - Virtual and abstract (too many classes)
+   1. Many Implementations - Virtual and abstract (too many classes) (multiple inheritance, customer -> elite customer -> silver and gold from elite)
       * Duplicated testing (status for elite customers)
       * Unnecessary Inheritance (silver customer, gold customer)
       * Inconsistent code
