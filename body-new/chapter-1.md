@@ -26,6 +26,10 @@ Spot where naked collections and properties can be consolidated
 - Properly encapsulated code limits options, shortens the feedback loop, and enforces simplicity through a common interface
 - If you only take away one idea from this book, it is to protect the integrity of your applications' encapsulation at all costs
 
+<!-- STRESS THAT TESTING == INSURANCE -->
+
+<!-- be more explicit with intent of code progression -->
+
 ## Wisdom
 
 > "You're on a need-to-know basis, and you don't need to know." (Simpson, Bruckheimer, & Bay, 1996).
@@ -956,6 +960,8 @@ public class TooMuchCustomerValidationLogic
 
 ---
 
+<!-- the limit for parameters is a "feeling" -->
+
 - What we are really passing into our Customer object should not be an assortment of random name-like values, but a name object itself.
 
 ##### Step 1: Create an encapsulated Name object
@@ -1172,11 +1178,17 @@ public class TooMuchCustomerValidationLogic
 
 - Our Name object's constructor is updated to create a validator for itself and calls the Validate method. The result is a Name object with its validation encapsulated.
 
+<!-- MENTION HOW VALIDATION WILL BE UPDATED LATER -->
+
+<!-- EXPLAINED HOW EXCEPTIONS ARE ACTUALLY "UNEXPECTED" -->
+
 #### The Result after Encapsulating Properties and Collections
 
 #### The Ability to Test Encapsulated Properties
 
 ## Hard Truth
+
+<!-- You're probs gonna have more testing code than production code -->
 
 ### Coding is easy. Engineering is hard
 

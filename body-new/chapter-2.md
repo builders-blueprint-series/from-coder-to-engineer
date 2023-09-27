@@ -7,7 +7,7 @@
 - Virtual and Abstract
 
 ## Introduction
-
+<!-- testing SHOULD be stated up front and then permeate the entire chapter, recall it throughout -->
 - Software engineering is not black and white, its a sea a gray
 - Software is knowing what not to do
 - Bad code comes from either not knowing, or not caring, you can't know everything, but you can eliminate the second
