@@ -30,7 +30,24 @@
       * Friendship is a bad abstraction
 4. Polymorphism
    1. Bad Dependencies - Dependency Injection
-   2. Relying on implementations - Dependency Inversion (DateTime, HttpClient, DbContext, SqlConnection, Loggers)
+
+Injecting the Service Container
+Resolving from the Service Container
+Using Statements as "DI"
+Injection other than constructor
+[FromServices] Tag
+Fancy Injection - anything other than give me interface (configuration is exception)
+Fancy Registration - anything other than this equals that
+Service Locators in application code
+Writing your own DI container
+Modyfing the existing DI container
+Swalling registrations - singleton accepting transient
+Bad registration - not knowing how to register things
+Injecting excessive dependencies 5+
+Null checks on injected services
+
+
+   2. Relying on implementations - Dependency Inversion (DateTime, HttpClient, DbContext, SqlConnection, Loggers, SOAP Client Factories)
    3. Small Variations - Generics & Constraints
 5. Abstraction
    1. Logic in the wrong place - everything data fetch/Validation/logic in app
@@ -66,6 +83,8 @@ From Code to Components - Brooklyn
 From Code to Patterns - Tower
 From Code to Architecture - Pont du Gard
 From Code to Clouds - Coronado/Sunshine Skyway
+From Code to Structure - Four pillars of software
+From Code to Domains - Move data bags to DDD
 
 ![Bridge](title_cover.png)
 
