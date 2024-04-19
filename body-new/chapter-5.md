@@ -18,7 +18,7 @@ Learn how we can reduce service dependencies by utilizing a common pattern.
 
 ## Introduction
 
-- Abstraction is the final main topic in object-oriented programming.
+- Abstraction is a major topic in object-oriented programming.
 - Abstraction is confusing at first because it shares common principles to Encapsulation.
 - Abstraction is hiding how something is implemented vs hiding information.
 - Maps are great examples of an abstraction because it gives us enough general knowledge, but doesn't fuss with unnecessary details.
