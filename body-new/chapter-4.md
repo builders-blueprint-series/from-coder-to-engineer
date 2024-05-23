@@ -47,5 +47,20 @@ The "hollywood principle" is a well known in the entertainment industry as a sta
 
 ## Code
 
-### 
+### The Problem with Relying on Concrete Types
 
+- When I talk about hard implementations or concrete classes, I am mostly referring to those that deal with either persistence or going across a wire.
+- Concrete types put you as the developer in a box that does not allow for automated testing
+- Concrete types do allow all us to provide a mock as a substitute in testing
+
+---
+
+:large_blue_circle: The domain classes discussed in previous chapters do not apply here because they are only involved with data and functions that operated on said data.
+
+---
+
+#### Concrete Types Are Not Mockable
+
+- Concrete types are unable to be mocked by any unit testing framework
+
+**Figure 5-1** 
