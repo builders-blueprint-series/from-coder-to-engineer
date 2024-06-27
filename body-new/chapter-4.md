@@ -161,7 +161,7 @@ public class MyService
 
 #### Using the "FromServices" attribute
 
-In web based applications, it is possible to annotate a dependency in a controller action with the "FromServices" attribute tag. This will tell the container to inject the dependency into the controller action when it is called. This is another example of a leaky abstraction. The application is fully aware of a DI container due to the attribute.
+- In web based applications, it is possible to annotate a dependency in a controller action with the "FromServices" attribute tag. This will tell the container to inject the dependency into the controller action when it is called. This is another example of a leaky abstraction. The application is fully aware of a DI container due to the attribute.
 
 ```csharp
 [HttpPost]
@@ -170,3 +170,23 @@ public IActionResult PostRequest([FromServices] IMyDependency dependency)
     // Implement method.
 }
 ```
+
+#### Injecting Non-Reference Values
+
+- Dependency Injection is a fancy way of implementing the Proxy pattern automatically for you. With the primary purpose of being able to use a different implementation type for automated testing purposes. In almost all cases, we use interfaces or static (singleton) concrete objects for dependency injection.
+
+```csharp
+public class MyService
+{
+    public string _myDependency _dependency;
+
+    public class MyService(string dependency)
+    {
+        _dependency = dependency;
+    }
+
+    // Methods below here.
+}
+```
+
+- If the string is for configuration purposes, then you should yield to using the "IConfiguration" interface, or place it in a defined type. Registering individual strings is not allowed in most DI frameworks, or is confusing at best.
