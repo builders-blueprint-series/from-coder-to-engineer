@@ -178,7 +178,7 @@ public IActionResult PostRequest([FromServices] IMyDependency dependency)
 ```csharp
 public class MyService
 {
-    public string _myDependency _dependency;
+    public string _dependency;
 
     public class MyService(string dependency)
     {
@@ -190,3 +190,116 @@ public class MyService
 ```
 
 - If the string is for configuration purposes, then you should yield to using the "IConfiguration" interface, or place it in a defined type. Registering individual strings is not allowed in most DI frameworks, or is confusing at best.
+
+#### Registering Dependencies in Abnormal Ways
+
+- Dependencies should only be registered in one of two ways:
+
+1) A single concrete class to a single interface
+2) A single concrete class by itself for static configuration values
+
+Some DI frameworks allow fancier ways of registration such as via lambda expressions, conditional injection, property injection, or dynamic registrations. These are all unnecessary and will only complicated the application for yourself and others.
+
+#### Using Service Locators
+
+- Service Locators have a time and place, but that time and place does not involve application level code.
+
+A service locator works in a similar fashion to a DI container, however in many cases you have to explicitly ask for what service you are looking for. This is the antithesis of what DI should be. DI is all about defining what dependencies you need at runtime and the container giving them to your application when needed.
+
+```csharp
+public class MyService
+{
+    private readonly IMyDependency _dependency;
+
+    public MyService(IServiceLocator locator)
+    {
+        _dependency = locator.FindService<IMyDependency>();
+    } 
+}
+```
+
+- Service locators are leaky abstractions. Your application should be unaware of any hard dependencies. Even though the service locator is in the form of an interface, it still leaks to the application details that the locator exists.
+
+#### Writing Your Own DI Container
+
+- There are much more important things to focus on in your application than worrying about having a customer DI implementation. If you feel that you need to write your own implementation to service a specific purpose-you've lost the plot. It is important to ask yourself why you feel you need to write a custom container, and then see if another solution exists where the default one will satisfy your needs.
+
+#### Modifying or Extending the Existing Container
+
+- In the same vein as above, if you so desire a feature that does not exist in the default implementation ask yourself why are you are seeking to modify the container. Again, there is a high chance this is not required and the default solution will fit your needs just fine.
+
+#### Swallowing Registrations
+
+- When you are registering dependencies, you need to make sure that you are registering implementations with the correct lifespan. Swallowing registrations entails one dependency holding on, or not letting another resource be reclaimed because it has a longer lifespan.
+
+In the following example, class A is a singleton that has a dependency on class B, with a transient lifespan. However, because A will never be reclaimed, B will also never be reclaimed as well.
+
+```csharp
+container.RegisterSingleton<ClassA>();
+container.RegisterTransient<ClassB>();
+```
+
+The code shows that ClassB is never released because ClassA will never be reclaimed.
+
+```csharp
+public class ClassA()
+{
+    // ClassB is now effectively a Singleton because A will never be garbage collected.
+    private readonly ClassB _b;
+
+    public ClassA(ClassB B)
+    {
+        _b = B;
+    }
+}
+```
+
+- Remember when you are defining the lifespans of objects to never let transient objects be dependencies of scoped or singletons, or for transients to be dependencies of scoped objects. This may result in undefined behavior for your application when it expects an object to be reclaimed by the garbage collector when in reality, it stays allocated in memory.
+
+#### Injecting Excessive Dependencies
+
+- There is no hard rule for how many dependencies should or should not be in a class, however I have found that the hard limit is five. More or equal to this and testing becomes annoying very fast.
+
+- Remember that every dependency you inject into a class means one more that must be mocked in an automated test. More than three will be annoying, and more than four will be downright frustrating.
+
+```csharp
+public class MyServiceTests
+{
+    private readonly IFirstDependency _first;
+    private readonly ISecondDependency _second;
+    private readonly IThirdDependency _third;
+    private readonly IFourthDependency _fourth;
+    private readonly IFifthDependency _fifth;
+
+    public MyServiceTests()
+    {
+        _first = new Mock<IFirstDependency>();
+        _second = new Mock<ISecondDependency>();
+        _third = new Mock<IThirdDependency>();
+        _fourth = new Mock<IFourthDependency>();
+        _fifth = new Mock<IFifthDependency>();
+    }
+}
+```
+
+- The unit test above shows the boilerplate required just to to get the test wired up and working. This is not code that you will want to maintain long-term as the tests associated with this kind of excessive code tent to be brittle and break easily due to the high number of logical branches involved.
+
+#### Null Checks on Injected Services
+
+- When you run your application, the container will run a series of checks to ensure that everything has been wired up correctly. An exception will be thrown in the case that you have missed something.
+
+```csharp
+public class MyService
+{
+    private readonly IMyDependency? _dependency;
+
+    public MyService(IMyDependency? dependency)
+    {
+        _dependency = dependency ?? throw new ArgumentNullException(nameof(dependency));
+    }
+}
+```
+
+- Checking injected services for null is a bad paradigm because you are creating two logical branches every time the object is dereferenced. This will lead to lots of unnecessary automated tests that serve no purpose.
+
+- Do not try to silence the complier in your code with the "!" operator. This will lead to undefined behavior in edge cases when the reference actually is null. The best way to avoid nullable values is not to have them in the first place. The DI container will ensure that all dependencies are valid at runtime or it will warn you with an exception when your application launches.
