@@ -29,8 +29,8 @@
       * Friendship breaks encapsulation (highest form of coupling)
       * Friendship is a bad abstraction
 4. Polymorphism
-   1. Bad Dependencies - Dependency Injection
-   2. Relying on implementations - Dependency Inversion (DateTime, HttpClient, DbContext, SqlConnection, Loggers, SOAP Client Factories)
+   1. Relying on Implementations - Dependency Inversion (DateTime, HttpClient, DbContext, SqlConnection, Loggers, SOAP Client Factories)
+   2. Bad Dependencies - Dependency Injection
    3. Small Variations - Generics & Constraints
 5. Abstraction
    1. Logic in the wrong place - everything data fetch/Validation/logic in app
