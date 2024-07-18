@@ -59,9 +59,54 @@ The "hollywood principle" is a well known in the entertainment industry as a sta
 
 ---
 
-#### Concrete Types Are Not Mockable
+#### Concrete Types Do Not Expose An Interface
 
-- Concrete types are unable to be mocked by any unit testing framework
+- Concrete types such as HttpClient, the standard DateTime class, DbContext, SqlConnection, certain Loggers, and SOAP client factories all suffer from the same fundamental flaw. They do not have a native interface that can be utilized for automated testing purposes.
+
+```csharp
+public class MyService
+{
+    private readonly HttpClient _httpClient;
+
+    public MyService()
+    {
+        _httpClient = HttpClientFactory.Instantiate();
+    }
+
+    public IEnumerable<Person> GetPeople()
+    {
+        var result = _httpClient.Get<IEnumerable<Person>>("www.someApi.com/people/");
+
+        return result ?? new List<Person>();
+    }
+}
+```
+
+- Concrete types are unable to be mocked by any unit testing frameworks. This means that anytime you have a method that uses one of these classes-you are inhibited from mocking the method properly.
+
+```csharp
+[TestClass]
+public class MyServiceTests
+{
+    private readonly MyService _myService;
+
+    public class MyServiceTests()
+    {
+        _myService = new MyService();
+    }
+
+    [TestMethod]
+    public void GetPeople_Success_ReturnsList()
+    {
+        // The method still tries to hit the real API, not a fake one.
+        var result = _myService.GetPeople();
+
+        Assert.AreEqual(2, result.Count());
+    }
+}
+```
+
+- Being tied to concrete classes means that we are limited to what we can-and can't automated with our testing. If you consider the number of classes mentioned above, that can translate into a large amount of code. The issue then further compounds considering those classes typically deal with data access, logging, and time stamps. Code in that realm is very sensitive and fully-requires us to have a battery of tests to ensure that we are doing things correctly.
 
 **Figure 5-1**
 
