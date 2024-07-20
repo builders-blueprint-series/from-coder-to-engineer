@@ -5,6 +5,7 @@
         "Liskov",
         "nameof",
         "Numer",
-        "Razzle"
+        "Razzle",
+        "typeof"
     ]
 }

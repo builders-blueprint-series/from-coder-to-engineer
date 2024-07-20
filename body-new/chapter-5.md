@@ -1,7 +1,13 @@
 # Abstraction
 
+<!-- Chapter Concepts -->
+<!-- Logic in the wrong place - data fetch/Validation/logic in app -->
+<!-- Excessive parameters - Command -->
+<!-- Excessive dependencies - Chain of Responsibility -->
+
 ## Key Terms
 
+- Abstraction
 - Command
 - Chain of Responsibility
 - Layering
@@ -29,6 +35,8 @@ Learn how we can reduce service dependencies by utilizing a common pattern.
 
 ## Simple Success - The Mercator Projection
 
+The Mercator projection is a map of the world, but it is a certain type of projection. It gets its name from its creator, Gerardus Mercator from all the way back in 1569. The map is specifically designed to aide ships in navigation. It introduced many common attributes we associate with map today such as north being up, and the general preservation of shapes and sizes. Where the Mercator projection is different is that it preserves the course of any ship to any point in the map. A ship could start on any position on earth, sail in the exact heading the map indicated, and it would eventually end up where the map pointed to. It's main purpose was to preserve navigation courses. The main drawback of the map is that the closer you get to the poles, the more the land masses had to be enlarged. That is why greenland and antarctica look are lot bigger than they actually are. The Mercator projection is simple cause it has a sole singular purpose, to aid ships in navigation. It just happened to do everything else so well, it became one of the standard ways we have taught the general geography of the earth for centuries now.
+
 ## Code
 
 ### The Problem with Logic in the Wrong Place
@@ -38,11 +46,12 @@ Learn how we can reduce service dependencies by utilizing a common pattern.
 - Each part of your application should interact via interfaces or simple objects that do not allow details to seep or float into other layers that should not be privy to those details.
 
 ---
+
 :large_blue_circle: One way to visualize layers in an application is to think of each as a project or separate dll. This allows you to both mentally and physically separate them easily.
 
 ---
 
-#### Poorly abstracted Application layer inhibits testing
+#### Poorly abstracted Application layer exposes details
 
 **Figure 4-x** A controller class for Reservations
 
@@ -51,18 +60,18 @@ Learn how we can reduce service dependencies by utilizing a common pattern.
 [ApiController]
 public class ReservationController : ControllerBase
 {
-    private readonly IReservationRepository _repository;
+    private readonly DBContext _dbContext;
 
-    public ReservationController(IReservationRepository repository)
+    public ReservationController(DbContext dbContext)
     {
-        _repository = repository;
+        _dbContext = dbContext;
     }
 
     [HttpGet(Name = "GetReservationById")]
     [ProducesResponseType(typeof(ReservationResponse), StatusCodes.Status200OK)]
     public IActionResult ReservationById(Guid id)
     {
-        var reservation = _repository.GetById(id);
+        var reservation = _dbContext.Reservations.FindById(id);
 
         var response = ReservationFactory.FromReservation(reservation);
 
@@ -72,10 +81,11 @@ public class ReservationController : ControllerBase
 ```
 
 - In the sample above we have a simple API controller with one action that will retrieve a reservation by an identifier. The code is fully testable.
-- The issue is that our presentation layer, the API, should have zero knowledge of *how* an object is retrieved from persistence or how it is transformed.
+- The issue is that our presentation layer, the API, should have zero knowledge of _how_ an object is retrieved from persistence or how it is transformed.
 - When any layer of your application is privy to details it should not be aware of-a bad abstraction is present. Bad abstractions will either inhibit or restrict future change in the application.
 
 ---
+
 :warning: Do not assume that the specifics of your presentation layer will always stay the same. If you need to change from a REST API to gRPC or GraphQL later-modifying your code will be painful because you will need to change a lot more than if you had just dealt with a simple interface method.
 
 ---
@@ -115,6 +125,7 @@ public class ReservationService
 - Just like how the presentation layer should not know how entities are persisted or transformed, the application layer should not be aware of how the data is finally returned to the client.
 
 ---
+
 :warning: In the previous section, details from the application layer seeped up into the presentation layer. In this example, details are leaking down.
 
 ---
@@ -122,6 +133,15 @@ public class ReservationService
 #### Poorly abstracted Infrastructure layer exposes details
 
 ---
+
 :heavy_check_mark: Layers should communicate via interfaces. This keeps each layer abstracted from another and keeps testing simple and easy. Typically interfaces live in the same layer they are used in and are implemented in an separate project.
 
 ---
+
+### The Problem with Excessive Parameters
+
+#### Excessive Parameters Cascade Changes Down
+
+### The Problem with Excessive Dependencies
+
+#### Excessive Dependencies Hinder Testing
