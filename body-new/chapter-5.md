@@ -51,13 +51,22 @@ The Mercator projection is a map of the world, but it is a certain type of proje
 
 ---
 
+
+If you are new to the terms layers or boundaries, do not fret. Software engineering uses a lot of overloaded terms that can have the same meaning. We are primarily concerned with keeping logic in the correct place to enable proper automated testing.
+
+---
+
+:heavy_check_mark: When we separate our application into different layers, we are employing Dependency Inversion. Using interfaces as a primary means to communicate between the boundaries of our application.
+
+---
+
 #### Poorly abstracted Application layer exposes details
 
-**Figure 4-x** A controller class for Reservations
+**Figure 5-x** A controller class for Reservations
 
 ```csharp
-[Route("[controller]")]
 [ApiController]
+[Route("[controller]")]
 public class ReservationController : ControllerBase
 {
     private readonly DBContext _dbContext;
@@ -68,14 +77,12 @@ public class ReservationController : ControllerBase
     }
 
     [HttpGet(Name = "GetReservationById")]
-    [ProducesResponseType(typeof(ReservationResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Reservation), StatusCodes.Status200OK)]
     public IActionResult ReservationById(Guid id)
     {
         var reservation = _dbContext.Reservations.FindById(id);
 
-        var response = ReservationFactory.FromReservation(reservation);
-
-        return Ok(response);
+        return Ok(reservation);
     }
 }
 ```
@@ -87,6 +94,14 @@ public class ReservationController : ControllerBase
 ---
 
 :warning: Do not assume that the specifics of your presentation layer will always stay the same. If you need to change from a REST API to gRPC or GraphQL later-modifying your code will be painful because you will need to change a lot more than if you had just dealt with a simple interface method.
+
+---
+
+
+
+---
+
+:large_blue_circle: The best way to divide a dotnet project into layers is to separate by projects. This allows us to specifically define the dependencies of each project.
 
 ---
 

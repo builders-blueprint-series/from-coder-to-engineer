@@ -44,19 +44,19 @@
 
 ### The Problem with X
 
-### The Inability to Test X
+#### The Inability to Test X - Doing X does/does not allow for Y
 
-### Transforming X to Y
+#### Transforming X to Y
 
-#### Step 1
+##### Step 1
 
-#### Step 2
+##### Step 2
 
-#### Step N
+##### Step N
 
-### The Result of Y
+#### The Result of Y
 
-### The Ability to Test Y
+#### The Ability to Test Y
 
 ## Truth
 
