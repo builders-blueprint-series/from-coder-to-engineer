@@ -47,10 +47,9 @@ The Mercator projection is a map of the world, but it is a certain type of proje
 
 ---
 
-:large_blue_circle: One way to visualize layers in an application is to think of each as a project or separate dll. This allows you to both mentally and physically separate them easily.
+:large_blue_circle: One way to visualize layers in an application is to think of each as a project or separate DLL. This allows you to both mentally and physically separate them easily.
 
 ---
-
 
 If you are new to the terms layers or boundaries, do not fret. Software engineering uses a lot of overloaded terms that can have the same meaning. We are primarily concerned with keeping logic in the correct place to enable proper automated testing.
 
@@ -60,7 +59,9 @@ If you are new to the terms layers or boundaries, do not fret. Software engineer
 
 ---
 
-#### Poorly abstracted Application layer exposes details
+#### Poorly abstracted Presentation layer exposes implementation details
+
+- A poorly abstracted presentation layer allows for details to be exposed in certain sections of your code that should instead be abstracted away. In the code sample below, we are using a DBContext object to access a database directly in an API controller. The issue will be exposed when we try to write an automated test for this piece of code.
 
 **Figure 5-x** A controller class for Reservations
 
@@ -69,9 +70,9 @@ If you are new to the terms layers or boundaries, do not fret. Software engineer
 [Route("[controller]")]
 public class ReservationController : ControllerBase
 {
-    private readonly DBContext _dbContext;
+    private readonly MyAppDbContext _dbContext;
 
-    public ReservationController(DbContext dbContext)
+    public ReservationController(MyAppDbContext dbContext)
     {
         _dbContext = dbContext;
     }
@@ -87,9 +88,7 @@ public class ReservationController : ControllerBase
 }
 ```
 
-- In the sample above we have a simple API controller with one action that will retrieve a reservation by an identifier. The code is fully testable.
-- The issue is that our presentation layer, the API, should have zero knowledge of _how_ an object is retrieved from persistence or how it is transformed.
-- When any layer of your application is privy to details it should not be aware of-a bad abstraction is present. Bad abstractions will either inhibit or restrict future change in the application.
+- In the sample above we have a simple API controller with one action that will retrieve a reservation by an identifier. The code is fully testable. The issue is that our presentation layer, the API, should have zero knowledge of _how_ an object is retrieved from persistence or how it is transformed. When any layer of your application is privy to details it should not be aware of-a bad abstraction is present. Bad abstractions will either inhibit or restrict future change in the application.
 
 ---
 
@@ -97,7 +96,93 @@ public class ReservationController : ControllerBase
 
 ---
 
+- When we attempt to write an automated test for this section of code. It will be very difficult to do so.
 
+**Figure 5-x** Test for the ReservationController
+
+```csharp
+[TestClass]
+public class ReservationControllerTests
+{
+    [TestMethod]
+    public void ReservationById_ReturnsCorrectAction()
+    {
+        var controller = new ReservationController(new MyAppDbContext());
+
+        var result = controller.GetReservationById(Guid.NewGuid());
+
+        Assert.IsInstanceOfType<OkObjectResult>(result);
+    }
+}
+```
+
+- This will technically work, however we are using our production DbContext to write an automated test. This is the last thing we want to be doing. We should not be using production data in automated tests. Any data we use should strictly be for test cases.
+
+---
+:warning: When we use a persistence method that is reading or writing to a non-volatile medium of storage such as a disk or file. That counts as an integration, not unit test.
+
+---
+
+- We need to introduce an interface between our presentation layer, the API, and the rest of our application. This will allow us to write automated tests for our presentation layer without.
+
+#### Poorly abstracted Presentation layer exposes domain details
+
+- If you look back at our controller, you will notice we are returning a domain entity directly from the database. This is not advised as there are multiple issues that may arise when directly returning database objects.
+
+**Figure 5-x** A controller class for Reservations
+
+```csharp
+[ApiController]
+[Route("[controller]")]
+public class ReservationController : ControllerBase
+{
+    private readonly MyAppDbContext _dbContext;
+
+    public ReservationController(MyAppDbContext dbContext)
+    {
+        _dbContext = dbContext;
+    }
+
+    [HttpGet(Name = "GetReservationById")]
+    [ProducesResponseType(typeof(Reservation), StatusCodes.Status200OK)]
+    public IActionResult ReservationById(Guid id)
+    {
+        var reservation = _dbContext.Reservations.FindById(id);
+
+        return Ok(reservation);
+    }
+}
+```
+
+Some issues from directly returning a domain entity:
+
+- Exposure of unnecessary data fields
+- Exposure of the wrong data type
+- Undefined behavior from non-aggregated database queries
+- Non-flattened data structures
+
+##### Exposure of Unnecessary Data Fields
+
+- When we return domain objects directly from the database, we risk return data fields are that unnecessary to the client.
+
+**Figure 5-x** The Reservation Class
+
+```csharp
+public class Reservation
+{
+    // some details removed for brevity
+
+    public Guid Id { get; }
+
+    public DateTime TimeFor { get; }
+
+    public Name Name { get; }
+
+    public bool IsSpecialOccasion { get; }
+}
+```
+
+- What if our 
 
 ---
 
@@ -105,7 +190,7 @@ public class ReservationController : ControllerBase
 
 ---
 
-#### Poorly abstracted Presentation layer exposes details
+#### Poorly abstracted Application layer exposes details
 
 **Figure 4-x** A method for removing a reservation from persistence
 
